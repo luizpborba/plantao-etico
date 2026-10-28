@@ -217,6 +217,22 @@ p { margin: 0; }
 .campo { display: flex; flex-direction: column; gap: 6px; }
 .campo input { font: inherit; font-size: 18px; border: 3px solid var(--ink); border-radius: 12px; padding: 12px 14px; background: #fff; color: var(--ink); }
 .looks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.looks-h { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
+/* ficha de prontuário dos casos clínicos */
+.ficha-wrap { background: rgba(14,31,28,.9); justify-content: center; align-items: center; }
+.prontuario { width: min(400px, 100%); background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 0 8px 0 var(--ink); overflow: hidden; animation: vira .7s cubic-bezier(.2,1.2,.4,1) both; }
+.prontuario .faixa { background: var(--teal); color: #fff; padding: 8px 16px; display: flex; justify-content: space-between; gap: 8px; }
+.prontuario .corpo-f { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.prontuario .quem { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: center; }
+.prontuario .quem .mini { width: 72px; height: 72px; }
+.prontuario .quem b { font-family: var(--font-display); font-size: 22px; display: block; }
+.prontuario dl { margin: 0; display: grid; gap: 8px; }
+.prontuario dt { font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); }
+.prontuario dd { margin: 0; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12px; font-weight: 700; padding: 3px 10px; border: 2px solid var(--ink); border-radius: 999px; background: #fff1c9; }
+.aviso-caso { font-size: 12px; color: var(--muted); }
+.caso-card .mini { width: 54px; height: 54px; }
 .look { border: 3px solid var(--ink); border-radius: 16px; background: #fff; padding: 8px 6px 0; overflow: hidden; box-shadow: 0 4px 0 var(--ink); }
 .look[aria-pressed="true"] { background: var(--gold); transform: translateY(-4px); }
 .look svg { width: 100%; height: auto; display: block; }
@@ -310,12 +326,23 @@ const PERS = {
   katia: { nome: "Kátia", papel: "Assistente social do CRAS", pele: "#5e3a24", cabelo: "#141414", estilo: "cacheado", roupa: "#f28f3b", voz: 330 },
   fernanda: { nome: "Fernanda", papel: "Apresentadora de TV", pele: "#f3cfb3", cabelo: "#e9c46a", estilo: "longo", roupa: "#d7263d", voz: 370 },
   rui: { nome: "Prof. Rui", papel: "Pesquisador", pele: "#c69c7b", cabelo: "#dcdcdc", estilo: "calvo", roupa: "#6c757d", barba: true, oculos: true, voz: 160 },
+  diego: { nome: "Diego", papel: "Paciente, 16 anos", pele: "#c68642", cabelo: "#20140c", estilo: "cacheado", roupa: "#3d405b", voz: 240 },
+  benedito: { nome: "Seu Benedito", papel: "Paciente, 72 anos", pele: "#e0b48f", cabelo: "#e6e6e6", estilo: "calvo", roupa: "#9c6644", oculos: true, bigode: true, voz: 150 },
+  marcelo: { nome: "Marcelo", papel: "Filho do Seu Benedito", pele: "#e8b896", cabelo: "#3b2a20", estilo: "curto", roupa: "#264653", barba: true, voz: 185 },
+  thiago: { nome: "Thiago", papel: "Paciente, policial militar", pele: "#8d5524", cabelo: "#111111", estilo: "raspado", roupa: "#2f5233", voz: 175 },
+  ramos: { nome: "Cel. Ramos", papel: "Comandante", pele: "#d8a07a", cabelo: "#9a9a9a", estilo: "curto", roupa: "#2f5233", bigode: true, voz: 140 },
+  anaclara: { nome: "Ana Clara", papel: "Paciente, 25 anos", pele: "#f3d2b8", cabelo: "#5a3825", estilo: "longo", roupa: "#e07a5f", voz: 350 },
+  rogerio: { nome: "Rogério", papel: "Paciente, 45 anos", pele: "#c99772", cabelo: "#4a4a4a", estilo: "curto", roupa: "#22333b", barbaRala: true, voz: 165 },
   jorge: { nome: "Seu Jorge", papel: "Pai do Caio", pele: "#dda982", cabelo: "#5a5a5a", estilo: "curto", roupa: "#8a6d3b", bigode: true, voz: 175 },
 };
+/* visuais do jogador: três femininos e três masculinos */
 const LOOKS = [
   { pele: "#f1c27d", cabelo: "#3a2a1e", estilo: "longo", roupa: "#0f5f58", traje: "blazer", cilios: true, olho: "#5b3a29" },
-  { pele: "#8d5524", cabelo: "#111111", estilo: "cacheado", roupa: "#0f5f58", traje: "gola", olho: "#2b1a10" },
-  { pele: "#e0ac69", cabelo: "#8b4a2b", estilo: "curto", roupa: "#0f5f58", traje: "blusa", oculos: true, armacao: "#b23a48", olho: "#3d6b8a" },
+  { pele: "#8d5524", cabelo: "#111111", estilo: "cacheado", roupa: "#0f5f58", traje: "blusa", cilios: true, olho: "#2b1a10" },
+  { pele: "#e0ac69", cabelo: "#8b4a2b", estilo: "coque", roupa: "#0f5f58", traje: "blusa", cilios: true, oculos: true, armacao: "#b23a48", olho: "#3d6b8a" },
+  { pele: "#f1c27d", cabelo: "#2b1d14", estilo: "curto", roupa: "#0f5f58", traje: "gola", barba: true, olho: "#3b2a20" },
+  { pele: "#6b4129", cabelo: "#111111", estilo: "raspado", roupa: "#0f5f58", traje: "blazer", barbaRala: true, olho: "#2b1a10" },
+  { pele: "#e0ac69", cabelo: "#7a7a7a", estilo: "calvo", roupa: "#0f5f58", traje: "gola", oculos: true, armacao: "#1b2422", bigode: true, olho: "#4a7a5a" },
 ];
 /* detalhes de figurino e rosto de cada personagem */
 const VISUAL = {
@@ -337,6 +364,13 @@ const VISUAL = {
   katia: { traje: "gola", cilios: true, olho: "#2b1a10" },
   fernanda: { traje: "blazer", cilios: true, olho: "#4a7a5a" },
   rui: { traje: "gola", armacao: "#7a4b2a" },
+  diego: { traje: "capuz", olho: "#2b1a10" },
+  benedito: { traje: "gola", armacao: "#7a4b2a", olho: "#4a3326" },
+  marcelo: { traje: "blazer", olho: "#3b2a20" },
+  thiago: { traje: "gola", olho: "#2b1a10" },
+  ramos: { traje: "blazer", olho: "#3d6b8a" },
+  anaclara: { traje: "blusa", cilios: true, olho: "#4a7a5a" },
+  rogerio: { traje: "blazer", olho: "#3b2a20" },
 };
 Object.entries(VISUAL).forEach(([k, v]) => Object.assign(PERS[k], v));
 
@@ -370,6 +404,7 @@ function cabelo(p, parte) {
       } else [[66, 76], [88, 64], [112, 64], [134, 76], [54, 96], [146, 96]].forEach(([x, y]) => { s += `<circle cx="${x}" cy="${y}" r="17" fill="${c}" stroke="#1b2422" stroke-width="2.5"/>`; });
       return s;
     }
+    case "raspado": return parte === "frente" ? `<path d="M49 116 C44 58 156 54 151 116 C144 84 56 84 49 116Z" fill="${c}" opacity=".85" stroke="#1b2422" stroke-width="2.5"/>` : "";
     case "calvo": return parte === "frente" ? `<path d="M47 132 C43 104 50 92 59 96 C56 110 56 120 58 134Z M153 132 C157 104 150 92 141 96 C144 110 144 120 142 134Z" fill="${c}" stroke="#1b2422" stroke-width="2.5"/>` : "";
   }
   return "";
@@ -574,6 +609,9 @@ const CARTAS = {
   "Greve e paralisação": "Em greve, manter as atividades de emergência e avisar os usuários com antecedência.",
   "Art. 1º (d)": "Prestar serviços em calamidade pública ou emergência, sem visar benefício pessoal.",
   "Art. 19": "Na mídia, o psicólogo divulga conhecimento sobre a profissão e sua base científica, sem expor pessoas.",
+  "Art. 13": "Com crianças e adolescentes, comunicar aos responsáveis só o estritamente essencial para promover medidas em benefício deles.",
+  "Estatuto da Pessoa Idosa": "Suspeita ou confirmação de violência contra a pessoa idosa deve ser notificada às autoridades (Lei 10.741/2003).",
+  "Art. 1º (b)": "Assumir responsabilidades profissionais só por atividades para as quais esteja capacitado pessoal, teórica e tecnicamente.",
   "Art. 16": "Em pesquisas: avaliar riscos, garantir participação voluntária, consentimento informado e sigilo.",
 };
 
@@ -930,6 +968,126 @@ function passosProva() {
   return out;
 }
 
+
+/* =====================================================================
+   CASOS CLÍNICOS HIPOTÉTICOS: simulações de atendimento, liberadas depois da Prova do CRP
+   ESCN(nível, ...) é igual a ESC, já com o nível (peso) da decisão.
+   ===================================================================== */
+const ESCN = (n, ...a) => { const e = ESC(...a); e.escolha.nivel = n; return e; };
+const CASOS_CLINICOS = [
+  { id: "c1", pac: "diego", paciente: "Diego, 16 anos", titulo: "O segredo do Diego",
+    ficha: { enc: "Escola, por queda nas notas e isolamento.", queixa: "Diz que \"ninguém entende\" e que a terapia é \"coisa da mãe\".", contexto: "Mora com a mãe. Pais separados. A mãe assinou a autorização." },
+    conceitos: ["Sigilo com adolescentes", "Art. 13", "Risco e proteção"],
+    cenas: [{ bg: "consultorio", passos: [
+      N("Terceira sessão com o Diego. Hoje ele chega mais falante."),
+      F("diego", "pensativo", "Posso te contar uma parada? Mas tem que ficar entre a gente."),
+      F("diego", "neutro", "Nos fins de semana eu fumo maconha com uns amigos. Minha mãe não pode nem sonhar."),
+      ESCN(2, "narr", null, "O que você faz com essa informação?", [
+        NO("Ligo para a mãe hoje mesmo. Ela é a responsável.", F("diego", "bravo", "Sabia que não dava pra confiar em ninguém."), N("O Diego para de falar nas sessões seguintes.")),
+        OK("Acolho, explico até onde vai o sigilo e trabalho o tema com ele, sem informar a mãe por enquanto.", F("diego", "surpreso", "Sério? Achei que você ia me dedurar."), V("O que você fala aqui é protegido. Se houver um risco sério para você, eu preciso envolver sua mãe, e aí eu te conto antes."), F("diego", "feliz", "Fechado. Justo.")),
+        NO("Digo que não atendo quem usa drogas.", F("diego", "triste", "Então nem adianta vir."), N("Recusar o atendimento deixa o Diego sem cuidado justo quando ele se abriu.")),
+      ], [F("helena", "neutro", "Com adolescentes, o sigilo também vale. O Art. 13 diz que aos responsáveis se comunica só o estritamente essencial para promover medidas em benefício do jovem."), F("helena", "feliz", "Explicar logo os limites do sigilo fortalece a confiança.")], "Art. 13"),
+      SAI("helena"),
+      N("Duas semanas depois, o Diego chega de moletom, mesmo no calor. Ao puxar a manga, você vê cortes recentes no braço."),
+      F("diego", "triste", "Não é nada. Às vezes dá um aperto e eu faço isso pra aliviar."),
+      ESCN(3, "narr", null, "E agora?", [
+        NO("Mantenho segredo, como prometi.", N("Autolesão pode indicar risco. Guardar segredo aqui deixa o Diego desprotegido.")),
+        OK("Acolho, avalio o risco e combino com ele como comunicar à mãe só o necessário para protegê-lo.", F("diego", "preocupado", "Você vai contar tudo pra ela?"), V("Só o que ela precisa saber para te ajudar. O resto continua aqui. Você pode estar junto quando eu falar."), F("diego", "neutro", "...Tá. Melhor eu estar junto.")),
+        NO("Conto à mãe tudo o que ele disse até hoje.", F("diego", "bravo", "Você contou até da maconha?!"), N("Revelar além do necessário quebra a confiança e não ajuda a protegê-lo.")),
+      ], [F("helena", "preocupado", "Agora há risco à integridade dele. Comunicar aos responsáveis passa a ser necessário, mas só o essencial para a proteção."), F("helena", "neutro", "Envolver o Diego na decisão preserva o vínculo.")], "Art. 10"),
+      SAI("diego"), SAI("helena"),
+      N("No dia seguinte, o pai do Diego, que não mora com ele, liga. Ele quer um relatório completo de tudo o que o filho fala, \"porque também é responsável\"."),
+      ESCN(2, "narr", null, "Como você responde ao pai?", [
+        NO("Envio um relatório completo. Ele também é responsável.", N("Um relatório com tudo exporia o Diego sem necessidade.")),
+        OK("Explico que ele pode receber as informações essenciais sobre o cuidado, mas não o conteúdo das sessões.", N("O pai fica contrariado, mas entende. Vocês marcam uma conversa sobre como apoiar o Diego.")),
+        NO("Digo que não posso falar nada porque não foi ele quem assinou.", N("Os dois são responsáveis. Ele também tem direito às informações essenciais.")),
+      ], [F("helena", "neutro", "Responsáveis recebem o essencial para cuidar, não o diário da terapia. Vale para o pai e para a mãe.")]),
+    ]}]},
+  { id: "c2", pac: "benedito", paciente: "Seu Benedito, 72 anos", titulo: "O laudo encomendado",
+    ficha: { enc: "O filho, que pede \"um laudo\".", queixa: "Esquecimentos recentes, segundo o filho.", contexto: "Viúvo há dois anos. Aposentado. Mora com o filho, Marcelo." },
+    conceitos: ["Documentos psicológicos", "Autonomia da pessoa idosa", "Violência contra a pessoa idosa"],
+    cenas: [{ bg: "consultorio", passos: [
+      N("O Marcelo chega sozinho, antes do pai."),
+      F("marcelo", "neutro", "Meu pai anda esquecido. Preciso de um laudo dizendo que ele não tem condições de cuidar do próprio dinheiro. Dá pra fazer hoje?"),
+      ESCN(2, "narr", null, "O que você responde?", [
+        NO("Faço o laudo hoje. O filho conhece bem o pai.", F("marcelo", "feliz", "Ótimo, assim eu resolvo logo."), N("Um laudo sem avaliação não tem fundamento técnico e pode tirar direitos do Seu Benedito.")),
+        OK("Explico que um laudo exige avaliação psicológica com métodos adequados, e que o resultado depende da avaliação, não do pedido.", F("marcelo", "bravo", "Mas eu já sei o resultado!"), V("Por isso mesmo a avaliação precisa ser cuidadosa. Ela pode confirmar ou não.")),
+        NO("Recuso atender essa família.", N("Dá para atender, desde que o trabalho siga critérios técnicos.")),
+      ], [F("helena", "neutro", "Documentos psicológicos precisam de fundamento técnico e científico. A Resolução 06/2019 orienta como elaborá-los."), F("helena", "pensativo", "Repare no interesse de quem pede. Um laudo não pode servir à vontade de terceiros.")], "Res. CFP 06/2019"),
+      SAI("marcelo"), SAI("helena"),
+      N("Na primeira sessão a sós com você, o Seu Benedito parece lúcido, mas triste."),
+      F("benedito", "triste", "O Marcelo fica com meu cartão do banco. Não me deixa sair sozinho, e diz que eu vou parar num asilo se reclamar."),
+      ESCN(3, "narr", null, "O que você faz?", [
+        NO("Conto ao Marcelo o que o pai disse, para resolverem em família.", N("Expor o relato a quem pode estar cometendo a violência coloca o Seu Benedito em risco.")),
+        NO("Não faço nada. É assunto de família.", N("Há sinais de violência patrimonial e psicológica. Ignorar deixa uma pessoa idosa desprotegida.")),
+        OK("Acolho, registro e comunico a suspeita aos órgãos de proteção da pessoa idosa, informando só o necessário.", F("benedito", "pensativo", "Então alguém vai olhar por mim?"), V("Vai, sim. E o senhor continua decidindo sobre a sua vida."), F("benedito", "feliz", "Faz tempo que ninguém me pergunta o que eu quero.")),
+      ], [F("helena", "neutro", "Suspeita de violência contra a pessoa idosa precisa ser comunicada às autoridades. O Estatuto da Pessoa Idosa prevê essa notificação pelos serviços de saúde."), F("helena", "feliz", "E respeitar a autonomia dele também é cuidado.")], "Estatuto da Pessoa Idosa"),
+    ]}]},
+  { id: "c3", pac: "thiago", paciente: "Thiago, 34 anos", titulo: "Dois papéis",
+    ficha: { enc: "Serviço de saúde da Polícia Militar.", queixa: "Insônia e pesadelos depois de uma ocorrência com morte.", contexto: "Soldado há 10 anos. Afastado das ruas temporariamente. Você atua como psicóloga ou psicólogo clínico da corporação." },
+    conceitos: ["Conflito de papéis", "Art. 6º", "Art. 2º (k)"],
+    cenas: [{ bg: "crp", passos: [
+      N("Você atende o Thiago há um mês, no serviço de saúde da corporação."),
+      F("thiago", "triste", "Toda noite eu acordo com o barulho do tiro. Não conta isso pro comando, por favor. Eu posso perder a farda."),
+      SAI("thiago"),
+      N("No dia seguinte, o Coronel Ramos chama você na sala dele."),
+      F("ramos", "neutro", "Preciso do relatório completo dos atendimentos do soldado Thiago. Quero saber tudo o que ele disse."),
+      ESCN(2, "narr", null, "O que você responde?", [
+        NO("Entrego o relatório completo. Ele é o comandante.", F("ramos", "feliz", "Excelente. É assim que se trabalha."), N("O conteúdo das sessões não pertence à instituição.")),
+        OK("Informo só o necessário para a gestão, como o afastamento e a necessidade de acompanhamento, sem o conteúdo das sessões.", F("ramos", "pensativo", "Entendo. Então me diga só se ele precisa continuar afastado.")),
+        NO("Digo que não posso informar nada, nem que ele está em acompanhamento.", F("ramos", "bravo", "Assim eu não consigo organizar a escala!"), N("Com a instituição, você compartilha o que é relevante para o serviço, preservando o sigilo.")),
+      ], [F("helena", "neutro", "Com a instituição e com outros profissionais, você compartilha só o que é relevante para o serviço, protegendo o que é confidencial. Isso é o Art. 6º.")], "Art. 6º"),
+      SAI("helena"),
+      F("ramos", "neutro", "Mais uma coisa: você vai fazer a avaliação psicológica dele para voltar a portar arma. Já conhece o caso, fica mais rápido."),
+      ESCN(3, "narr", null, "Você aceita?", [
+        NO("Aceito. Conheço o caso melhor do que ninguém.", N("O vínculo clínico compromete a imparcialidade. E o Thiago passaria a ter medo de falar nas sessões.")),
+        OK("Recuso e peço que outro profissional faça a avaliação, para não misturar o papel clínico com o de avaliador.", F("ramos", "pensativo", "Faz sentido. Vou chamar outra pessoa.")),
+        NO("Aceito, mas aprovo direto para não prejudicar o Thiago.", N("Aprovar sem avaliar seria uma fraude, com risco para ele e para outras pessoas.")),
+      ], [F("helena", "neutro", "É vedado ser perito ou avaliador quando vínculos profissionais podem afetar a qualidade do trabalho. Art. 2º (k)."), F("helena", "feliz", "Separar os papéis protege o paciente e a confiança na avaliação.")], "Art. 2º (k)"),
+      SAI("ramos"),
+      F("thiago", "feliz", "Soube que você não aceitou me avaliar. Valeu. Fiquei com medo de não poder mais falar com você."),
+    ]}]},
+  { id: "c4", pac: "anaclara", paciente: "Ana Clara, 25 anos", titulo: "Além da minha formação",
+    ficha: { enc: "Procura espontânea.", queixa: "Ansiedade antes das provas da faculdade.", contexto: "Estudante de Direito. Mora sozinha, longe da família." },
+    conceitos: ["Limites de competência", "Trabalho em rede", "Art. 1º (b)"],
+    cenas: [{ bg: "consultorio", passos: [
+      N("Na quarta sessão, a Ana Clara conta algo que não tinha mencionado."),
+      F("anaclara", "preocupado", "Eu quase não como. Quando como, eu provoco vômito. Já desmaiei duas vezes este mês."),
+      F("anaclara", "pensativo", "Mas eu quero tratar isso só com você. Médico vai me pesar, e eu não aguento."),
+      ESCN(3, "narr", null, "Você nunca trabalhou com transtornos alimentares. O que você faz?", [
+        NO("Sigo atendendo sem ajuda e vou aprendendo com o caso.", N("Desmaios indicam risco clínico. Atender sem preparo e sem equipe pode custar caro à saúde dela.")),
+        OK("Explico o risco, busco supervisão e articulo o cuidado com médico e nutricionista, ou encaminho para um serviço especializado.", F("anaclara", "triste", "Eu tenho medo de ser julgada."), V("Eu vou estar junto. Vamos procurar uma equipe que cuide de você sem julgamento."), F("anaclara", "neutro", "Tá. Se você for junto nisso, eu tento.")),
+        NO("Encerro o atendimento, porque não é minha área.", F("anaclara", "triste", "Então até você desistiu de mim."), N("Encerrar sem garantir o encaminhamento deixa a Ana Clara sem cuidado.")),
+      ], [F("helena", "neutro", "O Código pede que o psicólogo assuma responsabilidades só por atividades para as quais esteja capacitado pessoal, teórica e tecnicamente."), F("helena", "feliz", "Reconhecer o próprio limite e acionar a rede também é cuidado.")], "Art. 1º (b)"),
+      SAI("helena"),
+      F("anaclara", "pensativo", "Se eu for ao médico, você vai contar para ele tudo o que eu falo aqui?"),
+      ESCN(2, "narr", null, "O que você responde?", [
+        OK("Com a sua autorização, compartilho só o que for importante para o tratamento.", F("anaclara", "feliz", "Assim eu topo.")),
+        NO("Conto tudo. Somos uma equipe.", F("anaclara", "surpreso", "Tudo?! Até as coisas da minha família?"), N("Na equipe, compartilha-se só o relevante para o cuidado.")),
+        NO("Não conto nada para ninguém.", N("Sem trocar nenhuma informação, a equipe não consegue cuidar bem da Ana Clara.")),
+      ], [F("helena", "neutro", "No trabalho em equipe vale o Art. 6º: compartilhar só o relevante para o cuidado, preservando o que é confidencial.")], "Art. 6º"),
+    ]}]},
+  { id: "c5", pac: "rogerio", paciente: "Rogério, 45 anos", titulo: "O presente",
+    ficha: { enc: "Indicação de um amigo.", queixa: "Luto pela morte do pai e conflitos com os sócios.", contexto: "Empresário. Em atendimento há oito meses. Hoje é a sessão de encerramento." },
+    conceitos: ["Limites da relação", "Presentes e vantagens", "Art. 2º (j)"],
+    cenas: [{ bg: "consultorio", passos: [
+      N("Última sessão antes da alta. O Rogério chega com uma caixa embrulhada."),
+      F("rogerio", "feliz", "Um presente pra você. É um relógio importado. Sem você eu não teria saído do buraco."),
+      ESCN(2, "narr", null, "O que você faz?", [
+        NO("Aceito. Seria falta de educação recusar.", N("Um presente caro cria uma dívida simbólica e muda a relação.")),
+        OK("Agradeço, explico com cuidado por que não posso aceitar e conversamos sobre o significado do gesto.", F("rogerio", "pensativo", "Faz sentido. Acho que eu queria retribuir de algum jeito."), V("Ver você bem já é a retribuição. Vamos falar sobre o que este ano significou?")),
+        NO("Recuso secamente e mudo de assunto.", F("rogerio", "triste", "Ah... desculpa."), N("A recusa sem acolhimento deixa o Rogério constrangido no encerramento.")),
+      ], [F("helena", "neutro", "Presentes de valor podem interferir na relação e na sua isenção. A pergunta é: isso atrapalha o trabalho ou cria uma vantagem para mim?")], "Art. 2º (j)"),
+      SAI("helena"),
+      F("rogerio", "feliz", "Então aceita uma proposta: venha cuidar do RH da minha empresa. O salário é ótimo!"),
+      ESCN(3, "narr", null, "O que você responde?", [
+        NO("Aceito. A terapia acabou mesmo.", F("rogerio", "feliz", "Começa segunda!"), N("Se o Rogério precisar voltar à terapia, a nova relação já terá mudado o vínculo.")),
+        OK("Agradeço e recuso, porque uma relação de trabalho com quem atendi pode interferir no vínculo e numa possível volta à terapia.", F("rogerio", "neutro", "Entendi. E se eu precisar voltar, a porta fica aberta?"), V("Fica, sim.")),
+      ], [F("helena", "neutro", "O fim da terapia não apaga a relação terapêutica. Vínculos comerciais com ex-pacientes podem interferir no serviço e devem ser evitados.")]),
+    ]}]},
+];
+const casoLiberado = () => !!G.dias.d1;
+
 function passosRevisao(ids) {
   if (!ids.length) return [];
   const out = [F("helena", "feliz", "Antes de encerrar o dia, três perguntas rápidas para fixar.")];
@@ -948,7 +1106,7 @@ function passosRevisao(ids) {
    ESTADO
    ===================================================================== */
 const KEY = "primeira-semana-v1";
-const NOVO = () => ({ nome: "", look: 0, dias: {}, cartas: {}, som: true, musica: true });
+const NOVO = () => ({ nome: "", look: 0, dias: {}, casos: {}, cartas: {}, som: true, musica: true });
 let G = NOVO();
 try { const raw = localStorage.getItem(KEY); if (raw) G = Object.assign(NOVO(), JSON.parse(raw)); } catch (e) {}
 const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(G)); } catch (e) {} };
@@ -1059,7 +1217,7 @@ function telaTitulo() {
       <div class="psi" aria-hidden="true">Ψ</div>
       <span class="label">Um jogo sobre ética na Psicologia</span>
       <h1>Primeira Semana de <span>Plantão</span></h1>
-      <p class="sub">Duas semanas, nove dias de plantão e muitas decisões difíceis. A Helena vai supervisionar cada passo.</p>
+      <p class="sub">Duas semanas de plantão, casos clínicos para simular e muitas decisões difíceis. A Helena vai supervisionar cada passo.</p>
       <div class="pilha">
         ${G.nome ? `<button class="btn" id="continuar">Continuar como ${esc(G.nome)}</button><button class="btn sec" id="novo">Novo jogo</button>` : `<button class="btn" id="novo">Começar</button>`}
       </div>
@@ -1078,7 +1236,10 @@ function telaCriar() {
       <h2 style="font-size:30px">Quem vai assumir o plantão?</h2>
       <div class="campo"><label for="nome"><b>Como você quer ser chamado(a)?</b></label><input id="nome" maxlength="18" autocomplete="off" placeholder="Seu nome ou apelido"></div>
       <div class="campo"><b>Escolha seu visual</b>
-        <div class="looks">${LOOKS.map((l, i) => `<button class="look" data-l="${i}" aria-pressed="${i === look}" aria-label="Visual ${i + 1}">${cabecaSVG(l, "feliz")}</button>`).join("")}</div></div>
+        <span class="looks-h">Femininos</span>
+        <div class="looks">${LOOKS.slice(0, 3).map((l, i) => `<button class="look" data-l="${i}" aria-pressed="${i === look}" aria-label="Visual feminino ${i + 1}">${cabecaSVG(l, "feliz")}</button>`).join("")}</div>
+        <span class="looks-h">Masculinos</span>
+        <div class="looks">${LOOKS.slice(3).map((l, i) => `<button class="look" data-l="${i + 3}" aria-pressed="${i + 3 === look}" aria-label="Visual masculino ${i + 1}">${cabecaSVG(l, "feliz")}</button>`).join("")}</div></div>
       <button class="btn" id="ir" disabled>Começar a semana</button>
       <button class="btn sec" id="volta">Voltar</button>
     </div>`;
@@ -1112,6 +1273,14 @@ function telaAgenda() {
           <span class="cal"><span>${d.cal}</span><b>${i + 1}</b></span>
           <span><strong>${esc(d.titulo)}</strong><small>${ok ? esc(d.sub) : "Termine o dia anterior"}</small></span>
           ${estrelas(r ? r.estrelas : 0, "peq")}</button>`; }).join("")}</div>`).join("")}
+      <div class="semana-h"><h3>Casos clínicos</h3><span class="label">${CASOS_CLINICOS.filter(c => G.casos[c.id]).length}/${CASOS_CLINICOS.length} casos</span></div>
+      <p class="aviso-caso">Simulações de atendimento com casos hipotéticos. ${casoLiberado() ? "Escolha um paciente." : "Disponível depois da Prova do CRP, no dia 1."}</p>
+      <div class="dias">${CASOS_CLINICOS.map((c, k) => {
+        const r = G.casos[c.id], ok = casoLiberado();
+        return `<button class="dia-card caso-card ${r ? "feito" : ""}" data-c="${k}" ${ok ? "" : "disabled"}>
+          <span class="mini">${cabecaSVG(PERS[c.pac], "neutro")}</span>
+          <span><strong>${esc(c.titulo)}</strong><small>${esc(c.paciente)}</small></span>
+          ${estrelas(r ? r.estrelas : 0, "peq")}</button>`; }).join("")}</div>
       <div class="pilha">
         ${fim ? `<button class="btn" id="cert">Ver meu certificado</button>` : ""}
         <button class="btn sec" id="cad">Caderno do Código</button>
@@ -1120,6 +1289,7 @@ function telaAgenda() {
       </div>
     </div>`;
   $app.querySelectorAll("[data-d]").forEach(b => b.onclick = () => iniciarDia(+b.dataset.d));
+  $app.querySelectorAll("[data-c]").forEach(b => b.onclick = () => iniciarCaso(+b.dataset.c));
   document.getElementById("cad").onclick = () => telaCaderno(telaAgenda);
   document.getElementById("titulo").onclick = telaTitulo;
   const c = document.getElementById("cert"); if (c) c.onclick = certificado;
@@ -1179,11 +1349,23 @@ function iniciarDia(i) {
   fila = [];
   D.cenas.forEach(c => { fila.push({ bg: c.bg }); fila.push(...c.passos); });
   fila.push(...passosRevisao(D.revisao), { fim: true });
+  montarJogo(`Dia ${i + 1} · ${D.titulo}`);
+}
+function iniciarCaso(k) {
+  pararJogo();
+  D = { ...CASOS_CLINICOS[k], indice: k, tipo: "caso" };
+  fila = [];
+  D.cenas.forEach(c => { fila.push({ bg: c.bg }); fila.push(...c.passos); });
+  fila.push({ fim: true });
+  montarJogo(`Caso · ${D.paciente}`);
+}
+const reiniciar = () => D.tipo === "caso" ? iniciarCaso(D.indice) : iniciarDia(D.indice);
+function montarJogo(rotulo) {
   pos = -1; placar = { acertos: 0, total: 0, pontos: 0, max: 0, cartas: [] }; palco = { esq: null, dir: null };
   esperando = false; travado = false;
   $app.innerHTML = `<div class="fundo" id="fundo"></div>
     <div class="palco" id="palco"><div class="slot esq" id="s-esq"></div><div class="slot dir" id="s-dir"></div></div>
-    <div class="hud"><span class="pill dia">Dia ${i + 1} · ${esc(D.titulo)}</span>
+    <div class="hud"><span class="pill dia">${esc(rotulo)}</span>
       <span class="dir-hud"><span class="pill selos" id="selos" title="Pontos de hoje (média ponderada)"><svg viewBox="0 0 24 24">${ESTRELA}</svg><span id="n-selos">0</span></span>
       ${botaoSom("")}<button class="menu-btn" id="menu" aria-label="Pausar">II</button></span></div>
     <div class="caixa" id="caixa" hidden>
@@ -1199,6 +1381,7 @@ function iniciarDia(i) {
 }
 
 function cartaz() {
+  if (D.tipo === "caso") { fichaCaso(); return; }
   const div = document.createElement("div");
   div.className = "overlay cartaz";
   Som.abertura();
@@ -1426,7 +1609,57 @@ function resultadoProva() {
   }
 }
 
+function fichaCaso() {
+  const div = document.createElement("div");
+  div.className = "overlay ficha-wrap";
+  Som.abertura();
+  div.innerHTML = `<div class="prontuario">
+      <div class="faixa"><span class="label">Prontuário</span><span class="label">Caso hipotético</span></div>
+      <div class="corpo-f">
+        <div class="quem"><span class="mini">${cabecaSVG(PERS[D.pac], "neutro")}</span><span><b>${esc(D.paciente)}</b><span>${esc(D.titulo)}</span></span></div>
+        <dl><dt>Encaminhamento</dt><dd>${esc(D.ficha.enc)}</dd><dt>Queixa principal</dt><dd>${esc(D.ficha.queixa)}</dd><dt>Contexto</dt><dd>${esc(D.ficha.contexto)}</dd></dl>
+        <div><dt style="margin-bottom:6px">Conceitos éticos em jogo</dt><div class="chips">${D.conceitos.map(c => `<span class="chip">${esc(c)}</span>`).join("")}</div></div>
+        <button class="btn" id="iniciar-at">Iniciar atendimento</button>
+        <p class="aviso-caso">Caso fictício, criado para estudo. Qualquer semelhança com pessoas reais é coincidência.</p>
+      </div></div>`;
+  $app.appendChild(div);
+  const b = div.querySelector("#iniciar-at");
+  b.onclick = () => { div.remove(); avancar(); };
+  b.focus();
+}
+
+function fimCaso() {
+  const pct = placar.max ? placar.pontos / placar.max : 0;
+  const est = pct >= .9 ? 3 : pct >= .65 ? 2 : pct >= .4 ? 1 : 0;
+  const ant = G.casos[D.id];
+  G.casos[D.id] = { estrelas: Math.max(est, ant ? ant.estrelas : 0) };
+  salvar();
+  const refs = [...new Set(placar.cartas)];
+  const prox = CASOS_CLINICOS.findIndex((c, k) => k > D.indice && !G.casos[c.id]);
+  const div = document.createElement("div");
+  div.className = "overlay escuro";
+  div.innerHTML = `<div class="resumo-dia">
+      <span class="label">Supervisão do caso</span>
+      <h2 style="font-size:30px">${esc(D.paciente)}</h2>
+      ${estrelas(est)}
+      <span class="grande">${fmtNota(nota10(placar.pontos, placar.max))}</span><span>${placar.acertos} de ${placar.total} decisões éticas · ${placar.pontos} de ${placar.max} pontos</span>
+    </div>
+    <div class="anot"><h3>O que a Helena destaca</h3><ul>${refs.map(r => `<li><b>${esc(r)}:</b> ${esc(CARTAS[r])}</li>`).join("")}</ul>
+      <div class="chips">${D.conceitos.map(c => `<span class="chip">${esc(c)}</span>`).join("")}</div></div>
+    <div class="pilha">
+      ${prox >= 0 ? `<button class="btn" id="prox">Próximo caso: ${esc(CASOS_CLINICOS[prox].paciente)}</button>` : ""}
+      <button class="btn sec" id="rep">Atender de novo</button>
+      <button class="btn sec" id="ag">Voltar à agenda</button>
+    </div>`;
+  $app.appendChild(div);
+  if (est >= 2) { confete(); Som.fanfarra(); } else Som.triste();
+  const p = div.querySelector("#prox"); if (p) p.onclick = () => iniciarCaso(prox);
+  div.querySelector("#rep").onclick = reiniciar;
+  div.querySelector("#ag").onclick = telaAgenda;
+}
+
 function fimDoDia() {
+  if (D.tipo === "caso") { fimCaso(); return; }
   const pct = placar.max ? placar.pontos / placar.max : 0;
   const est = pct >= .9 ? 3 : pct >= .65 ? 2 : pct >= .4 ? 1 : 0;
   const ant = G.dias[D.id];
@@ -1466,13 +1699,13 @@ function pausa() {
     <button class="btn sec" id="t-som" aria-pressed="${G.som}">Efeitos e vozes: ${G.som ? "ligados" : "desligados"}</button>
     <button class="btn sec" id="t-mus" aria-pressed="${G.musica}">Música: ${G.musica ? "ligada" : "desligada"}</button>
     <button class="btn sec" id="cad">Caderno do Código</button>
-    <button class="btn sec" id="rei">Recomeçar o dia</button><button class="btn sec" id="ag">Sair para a agenda</button></div>`;
+    <button class="btn sec" id="rei">${D.tipo === "caso" ? "Recomeçar o caso" : "Recomeçar o dia"}</button><button class="btn sec" id="ag">Sair para a agenda</button></div>`;
   $app.appendChild(div);
   div.querySelector("#seguir").onclick = () => { div.remove(); document.getElementById("som").innerHTML = ICO_SOM(somLigado()); };
   div.querySelector("#t-som").onclick = e => { G.som = !G.som; salvar(); e.currentTarget.textContent = "Efeitos e vozes: " + (G.som ? "ligados" : "desligados"); e.currentTarget.setAttribute("aria-pressed", G.som); };
   div.querySelector("#t-mus").onclick = e => { G.musica = !G.musica; salvar(); if (G.musica) Som.iniciar(); else Som.pararMusica(); e.currentTarget.textContent = "Música: " + (G.musica ? "ligada" : "desligada"); e.currentTarget.setAttribute("aria-pressed", G.musica); };
   div.querySelector("#cad").onclick = () => { div.remove(); telaCaderno(); };
-  div.querySelector("#rei").onclick = () => iniciarDia(D.indice);
+  div.querySelector("#rei").onclick = reiniciar;
   div.querySelector("#ag").onclick = telaAgenda;
   div.querySelector("#seguir").focus();
 }
