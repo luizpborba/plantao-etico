@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Primeira Semana de Plantão</title>
+<meta name="description" content="Jogo sobre ética na Psicologia: viva duas semanas de plantão, tome decisões difíceis e conquiste seu CRP.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Primeira Semana de Plantão">
+<meta property="og:description" content="Jogo sobre ética na Psicologia: viva duas semanas de plantão, tome decisões difíceis e conquiste seu CRP.">
+<meta property="og:url" content="https://luizpborba.github.io/plantao-etico/">
+<meta property="og:image" content="https://luizpborba.github.io/plantao-etico/capa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1f1c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4c04a'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' font-family='Georgia,serif' fill='%230f5f58'%3E%CE%A8%3C/text%3E%3C/svg%3E">
+<style>body { margin: 0; } [hidden] { display: none !important; }</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: um "celular" de até 480px. Cenário ilustrado ocupa a tela, personagens em pé no palco, caixa de diálogo por cima da parte de baixo.
+   Visual de um mundo só (ilustração clara), por escolha: as cores são fixas e não seguem o tema escuro. */
+:root {
+  color-scheme: light;
+  --ink: #1b2422;
+  --paper: #fffdf8;
+  --teal: #0f5f58;
+  --teal-2: #4fb8ad;
+  --gold: #f4c04a;
+  --gold-ink: #3a2a00;
+  --ok: #1f7a4d;
+  --ok-bg: #dff3e7;
+  --bad: #b53a26;
+  --bad-bg: #fbe4df;
+  --muted: #5b6b66;
+  --night: #0e1f1c;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+body { background: var(--night); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; overflow: hidden; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+#app { position: relative; max-width: 480px; height: 100%; margin: 0 auto; overflow: hidden; background: #cfe3d8; }
+@media (min-width: 520px) { #app { height: calc(100% - 32px); margin-top: 16px; border-radius: 22px; box-shadow: 0 20px 60px rgba(0,0,0,.45); } }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.08; text-wrap: balance; }
+p { margin: 0; }
+.label { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+
+/* ---------- cenário ---------- */
+.fundo, .fundo .camada { position: absolute; inset: 0; }
+.fundo .camada { transition: opacity .6s ease; }
+.fundo svg { width: 100%; height: 100%; display: block; }
+.nuvens { animation: nuvem 26s ease-in-out infinite alternate; }
+@keyframes nuvem { to { transform: translateX(34px); } }
+.planta { transform-box: fill-box; transform-origin: 50% 100%; animation: balanca 5s ease-in-out infinite; }
+@keyframes balanca { 50% { transform: rotate(3deg); } }
+.ponteiro { transform-box: fill-box; transform-origin: 50% 100%; animation: gira 40s linear infinite; }
+@keyframes gira { to { transform: rotate(360deg); } }
+.lampada { transform-box: fill-box; transform-origin: 50% 0; animation: pendulo 4s ease-in-out infinite; }
+@keyframes pendulo { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.holofote { transform-box: fill-box; transform-origin: 50% 0; animation: varre 7s ease-in-out infinite; }
+@keyframes varre { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+.luz { animation: brilha 1.6s ease-in-out infinite alternate; }
+.pisca { animation: brilha .8s steps(2, jump-none) infinite alternate; }
+.ecg { stroke-dasharray: 260; animation: ecg 2.2s linear infinite; }
+@keyframes ecg { from { stroke-dashoffset: 260; } to { stroke-dashoffset: 0; } }
+.tela-call { animation: brilha 3s ease-in-out infinite alternate; }
+@keyframes brilha { from { opacity: .35; } to { opacity: 1; } }
+.vapor { animation: vapor 3s ease-in-out infinite; }
+@keyframes vapor { 0% { opacity: 0; transform: translateY(6px); } 40% { opacity: .8; } 100% { opacity: 0; transform: translateY(-14px); } }
+
+/* ---------- personagens ---------- */
+.palco { position: absolute; inset: 0; pointer-events: none; }
+.slot { position: absolute; bottom: 21%; width: 60%; max-width: 290px; transition: left .5s ease, right .5s ease, bottom .5s ease, width .5s ease; }
+.palco.escolhendo .slot { bottom: 52%; width: 40%; }
+.palco-titulo .slot { bottom: 50%; width: 46%; }
+.palco-titulo.so-esq .slot.esq { left: 2%; }
+.slot.esq { left: -6%; }
+.slot.dir { right: -6%; }
+.palco.so-esq .slot.esq { left: 20%; }
+.palco.so-dir .slot.dir { right: 20%; }
+.char { transition: opacity .45s ease, transform .45s ease, filter .3s ease; }
+.char.entra-esq { opacity: 0; transform: translateX(-50px); }
+.char.entra-dir { opacity: 0; transform: translateX(50px); }
+.char.ouvindo { filter: brightness(.82) saturate(.85); }
+.slot.fala-agora { z-index: 2; }
+.av { width: 100%; height: auto; display: block; overflow: visible; }
+.av .corpo { transform-origin: 100px 300px; animation: respira 4s ease-in-out infinite; }
+@keyframes respira { 50% { transform: scaleY(1.014) translateY(-1px); } }
+.av .olhos { transform-origin: 100px 126px; animation: pisca 5s infinite; }
+@keyframes pisca { 0%, 93%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } }
+.char.falando .boca { transform-origin: 100px 157px; animation: fala .15s ease-in-out infinite alternate; }
+@keyframes fala { to { transform: scale(.92, 1.65); } }
+.char.pula { animation: pula .55s ease; }
+@keyframes pula { 30% { transform: translateY(-18px); } 60% { transform: translateY(0); } 80% { transform: translateY(-6px); } }
+.char.treme { animation: treme .45s ease; }
+@keyframes treme { 20%, 60% { transform: translateX(-7px); } 40%, 80% { transform: translateX(7px); } }
+.char.afunda { animation: afunda .9s ease; }
+@keyframes afunda { 40% { transform: translateY(10px) scale(.98); } }
+.char.inclina { animation: inclina .8s ease; }
+@keyframes inclina { 40% { transform: rotate(-3deg); } }
+
+/* ---------- HUD ---------- */
+.hud { position: absolute; top: 0; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); padding-bottom: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.pill { background: rgba(255,253,248,.92); border: 2px solid var(--ink); border-radius: 999px; padding: 5px 12px; font-family: var(--font-display); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.pill.dia { flex: 1 1 auto; max-width: fit-content; }
+.hud .dir-hud { display: flex; gap: 6px; flex: none; }
+.pill.selos svg { width: 14px; height: 14px; fill: var(--gold); stroke: var(--ink); stroke-width: 1.5; }
+.pill.selos.ganhou { animation: ganhou .6s ease; }
+@keyframes ganhou { 40% { transform: scale(1.25); background: var(--gold); } }
+.som-titulo { position: absolute; z-index: 22; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); color: var(--ink); }
+.menu-btn { color: var(--ink); width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--ink); background: rgba(255,253,248,.92); display: grid; place-items: center; font-weight: 700; }
+
+/* ---------- caixa de diálogo ---------- */
+.caixa { position: absolute; z-index: 6; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); background: var(--paper); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 0 6px 0 var(--ink); min-height: 132px; }
+.caixa.narra { background: #22312d; color: #f2efe6; border-color: #0b1513; box-shadow: 0 6px 0 #0b1513; }
+.caixa.narra .fala { font-style: italic; }
+.caixa .tag { position: absolute; top: -22px; left: 14px; display: flex; align-items: center; gap: 8px; background: var(--teal); color: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 3px 12px 3px 4px; animation: tag .3s ease; }
+.caixa .tag.voce { background: var(--gold); color: var(--gold-ink); }
+@keyframes tag { from { transform: translateY(8px); opacity: 0; } }
+.caixa .tag b { font-family: var(--font-display); font-size: 16px; line-height: 1; }
+.caixa .tag small { display: block; font-size: 11px; opacity: .85; line-height: 1.1; }
+.mini { width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 2px solid var(--ink); overflow: hidden; display: block; flex: none; }
+.mini svg { width: 100%; height: 100%; display: block; }
+.conteudo { padding: 38px 20px 22px; max-height: 58vh; overflow-y: auto; }
+.caixa.narra .conteudo { padding-top: 22px; }
+.fala { font-size: 17px; line-height: 1.6; min-height: 3.2em; white-space: pre-wrap; }
+.nivel { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; padding: 3px 10px; border: 2px solid var(--ink); border-radius: 999px; font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); animation: tag .3s ease; }
+.nivel i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink); background: transparent; }
+.nivel i.on { background: var(--ink); }
+.nivel.n1 { background: #dff3e7; }
+.nivel.n2 { background: #fff1c9; }
+.nivel.n3 { background: #fbe4df; }
+/* resultado da prova do CRP */
+.prova-res { text-align: center; align-items: center; }
+.nota-grande { font-family: var(--font-display); font-weight: 800; font-size: 76px; line-height: 1; color: var(--gold); text-shadow: 0 5px 0 var(--ink); }
+.tabela-niveis { width: 100%; max-width: 340px; border-collapse: collapse; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px; overflow: hidden; font-variant-numeric: tabular-nums; }
+.tabela-niveis th, .tabela-niveis td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #d9dfdc; font-size: 15px; }
+.tabela-niveis tr:last-child td { border-bottom: 0; font-weight: 700; }
+.tabela-niveis td:last-child, .tabela-niveis th:last-child { text-align: right; }
+.carimbo { max-width: 90%; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: .08em; padding: 6px 18px; border: 4px solid currentColor; border-radius: 10px; transform: rotate(-8deg); animation: carimbo .5s .4s cubic-bezier(.2,1.6,.4,1) both; }
+.carimbo.ok { color: #5fd39a; }
+.carimbo.no { color: #ff8a73; }
+@keyframes carimbo { from { opacity: 0; transform: rotate(-8deg) scale(2.4); } }
+.carteira { width: min(320px, 100%); display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; text-align: left; background: linear-gradient(135deg, #0f5f58, #1f8a7f); color: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 14px; box-shadow: 0 6px 0 var(--ink); animation: vira .8s .6s cubic-bezier(.2,1.2,.4,1) both; }
+.carteira .foto { width: 76px; height: 76px; border-radius: 12px; background: #fff; border: 2px solid var(--ink); overflow: hidden; }
+.carteira .foto svg { width: 100%; height: 100%; display: block; }
+.carteira b { font-family: var(--font-display); font-size: 20px; display: block; overflow-wrap: anywhere; }
+.carteira .num { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--gold); }
+.crp-num { font-family: var(--font-display); font-weight: 800; color: var(--teal); }
+.seta { position: absolute; right: 16px; bottom: 10px; font-size: 14px; animation: seta .8s ease-in-out infinite alternate; }
+@keyframes seta { to { transform: translateY(4px); } }
+.opcoes { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.op { text-align: left; background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 12px; padding: 10px 12px; font-size: 15px; display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; box-shadow: 0 3px 0 var(--ink); animation: opcao .35s ease both; transition: transform .1s; }
+.op:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.op .k { width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: #fff; display: grid; place-items: center; font-family: var(--font-display); font-size: 13px; }
+.op.certa { background: var(--ok-bg); border-color: var(--ok); box-shadow: 0 3px 0 var(--ok); }
+.op.certa .k { background: var(--ok); }
+.op.errada { background: var(--bad-bg); border-color: var(--bad); box-shadow: 0 3px 0 var(--bad); animation: treme .4s ease; }
+.op.errada .k { background: var(--bad); }
+.op.apaga { opacity: .35; }
+@keyframes opcao { from { opacity: 0; transform: translateY(12px); } }
+
+/* ---------- efeitos ---------- */
+.flash { position: absolute; inset: 0; z-index: 4; pointer-events: none; animation: flash .7s ease forwards; }
+.flash.ok { background: radial-gradient(circle at 50% 45%, rgba(95,211,154,.55), transparent 70%); }
+.flash.no { background: radial-gradient(circle at 50% 45%, rgba(255,120,95,.45), transparent 70%); }
+@keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+.flutua { position: absolute; z-index: 7; left: 50%; top: 38%; transform: translateX(-50%); font-family: var(--font-display); font-weight: 800; font-size: 26px; padding: 6px 16px; border-radius: 999px; border: 3px solid var(--ink); pointer-events: none; animation: flutua 1.4s ease forwards; white-space: nowrap; }
+.flutua.ok { background: var(--gold); color: var(--gold-ink); }
+.flutua.no { background: #fff; color: var(--bad); }
+@keyframes flutua { 0% { opacity: 0; transform: translate(-50%, 20px) scale(.8); } 20% { opacity: 1; transform: translate(-50%, 0) scale(1.08); } 70% { opacity: 1; transform: translate(-50%, -30px) scale(1); } 100% { opacity: 0; transform: translate(-50%, -60px); } }
+
+/* ---------- telas sobrepostas ---------- */
+.overlay { position: absolute; inset: 0; z-index: 20; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 16px; padding-top: calc(24px + env(safe-area-inset-top, 0px)); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); animation: aparece .35s ease; }
+@keyframes aparece { from { opacity: 0; } }
+.overlay.escuro { background: rgba(14,31,28,.86); color: #f2efe6; backdrop-filter: blur(3px); }
+.overlay.papel { background: var(--paper); }
+.btn { border: 3px solid var(--ink); background: var(--gold); color: var(--gold-ink); border-radius: 14px; padding: 13px 16px; font-family: var(--font-display); font-weight: 800; font-size: 18px; box-shadow: 0 4px 0 var(--ink); width: 100%; text-align: center; text-decoration: none; display: block; }
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.btn.sec { background: #fff; color: var(--ink); }
+.btn.teal { background: var(--teal); color: #fff; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.toque { text-align: center; font-size: 14px; opacity: .8; animation: seta .9s ease-in-out infinite alternate; }
+
+/* título */
+.titulo { background: linear-gradient(180deg, transparent 0%, transparent 36%, rgba(14,31,28,.94) 56%); color: #fff; justify-content: flex-end; }
+.titulo .psi { width: 64px; height: 64px; border-radius: 18px; background: var(--gold); color: var(--ink); border: 3px solid var(--ink); display: grid; place-items: center; font-family: Georgia, serif; font-size: 38px; box-shadow: 0 4px 0 var(--ink); animation: pula 1.6s ease infinite; }
+.titulo h1 { font-size: clamp(40px, 12vw, 56px); font-weight: 800; letter-spacing: -.02em; }
+.titulo h1 span { color: var(--gold); }
+.titulo p.sub { font-size: 17px; opacity: .9; }
+.balao { position: absolute; top: 12%; right: 6%; max-width: 48%; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 16px; padding: 10px 14px; font-weight: 700; z-index: 21; animation: balao 3s ease-in-out infinite; }
+.balao::after { content: ""; position: absolute; left: 20px; bottom: -14px; border: 8px solid transparent; border-top-color: var(--ink); }
+@keyframes balao { 50% { transform: translateY(-6px); } }
+.pilha { display: flex; flex-direction: column; gap: 10px; }
+.nota { font-size: 13px; opacity: .75; text-align: center; }
+.nota a { color: inherit; }
+
+/* criar personagem */
+.campo { display: flex; flex-direction: column; gap: 6px; }
+.campo input { font: inherit; font-size: 18px; border: 3px solid var(--ink); border-radius: 12px; padding: 12px 14px; background: #fff; color: var(--ink); }
+.looks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.look { border: 3px solid var(--ink); border-radius: 16px; background: #fff; padding: 8px 6px 0; overflow: hidden; box-shadow: 0 4px 0 var(--ink); }
+.look[aria-pressed="true"] { background: var(--gold); transform: translateY(-4px); }
+.look svg { width: 100%; height: auto; display: block; }
+
+/* cartaz do dia */
+.cartaz { background: var(--teal); color: #fff; justify-content: center; text-align: center; align-items: center; cursor: pointer; }
+.cartaz .semana { animation: desce .5s ease both; }
+.cartaz .num { font-family: var(--font-display); font-weight: 800; font-size: 88px; line-height: 1; color: var(--gold); text-shadow: 0 5px 0 var(--ink); animation: zoom .6s .15s cubic-bezier(.2,1.6,.4,1) both; }
+.cartaz h2 { font-size: 34px; animation: desce .5s .35s ease both; }
+.cartaz p { opacity: .9; animation: desce .5s .5s ease both; max-width: 30ch; }
+@keyframes desce { from { opacity: 0; transform: translateY(-14px); } }
+@keyframes zoom { from { opacity: 0; transform: scale(.3); } }
+
+/* carta do código */
+.carta-wrap { justify-content: center; align-items: center; text-align: center; cursor: pointer; }
+.carta { width: min(300px, 100%); background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 20px; padding: 22px 20px; box-shadow: 0 8px 0 var(--ink), 0 0 60px rgba(244,192,74,.6); display: flex; flex-direction: column; gap: 12px; animation: vira .8s cubic-bezier(.2,1.2,.4,1) both; }
+@keyframes vira { from { transform: perspective(700px) rotateY(100deg) scale(.6); opacity: 0; } }
+.carta .ref { align-self: center; background: var(--gold); color: var(--gold-ink); border: 2px solid var(--ink); border-radius: 10px; padding: 6px 14px; font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.carta .psi-c { font-family: Georgia, serif; font-size: 34px; color: var(--teal); }
+.brilho { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: brilho 1.2s ease-out forwards; }
+@keyframes brilho { to { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
+
+/* fim do dia, agenda, caderno */
+.cab { display: flex; align-items: center; gap: 12px; }
+.cab .mini { width: 52px; height: 52px; }
+.cab h2 { font-size: 24px; }
+.estrelas { display: flex; gap: 6px; justify-content: center; }
+.estrelas svg { flex: none; width: 54px; height: 54px; fill: rgba(255,255,255,.2); stroke: var(--ink); stroke-width: 1.5; }
+.estrelas svg.on { fill: var(--gold); animation: zoom .5s cubic-bezier(.2,1.6,.4,1) both; }
+.estrelas.peq svg { width: 18px; height: 18px; }
+.estrelas.peq svg.on { animation: none; }
+.resumo-dia { text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.resumo-dia .grande { font-family: var(--font-display); font-weight: 800; font-size: 44px; }
+.anot { background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.anot h3 { font-size: 18px; }
+.anot ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+.anot b { color: var(--teal); }
+.semana-h { display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; }
+.semana-h h3 { font-size: 20px; }
+.dias { display: flex; flex-direction: column; gap: 10px; }
+.dia-card { display: grid; grid-template-columns: 54px 1fr auto; gap: 12px; align-items: center; text-align: left; background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 10px 12px; box-shadow: 0 4px 0 var(--ink); }
+.dia-card .cal { width: 54px; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; text-align: center; background: #fff; }
+.dia-card .cal span { display: block; background: var(--bad); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 2px 0; }
+.dia-card .cal b { display: block; font-family: var(--font-display); font-size: 24px; padding: 2px 0; }
+.dia-card strong { font-family: var(--font-display); font-size: 17px; display: block; }
+.dia-card small { color: var(--muted); font-size: 13px; }
+.dia-card[disabled] { opacity: .5; box-shadow: none; }
+.dia-card.feito .cal span { background: var(--ok); }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.cartinha { background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.cartinha .ref { align-self: flex-start; background: var(--gold); border: 2px solid var(--ink); border-radius: 8px; padding: 2px 8px; font-family: var(--font-display); font-weight: 800; font-size: 13px; }
+.cartinha p { font-size: 14px; }
+.cartinha.bloq { background: transparent; border-style: dashed; color: var(--muted); }
+.cartinha.bloq .ref { background: #e6ebe8; color: var(--muted); }
+.certificado { background: #fff; color: var(--ink); border: 3px solid var(--ink); border-radius: 18px; padding: 26px 20px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; box-shadow: 0 6px 0 var(--ink); outline: 3px double var(--gold); outline-offset: -12px; }
+.certificado .psi-c { font-family: Georgia, serif; font-size: 40px; color: var(--teal); }
+.certificado h2 { font-size: 26px; }
+.certificado .nome { font-family: var(--font-display); font-weight: 800; font-size: 32px; color: var(--teal); border-bottom: 2px solid var(--ink); padding: 0 12px 4px; overflow-wrap: anywhere; }
+.assin { display: flex; gap: 20px; justify-content: center; font-size: 13px; color: var(--muted); }
+.assin span { border-top: 1px solid var(--ink); padding-top: 4px; }
+.toast { position: absolute; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 40; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 12px; font-weight: 700; transition: .3s; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+canvas.confete { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+
+<div id="app" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   PERSONAGENS
+   ===================================================================== */
+const PERS = {
+  helena: { nome: "Helena", papel: "Sua supervisora", pele: "#c68a64", cabelo: "#d6d6d6", estilo: "coque", roupa: "#1f6f66", oculos: true, voz: 300 },
+  marcos: { nome: "Marcos", papel: "Conselheiro do CRP", pele: "#7b4b2a", cabelo: "#1e1510", estilo: "curto", roupa: "#3b5ba5", barba: true, voz: 170 },
+  celia: { nome: "Dona Célia", papel: "Mãe do Rafael, ao telefone", pele: "#ebc2a3", cabelo: "#a7a7a7", estilo: "cacheado", roupa: "#b5527a", oculos: true, voz: 360 },
+  rafael: { nome: "Rafael", papel: "Paciente", pele: "#d49b74", cabelo: "#3d2a1f", estilo: "curto", roupa: "#4b5563", barbaRala: true, voz: 190 },
+  camila: { nome: "Camila", papel: "Paciente", pele: "#6b4129", cabelo: "#1a1110", estilo: "cacheado", roupa: "#7a5bd1", voz: 330 },
+  bia: { nome: "Bia", papel: "Colega psicóloga", pele: "#f2c6a5", cabelo: "#d9709b", estilo: "longo", roupa: "#f2b33d", voz: 380 },
+  daniel: { nome: "Daniel", papel: "Pai do Theo", pele: "#b97a4c", cabelo: "#2e2018", estilo: "curto", roupa: "#4e8f5a", barba: true, voz: 200 },
+  augusto: { nome: "Sr. Augusto", papel: "Diretor da escola", pele: "#f0c9a8", cabelo: "#8a8a8a", estilo: "calvo", roupa: "#2f3e46", oculos: true, gravata: true, voz: 160 },
+  renata: { nome: "Renata", papel: "Busca orientação", pele: "#a66a48", cabelo: "#4a2216", estilo: "longo", roupa: "#2e86ab", voz: 320 },
+  leo: { nome: "Léo", papel: "Paciente on-line", pele: "#c98b5f", cabelo: "#2a1b12", estilo: "cacheado", roupa: "#e4572e", voz: 230 },
+  paula: { nome: "Paula", papel: "Paciente", pele: "#f1c9a5", cabelo: "#b5651d", estilo: "longo", roupa: "#5c946e", voz: 340 },
+  tania: { nome: "Tânia", papel: "Pedagoga", pele: "#8a5a3c", cabelo: "#2b2b2b", estilo: "coque", roupa: "#c44569", oculos: true, voz: 350 },
+  claudia: { nome: "Dra. Cláudia", papel: "Advogada da Paula", pele: "#e8b48f", cabelo: "#151515", estilo: "curto", roupa: "#22223b", voz: 310 },
+  henrique: { nome: "Dr. Henrique", papel: "Médico cirurgião", pele: "#f0d0b4", cabelo: "#6b4f3a", estilo: "curto", roupa: "#e9f1f7", oculos: true, voz: 190 },
+  katia: { nome: "Kátia", papel: "Assistente social do CRAS", pele: "#5e3a24", cabelo: "#141414", estilo: "cacheado", roupa: "#f28f3b", voz: 330 },
+  fernanda: { nome: "Fernanda", papel: "Apresentadora de TV", pele: "#f3cfb3", cabelo: "#e9c46a", estilo: "longo", roupa: "#d7263d", voz: 370 },
+  rui: { nome: "Prof. Rui", papel: "Pesquisador", pele: "#c69c7b", cabelo: "#dcdcdc", estilo: "calvo", roupa: "#6c757d", barba: true, oculos: true, voz: 160 },
+  jorge: { nome: "Seu Jorge", papel: "Pai do Caio", pele: "#dda982", cabelo: "#5a5a5a", estilo: "curto", roupa: "#8a6d3b", bigode: true, voz: 175 },
+};
+const LOOKS = [
+  { pele: "#f1c27d", cabelo: "#3a2a1e", estilo: "longo", roupa: "#0f5f58", traje: "blazer", cilios: true, olho: "#5b3a29" },
+  { pele: "#8d5524", cabelo: "#111111", estilo: "cacheado", roupa: "#0f5f58", traje: "gola", olho: "#2b1a10" },
+  { pele: "#e0ac69", cabelo: "#8b4a2b", estilo: "curto", roupa: "#0f5f58", traje: "blusa", oculos: true, armacao: "#b23a48", olho: "#3d6b8a" },
+];
+/* detalhes de figurino e rosto de cada personagem */
+const VISUAL = {
+  helena: { traje: "blazer", cilios: true, olho: "#5b3a29", armacao: "#7a4b2a" },
+  marcos: { traje: "gola", olho: "#2b1a10" },
+  celia: { traje: "blusa", cilios: true, armacao: "#b5527a" },
+  rafael: { traje: "blusa", olho: "#3b2a20" },
+  camila: { traje: "blusa", cilios: true, olho: "#2b1a10" },
+  bia: { traje: "blusa", cilios: true, olho: "#3d6b8a" },
+  daniel: { traje: "gola", olho: "#2b1a10" },
+  augusto: { traje: "blazer", olho: "#4a7a5a", armacao: "#1b2422" },
+  renata: { traje: "gola", cilios: true, olho: "#3b2a20" },
+  jorge: { traje: "gola", olho: "#4a3326" },
+  leo: { traje: "capuz", olho: "#2b1a10" },
+  paula: { traje: "blusa", cilios: true, olho: "#4a7a5a" },
+  tania: { traje: "blusa", cilios: true, armacao: "#c44569" },
+  claudia: { traje: "blazer", cilios: true, olho: "#2b1a10" },
+  henrique: { traje: "jaleco", olho: "#3d6b8a", armacao: "#1b2422" },
+  katia: { traje: "gola", cilios: true, olho: "#2b1a10" },
+  fernanda: { traje: "blazer", cilios: true, olho: "#4a7a5a" },
+  rui: { traje: "gola", armacao: "#7a4b2a" },
+};
+Object.entries(VISUAL).forEach(([k, v]) => Object.assign(PERS[k], v));
+
+/* expressões: sb = giro da sobrancelha esquerda (a direita espelha), by = altura da sobrancelha */
+const BOCA = c => `stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"`;
+const EMO = {
+  neutro: { sb: 0, by: 0, boca: `<path d="M89 157 Q100 162 111 157" ${BOCA("#5a1f18")}/>` },
+  feliz: { sb: 0, by: -3, blush: true, boca: `<path d="M84 150 Q100 172 116 150 Q100 157 84 150Z" fill="#7a2e22" stroke="#7a2e22" stroke-width="2" stroke-linejoin="round"/>`, anim: "pula" },
+  preocupado: { sb: -14, by: -2, boca: `<path d="M89 161 Q100 154 111 161" ${BOCA("#5a1f18")}/>`, anim: "inclina" },
+  triste: { sb: -18, by: 1, oy: 2, boca: `<path d="M88 163 Q100 152 112 163" ${BOCA("#5a1f18")}/>`, anim: "afunda" },
+  bravo: { sb: 17, by: 3, boca: `<path d="M88 160 Q100 153 112 160" ${BOCA("#5a1f18")} stroke-width="5"/>`, anim: "treme" },
+  surpreso: { sb: 0, by: -9, boca: `<ellipse cx="100" cy="158" rx="7" ry="9" fill="#7a2e22"/>`, anim: "pula" },
+  pensativo: { sb: -7, by: -2, boca: `<path d="M91 158 L110 155" ${BOCA("#5a1f18")}/>`, anim: "inclina" },
+};
+
+function cabelo(p, parte) {
+  const c = p.cabelo;
+  switch (p.estilo) {
+    case "curto": return parte === "frente" ? `<path d="M47 120 C40 52 160 44 153 120 C147 92 128 80 104 82 C80 82 58 94 47 120Z" fill="${c}" stroke="#1b2422" stroke-width="3"/>` : "";
+    case "longo": return parte === "tras"
+      ? `<path d="M37 128 C27 36 173 36 163 128 L171 252 C140 266 60 266 29 252Z" fill="${c}" stroke="#1b2422" stroke-width="3"/>`
+      : `<path d="M47 124 C42 50 158 44 153 124 C150 96 122 72 98 76 C86 92 64 100 47 124Z" fill="${c}" stroke="#1b2422" stroke-width="3"/>`;
+    case "coque": return parte === "tras"
+      ? `<circle cx="100" cy="50" r="25" fill="${c}" stroke="#1b2422" stroke-width="3"/>`
+      : `<path d="M47 118 C44 56 156 52 153 118 C141 84 59 84 47 118Z" fill="${c}" stroke="#1b2422" stroke-width="3"/>`;
+    case "cacheado": {
+      let s = "";
+      if (parte === "tras") {
+        for (let a = -200; a <= 20; a += 20) { const r = a * Math.PI / 180; s += `<circle cx="${(100 + 64 * Math.cos(r)).toFixed(1)}" cy="${(118 + 72 * Math.sin(r)).toFixed(1)}" r="23" fill="${c}" stroke="#1b2422" stroke-width="3"/>`; }
+        s += `<circle cx="42" cy="168" r="18" fill="${c}" stroke="#1b2422" stroke-width="3"/><circle cx="158" cy="168" r="18" fill="${c}" stroke="#1b2422" stroke-width="3"/>`;
+      } else [[66, 76], [88, 64], [112, 64], [134, 76], [54, 96], [146, 96]].forEach(([x, y]) => { s += `<circle cx="${x}" cy="${y}" r="17" fill="${c}" stroke="#1b2422" stroke-width="2.5"/>`; });
+      return s;
+    }
+    case "calvo": return parte === "frente" ? `<path d="M47 132 C43 104 50 92 59 96 C56 110 56 120 58 134Z M153 132 C157 104 150 92 141 96 C144 110 144 120 142 134Z" fill="${c}" stroke="#1b2422" stroke-width="2.5"/>` : "";
+  }
+  return "";
+}
+
+function roupa(p) {
+  const T = "#1b2422", tipo = p.traje || "gola";
+  let r = `<path d="M24 302 C24 238 58 211 100 209 C142 211 176 238 176 302Z" fill="${p.roupa}" stroke="${T}" stroke-width="3"/>
+    <path d="M58 256 C63 272 63 290 61 302 M142 256 C137 272 137 290 139 302" stroke="rgba(0,0,0,.18)" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  if (tipo === "blazer" || tipo === "jaleco") {
+    r += `<path d="M84 212 L100 302 L116 212 C110 209 90 209 84 212Z" fill="${tipo === "jaleco" ? "#8fb8d6" : "#fffdf8"}" stroke="${T}" stroke-width="2.5"/>
+      <path d="M82 213 L68 240 L90 252 L100 302 M118 213 L132 240 L110 252 L100 302" fill="${p.roupa}" stroke="${T}" stroke-width="3" stroke-linejoin="round"/>`;
+    if (tipo === "jaleco") r += `<path d="M74 238 C62 266 76 284 96 284" fill="none" stroke="#2b2b2b" stroke-width="4" stroke-linecap="round"/><circle cx="98" cy="284" r="6" fill="#9aa5ad" stroke="${T}" stroke-width="2"/><rect x="128" y="262" width="22" height="16" rx="3" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="2"/>`;
+  } else if (tipo === "capuz") {
+    r += `<path d="M56 224 C66 250 134 250 144 224" fill="none" stroke="${T}" stroke-width="3"/><path d="M90 242 L88 274 M110 242 L112 274" stroke="#fffdf8" stroke-width="3.5" stroke-linecap="round"/><path d="M70 286 Q100 296 130 286" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="3"/>`;
+  } else if (tipo === "blusa") {
+    r += `<path d="M76 214 C84 236 116 236 124 214" fill="none" stroke="${T}" stroke-width="3"/>`;
+  } else {
+    r += `<path d="M84 211 L100 232 L89 245 L76 220Z M116 211 L100 232 L111 245 L124 220Z" fill="#fffdf8" stroke="${T}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="100" cy="258" r="2.6" fill="${T}"/><circle cx="100" cy="280" r="2.6" fill="${T}"/>`;
+  }
+  if (p.gravata) r += `<path d="M95 226 L105 226 L110 268 L100 280 L90 268Z" fill="#b23a48" stroke="${T}" stroke-width="2"/>`;
+  return r;
+}
+
+function avatar(p, emo = "neutro", vb = "0 0 200 300") {
+  const T = "#1b2422", E = EMO[emo] || EMO.neutro, oy = E.oy || 0;
+  const corSob = p.cabelo === "#d6d6d6" || p.cabelo === "#dcdcdc" ? "#8f8f8f" : p.cabelo === "#e9c46a" ? "#b08a2e" : p.cabelo;
+  const sob = (cx, rot) => `<path d="M${cx - 12} ${107 + E.by} Q${cx} ${102 + E.by} ${cx + 12} ${107 + E.by}" stroke="${corSob}" stroke-width="6" fill="none" stroke-linecap="round" transform="rotate(${rot} ${cx} ${106 + E.by})"/>`;
+  const olho = (cx, lado) => `<ellipse cx="${cx}" cy="${126 + oy}" rx="9.5" ry="8.5" fill="#fff" stroke="${T}" stroke-width="2"/>
+      <circle cx="${cx + 1}" cy="${127 + oy}" r="5.6" fill="${p.olho || "#4a3326"}"/><circle cx="${cx + 1}" cy="${127 + oy}" r="2.6" fill="#111"/><circle cx="${cx + 3}" cy="${124 + oy}" r="1.8" fill="#fff"/>
+      <path d="M${cx - 9.5} ${125 + oy} Q${cx} ${115 + oy} ${cx + 9.5} ${125 + oy}" fill="none" stroke="${T}" stroke-width="2.5" stroke-linecap="round"/>
+      ${p.cilios ? `<path d="M${cx + lado * 9} ${121 + oy} l${lado * 5} -4 M${cx + lado * 6} ${118 + oy} l${lado * 3} -5" stroke="${T}" stroke-width="2.2" stroke-linecap="round"/>` : ""}`;
+  const brilhoCabelo = ["curto", "longo", "coque"].includes(p.estilo) ? `<path d="M68 84 C82 70 104 68 124 74" stroke="rgba(255,255,255,.3)" stroke-width="5" fill="none" stroke-linecap="round"/>` : "";
+  return `<svg class="av" viewBox="${vb}" aria-hidden="true"><g class="corpo">
+    ${cabelo(p, "tras")}
+    <rect x="86" y="172" width="28" height="48" rx="11" fill="${p.pele}" stroke="${T}" stroke-width="3"/>
+    <ellipse cx="100" cy="186" rx="15" ry="7" fill="rgba(0,0,0,.18)"/>
+    ${roupa(p)}
+    <g class="cabeca">
+      <ellipse cx="47" cy="128" rx="9" ry="13" fill="${p.pele}" stroke="${T}" stroke-width="3"/><ellipse cx="153" cy="128" rx="9" ry="13" fill="${p.pele}" stroke="${T}" stroke-width="3"/>
+      <path d="M45 124 q4 4 0 9 M155 124 q-4 4 0 9" stroke="rgba(0,0,0,.25)" stroke-width="2" fill="none"/>
+      <ellipse cx="100" cy="120" rx="53" ry="63" fill="${p.pele}" stroke="${T}" stroke-width="3"/>
+      <path d="M58 150 C66 176 90 184 100 184 C110 184 134 176 142 150 C130 170 112 176 100 176 C88 176 70 170 58 150Z" fill="rgba(0,0,0,.07)"/>
+      ${cabelo(p, "frente")}${brilhoCabelo}
+      ${p.barba ? `<path d="M48 128 C52 190 148 190 152 128 C144 168 122 176 100 176 C78 176 56 168 48 128Z" fill="${p.cabelo}" stroke="${T}" stroke-width="3"/>` : ""}
+      ${p.barbaRala ? `<path d="M50 132 C55 186 145 186 150 132 C142 168 122 176 100 176 C78 176 58 168 50 132Z" fill="${p.cabelo}" opacity=".28"/>` : ""}
+      <g class="olhos">${olho(80, -1)}${olho(120, 1)}</g>
+      ${sob(79, E.sb)}${sob(121, -E.sb)}
+      ${p.oculos ? `<g fill="rgba(255,255,255,.1)" stroke="${p.armacao || "#2b2b2b"}" stroke-width="3.5"><rect x="63" y="113" width="34" height="27" rx="11"/><rect x="103" y="113" width="34" height="27" rx="11"/><path d="M97 124 h6 M63 122 l-12 -3 M137 122 l12 -3" fill="none"/></g>` : ""}
+      <path d="M101 132 Q95 145 103 147" stroke="rgba(0,0,0,.3)" fill="none" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="68" cy="149" rx="9" ry="5" fill="#e8746b" opacity="${E.blush ? .4 : .16}"/><ellipse cx="132" cy="149" rx="9" ry="5" fill="#e8746b" opacity="${E.blush ? .4 : .16}"/>
+      ${p.bigode ? `<path d="M83 150 Q100 139 117 150 Q100 146 83 150Z" fill="${p.cabelo}" stroke="${T}" stroke-width="2"/>` : ""}
+      <g class="boca">${E.boca}</g>
+    </g>
+  </g></svg>`;
+}
+const cabecaSVG = (p, emo) => avatar(p, emo, "42 48 116 116");
+
+/* =====================================================================
+   CENÁRIOS
+   ===================================================================== */
+const livros = (x, y) => { const cores = ["#d9534f", "#f2b33d", "#3b5ba5", "#4e8f5a", "#7a5bd1", "#e07fa5", "#2e86ab"]; let s = "", px = x; for (let i = 0; i < 7; i++) { const w = 8 + (i * 5) % 6, h = 40 + (i * 7) % 18; s += `<rect x="${px}" y="${y - h}" width="${w}" height="${h}" rx="1.5" fill="${cores[(i + x) % cores.length]}"/>`; px += w + 2; } return s; };
+const FUNDOS = {
+  consultorio: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#cfe3d8"/><rect width="400" height="22" fill="#bcd6c8"/>
+    <rect x="30" y="104" width="156" height="190" rx="8" fill="#f7f4ee"/><rect x="40" y="114" width="136" height="168" fill="#a9daee"/>
+    <g class="nuvens"><ellipse cx="78" cy="156" rx="24" ry="10" fill="#fff"/><ellipse cx="96" cy="149" rx="16" ry="11" fill="#fff"/><ellipse cx="136" cy="206" rx="20" ry="8" fill="#fff"/><ellipse cx="150" cy="200" rx="12" ry="8" fill="#fff"/></g>
+    <circle cx="150" cy="140" r="14" fill="#ffe08a"/>
+    <rect x="40" y="194" width="136" height="6" fill="#f7f4ee"/><rect x="105" y="114" width="6" height="168" fill="#f7f4ee"/>
+    <rect x="22" y="290" width="172" height="12" rx="4" fill="#e4dccd"/>
+    <rect x="212" y="114" width="58" height="46" fill="#fff" stroke="#c9a227" stroke-width="4"/><text x="241" y="146" text-anchor="middle" font-size="26" font-family="Georgia,serif" fill="#0f5f58">Ψ</text>
+    <g transform="translate(241 212)"><circle r="21" fill="#fff" stroke="#1b2422" stroke-width="3"/><line x1="0" y1="0" x2="0" y2="-13" stroke="#1b2422" stroke-width="3" stroke-linecap="round" class="ponteiro"/><line x2="8" stroke="#1b2422" stroke-width="3" stroke-linecap="round"/></g>
+    <rect x="292" y="136" width="100" height="306" fill="#8e6446"/><rect x="298" y="142" width="88" height="294" fill="#a27554"/>
+    ${[214, 286, 358].map(y => `<rect x="298" y="${y}" width="88" height="6" fill="#8e6446"/>${livros(302, y)}`).join("")}
+    <rect y="440" width="400" height="160" fill="#b88a63"/><rect y="436" width="400" height="8" fill="#94694a"/>
+    ${[480, 530, 580].map(y => `<line x1="0" y1="${y}" x2="400" y2="${y}" stroke="#a87b56" stroke-width="2"/>`).join("")}
+    <ellipse cx="200" cy="548" rx="176" ry="40" fill="#e2a65b"/><ellipse cx="200" cy="548" rx="150" ry="30" fill="none" stroke="#f3c98c" stroke-width="4"/>
+    <g class="planta"><path d="M196 436 C188 396 168 376 150 368 C172 380 184 398 192 430Z M200 436 C204 392 220 368 238 356 C222 376 210 402 204 434Z M198 436 C196 404 200 384 198 360 C206 386 206 408 202 436Z" fill="#3f8a5f"/></g>
+    <path d="M176 436 L222 436 L216 486 L182 486Z" fill="#c2643f"/>
+  </svg>`,
+  crp: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#dce5ee"/>
+    ${[60, 200, 340].map(x => `<rect x="${x - 34}" y="0" width="68" height="8" fill="#fff"/><ellipse class="luz" cx="${x}" cy="10" rx="50" ry="14" fill="#fff" opacity=".6"/>`).join("")}
+    <rect x="62" y="70" width="276" height="122" rx="14" fill="#0f5f58" stroke="#0b4742" stroke-width="5"/>
+    <text x="200" y="134" font-size="50" fill="#f4c04a" text-anchor="middle" font-family="Georgia,serif">Ψ</text>
+    <text x="200" y="168" font-size="10" fill="#fff" text-anchor="middle" font-family="sans-serif" letter-spacing="1">CONSELHO REGIONAL DE PSICOLOGIA</text>
+    <rect x="16" y="226" width="78" height="214" rx="4" fill="#b9c7d6"/><circle cx="82" cy="336" r="4" fill="#7f8fa1"/>
+    <rect x="300" y="226" width="86" height="110" rx="4" fill="#c9a77c"/>
+    <rect x="310" y="238" width="30" height="38" fill="#fff" transform="rotate(-4 325 257)"/><rect x="346" y="244" width="30" height="30" fill="#fff59d"/><rect x="316" y="288" width="56" height="34" fill="#fff" transform="rotate(3 344 305)"/>
+    <rect y="440" width="400" height="160" fill="#8e9baa"/>${[0, 80, 160, 240, 320].map(x => `<line x1="${x}" y1="440" x2="${x - 40}" y2="600" stroke="#7f8b99" stroke-width="2"/>`).join("")}
+    <rect x="40" y="414" width="320" height="86" rx="6" fill="#f4f7fa"/><rect x="34" y="402" width="332" height="16" rx="5" fill="#0f5f58"/>
+    <rect x="250" y="384" width="34" height="20" rx="3" fill="#fff" stroke="#1b2422" stroke-width="2"/>
+  </svg>`,
+  cafe: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#ead7bf"/>
+    ${[60, 120, 180, 240, 300].map((y, i) => `<rect x="${i % 2 ? 300 : 12}" y="${y + 200}" width="40" height="14" rx="3" fill="#d9bf9f"/>`).join("")}
+    <rect x="236" y="96" width="140" height="120" rx="6" fill="#2e3a36" stroke="#6e4b35" stroke-width="8"/>
+    <text x="306" y="132" font-size="16" fill="#f2efe6" text-anchor="middle" font-family="cursive, sans-serif">Cardápio</text>
+    <text x="252" y="160" font-size="12" fill="#f2efe6" font-family="sans-serif">Café ..... 5,00</text><text x="252" y="182" font-size="12" fill="#f2efe6" font-family="sans-serif">Pão de queijo 4,00</text><text x="252" y="204" font-size="12" fill="#f4c04a" font-family="sans-serif">Bolo .... 7,00</text>
+    ${[70, 200].map((x, i) => `<g class="lampada" style="animation-delay:-${i * 1.3}s"><line x1="${x}" y1="0" x2="${x}" y2="96" stroke="#3a2a20" stroke-width="3"/><path d="M${x - 24} 120 L${x - 12} 96 L${x + 12} 96 L${x + 24} 120Z" fill="#0f5f58"/><ellipse cx="${x}" cy="122" rx="12" ry="5" fill="#ffe08a"/></g>`).join("")}
+    <rect y="430" width="400" height="170" fill="#6e4b35"/>
+    <rect x="0" y="380" width="400" height="74" fill="#4a2f22"/><rect x="0" y="372" width="400" height="12" fill="#8b5e3c"/>
+    <rect x="30" y="306" width="54" height="68" rx="6" fill="#b8c1c6"/><rect x="40" y="318" width="34" height="18" rx="3" fill="#2b2b2b"/><rect x="48" y="346" width="18" height="24" rx="3" fill="#fff"/>
+    <path class="vapor" d="M56 340 q-6 -8 0 -16 q6 -8 0 -16" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="320" y="346" width="26" height="26" rx="4" fill="#fff"/><path d="M346 352 q10 0 10 8 q0 8 -10 8" stroke="#fff" stroke-width="4" fill="none"/>
+  </svg>`,
+  escola: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#f2e3a6"/><rect y="330" width="400" height="110" fill="#e3c770"/><rect y="326" width="400" height="8" fill="#c9a94f"/>
+    <rect x="44" y="84" width="312" height="182" rx="6" fill="#2f5d50" stroke="#8e6446" stroke-width="10"/>
+    <text x="200" y="144" font-size="30" fill="#f2efe6" text-anchor="middle" font-family="cursive, sans-serif">Bem-vindos!</text>
+    <text x="84" y="206" font-size="20" fill="#f4c04a" font-family="cursive, sans-serif">A B C</text><text x="236" y="210" font-size="20" fill="#f2efe6" font-family="cursive, sans-serif">2 + 2 = 4</text>
+    <rect x="100" y="262" width="60" height="8" rx="3" fill="#fff"/>
+    <g transform="translate(360 56)"><circle r="20" fill="#fff" stroke="#1b2422" stroke-width="3"/><line x1="0" y1="0" x2="0" y2="-13" stroke="#1b2422" stroke-width="3" stroke-linecap="round" class="ponteiro"/><line x2="8" stroke="#1b2422" stroke-width="3" stroke-linecap="round"/></g>
+    <rect y="440" width="400" height="160" fill="#c9a27a"/>
+    ${[40, 230].map(x => `<rect x="${x}" y="452" width="130" height="14" rx="3" fill="#8e6446"/><rect x="${x + 10}" y="466" width="8" height="60" fill="#5b4636"/><rect x="${x + 112}" y="466" width="8" height="60" fill="#5b4636"/>`).join("")}
+  </svg>`,
+  cerimonia: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#23283b"/><rect y="0" width="400" height="440" fill="#2c3350"/>
+    <polygon class="holofote" points="170,0 230,0 300,440 100,440" fill="#fff" opacity=".1"/>
+    <polygon class="holofote" style="animation-delay:-3.5s" points="60,0 100,0 180,440 20,440" fill="#f4c04a" opacity=".08"/>
+    <rect x="120" y="60" width="160" height="96" rx="10" fill="#0f5f58" stroke="#f4c04a" stroke-width="4"/>
+    <text x="200" y="122" font-size="48" fill="#f4c04a" text-anchor="middle" font-family="Georgia,serif">Ψ</text>
+    ${Array.from({ length: 12 }, (_, i) => `<circle class="luz" style="animation-delay:-${(i * .37).toFixed(2)}s" cx="${20 + i * 33}" cy="${28 + (i % 2) * 8}" r="5" fill="#ffe08a"/>`).join("")}
+    <path d="M0 0 L70 0 C60 160 80 320 54 440 L0 440Z" fill="#8e2c3b"/><path d="M400 0 L330 0 C340 160 320 320 346 440 L400 440Z" fill="#8e2c3b"/>
+    <path d="M20 0 C14 150 30 300 18 440 M44 0 C36 150 54 300 40 440 M380 0 C386 150 370 300 382 440 M356 0 C364 150 346 300 360 440" stroke="#6e1f2c" stroke-width="5" fill="none"/>
+    <rect y="440" width="400" height="160" fill="#5a3f2e"/><rect y="436" width="400" height="10" fill="#7a5843"/>
+  </svg>`,
+  escritorio: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#e6def0"/>
+    <rect x="236" y="90" width="140" height="170" rx="8" fill="#fff"/><rect x="246" y="100" width="120" height="150" fill="#2b3a67"/>
+    <circle cx="336" cy="130" r="14" fill="#f4f1de"/><circle cx="330" cy="126" r="12" fill="#2b3a67"/>
+    ${[[266, 120], [290, 180], [350, 200], [270, 220]].map(([x, y], i) => `<circle class="luz" style="animation-delay:-${i * .4}s" cx="${x}" cy="${y}" r="2" fill="#fff"/>`).join("")}
+    <rect x="246" y="172" width="120" height="5" fill="#fff"/><rect x="303" y="100" width="5" height="150" fill="#fff"/>
+    <rect x="34" y="96" width="120" height="84" rx="4" fill="#f4c04a"/><text x="94" y="146" text-anchor="middle" font-size="26" font-family="Georgia,serif" fill="#0f5f58">Ψ</text>
+    <rect y="440" width="400" height="160" fill="#9c8bb0"/>
+    <rect x="0" y="384" width="400" height="20" rx="4" fill="#7a5c45"/><rect x="20" y="404" width="12" height="100" fill="#5e4535"/><rect x="368" y="404" width="12" height="100" fill="#5e4535"/>
+    <rect x="128" y="290" width="144" height="94" rx="8" fill="#2b2b2b"/><rect x="136" y="298" width="128" height="78" rx="3" fill="#a9daee" class="tela-call"/>
+    <circle cx="200" cy="330" r="14" fill="#c98b5f"/><path d="M178 376 C180 352 220 352 222 376Z" fill="#e4572e"/>
+    <circle cx="252" cy="306" r="4" fill="#5fd39a" class="pisca"/>
+    <path d="M112 384 L288 384 L276 392 L124 392Z" fill="#444"/>
+    <rect x="310" y="350" width="28" height="34" rx="5" fill="#fff"/><path d="M338 358 q12 0 12 10 q0 10 -12 10" stroke="#fff" stroke-width="4" fill="none"/>
+    <path class="vapor" d="M324 344 q-6 -8 0 -16 q6 -8 0 -16" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <g class="planta"><path d="M56 384 C40 340 30 330 20 326 C40 334 50 350 60 380Z M64 384 C70 340 86 324 100 318 C86 334 76 356 70 384Z" fill="#3f8a5f"/></g>
+  </svg>`,
+  hospital: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#e3f1f4"/><rect y="300" width="400" height="140" fill="#cfe6eb"/><rect y="296" width="400" height="6" fill="#9cc7d1"/>
+    <rect x="22" y="150" width="96" height="290" rx="4" fill="#9cc7d1"/><rect x="40" y="176" width="60" height="70" rx="3" fill="#e3f1f4"/><rect x="96" y="300" width="10" height="26" rx="3" fill="#5b7f88"/>
+    <rect x="150" y="70" width="100" height="40" rx="8" fill="#fff" stroke="#1b2422" stroke-width="3"/><path d="M200 78 v24 M188 90 h24" stroke="#d7263d" stroke-width="6" stroke-linecap="round"/>
+    <rect x="270" y="150" width="110" height="80" rx="8" fill="#1b2422"/><rect x="278" y="158" width="94" height="64" rx="4" fill="#0b2b26"/>
+    <polyline class="ecg" points="282,192 300,192 306,180 312,206 318,170 324,196 330,192 368,192" fill="none" stroke="#5fd39a" stroke-width="3"/>
+    <text x="352" y="172" font-size="11" fill="#5fd39a" font-family="monospace">72</text>
+    <line x1="330" y1="230" x2="330" y2="440" stroke="#8a9ba8" stroke-width="4"/><rect x="316" y="248" width="28" height="40" rx="6" fill="#d9f0ff" stroke="#8a9ba8" stroke-width="2"/>
+    <rect y="440" width="400" height="160" fill="#b9cdd3"/>${[0, 100, 200, 300].map(x => `<line x1="${x}" y1="440" x2="${x}" y2="600" stroke="#a8bec5" stroke-width="2"/>`).join("")}
+  </svg>`,
+  estudio: `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMax slice">
+    <rect width="400" height="600" fill="#1d2233"/>
+    <rect x="40" y="80" width="320" height="190" rx="10" fill="#2b3a67"/>
+    ${[[60, 200, 30, 70], [96, 170, 26, 100], [128, 190, 34, 80], [168, 150, 24, 120], [198, 180, 40, 90], [244, 160, 28, 110], [278, 196, 36, 74], [318, 176, 24, 94]].map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h - 20}" fill="#16213e"/>`).join("")}
+    <rect x="40" y="250" width="320" height="20" fill="#16213e"/>
+    <rect x="140" y="26" width="120" height="34" rx="8" fill="#d7263d" class="pisca"/><text x="200" y="49" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="sans-serif" letter-spacing="2">AO VIVO</text>
+    <polygon class="holofote" points="190,0 210,0 280,440 120,440" fill="#fff" opacity=".07"/>
+    <rect y="440" width="400" height="160" fill="#2a2f45"/>
+    <rect x="60" y="380" width="280" height="70" rx="10" fill="#d7263d"/><rect x="60" y="374" width="280" height="12" rx="5" fill="#f4c04a"/>
+    <g transform="translate(-10 330)"><rect x="0" y="0" width="60" height="40" rx="6" fill="#3a3f55"/><rect x="58" y="12" width="20" height="16" fill="#3a3f55"/><line x1="30" y1="40" x2="30" y2="120" stroke="#3a3f55" stroke-width="6"/></g>
+  </svg>`,
+};
+
+/* =====================================================================
+   ROTEIRO
+   Passos: F(personagem, emoção, fala) · N(narração) · V(fala sua) · {sai}
+   ESC(quem pergunta, emoção, pergunta, opções, explicação da Helena, carta do Código)
+   ===================================================================== */
+const N = t => ({ f: "narr", t });
+const V = t => ({ f: "voce", t });
+const F = (f, e, t) => ({ f, e, t });
+const SAI = f => ({ sai: f });
+const ESC = (f, e, t, opcoes, ensina = [], carta = null) => ({ escolha: { f, e, t, opcoes, ensina, carta } });
+const OK = (t, ...r) => ({ t, ok: true, r });
+const NO = (t, ...r) => ({ t, ok: false, r });
+
+const CARTAS = {
+  "Lei 5.766/1971": "Cria o Conselho Federal e os Conselhos Regionais, que formam o Sistema Conselhos.",
+  "Res. CFP 010/2005": "Código de Ética Profissional do Psicólogo, aprovado pelo CFP e válido em todo o país.",
+  "Art. 9º": "É dever respeitar o sigilo profissional para proteger a intimidade das pessoas.",
+  "Art. 10": "Em situações de conflito, a quebra do sigilo busca o menor prejuízo e se limita ao estritamente necessário.",
+  "Art. 2º (j)": "É vedado manter com a pessoa atendida uma relação que atrapalhe os objetivos do serviço.",
+  "Art. 20": "Na publicidade: nome e número do CRP, sem prometer resultados e sem usar o preço como propaganda.",
+  "Art. 2º (q)": "É vedado fazer diagnósticos em meios de comunicação de forma a expor pessoas.",
+  "Art. 8º": "Atender criança ou adolescente de forma não eventual exige a autorização de ao menos um responsável.",
+  "ECA, art. 13": "Suspeita ou confirmação de maus-tratos contra criança ou adolescente deve ser comunicada ao Conselho Tutelar.",
+  "Princípio VII": "Considerar as relações de poder onde atua e seus impactos, posicionando-se de forma crítica.",
+  "Processamento disciplinar": "Na notificação, quem informa não é parte. Na denúncia, a pessoa é parte e acompanha o processo.",
+  "Penalidades": "Advertência, multa, censura pública, suspensão do exercício e cassação do registro.",
+  "Res. CFP 01/1999": "Proíbe tratar a orientação sexual como doença e oferecer qualquer forma de \"cura\".",
+  "Art. 1º": "Deveres fundamentais, a começar por conhecer, divulgar, cumprir e fazer cumprir o Código.",
+  "Res. CFP 11/2018": "Regulamenta o atendimento por tecnologias da informação e exige cadastro prévio no e-Psi.",
+  "Res. CFP 06/2019": "Manual de documentos escritos: declaração, atestado, relatório, laudo e parecer.",
+  "Art. 18": "É vedado divulgar, ensinar, ceder, emprestar ou vender a leigos instrumentos e técnicas psicológicas.",
+  "Art. 2º (k)": "É vedado ser perito ou avaliador quando vínculos atuais ou anteriores podem afetar o trabalho.",
+  "Princípios da bioética": "Beneficência, não maleficência, autonomia e justiça orientam as decisões sobre o cuidado.",
+  "Art. 6º": "Com profissionais que não são psicólogos, compartilhar só o relevante, resguardando a confidencialidade.",
+  "Greve e paralisação": "Em greve, manter as atividades de emergência e avisar os usuários com antecedência.",
+  "Art. 1º (d)": "Prestar serviços em calamidade pública ou emergência, sem visar benefício pessoal.",
+  "Art. 19": "Na mídia, o psicólogo divulga conhecimento sobre a profissão e sua base científica, sem expor pessoas.",
+  "Art. 16": "Em pesquisas: avaliar riscos, garantir participação voluntária, consentimento informado e sigilo.",
+};
+
+/* perguntas da disciplina usadas na revisão do fim de cada dia (c = índice da certa) */
+const QUEST = {
+  q1: { p: "O Sistema Conselhos é formado por quais órgãos?", o: ["Associação Brasileira de Psicólogos e Sociedade de Psicologia", "Conselho Federal de Psicologia e Conselhos Regionais de Psicologia", "Conselho de Ética e Comissão de Fiscalização", "Sindicato dos Psicólogos e Associação de Classe"], c: 1, e: "Associações e sindicatos são importantes, mas o Sistema Conselhos é o CFP mais os CRPs." },
+  q2: { p: "Qual órgão tem jurisdição nacional e sede no Distrito Federal?", o: ["Conselho Regional de Psicologia", "Associação Brasileira de Psicólogos", "Conselho Federal de Psicologia", "Comissão de Orientação e Fiscalização"], c: 2, e: "O CFP fica em Brasília e atua no país inteiro. Cada CRP atua na sua região." },
+  q6: { p: "O Código de Ética Profissional do Psicólogo serve como:", o: ["Instrumento-guia para a conduta profissional", "Manual de publicidade", "Tabela de honorários", "Lista de especialidades"], c: 0, e: "O Código ajuda a pensar a conduta. Não serve só para punir." },
+  q18: { p: "Em caso de quebra de sigilo, o psicólogo deve basear sua decisão:", o: ["No próprio interesse", "Na busca pelo menor prejuízo, prestando apenas as informações necessárias", "Na vontade da família", "Na divulgação total dos fatos"], c: 1, e: "Foi o que você fez com o Rafael: menor prejuízo e só o necessário." },
+  q19: { p: "Se o trabalho for interrompido, o que o psicólogo faz com os arquivos confidenciais?", o: ["Joga no lixo comum", "Deixa em local aberto", "Lacra e repassa ao psicólogo substituto ou ao Conselho Regional", "Vende os dados para outra clínica"], c: 2, e: "O sigilo continua depois que o trabalho acaba. Os arquivos são lacrados e repassados." },
+  q10: { p: "Quais são exemplos de práticas bioéticas na Psicologia?", o: ["Sigilo, consentimento informado e supervisão ética", "Publicidade, lucro e autopromoção", "Interrogatório sob hipnose e coerção", "Divulgação de dados de pacientes ao público"], c: 0, e: "Sigilo, consentimento e supervisão protegem quem atendemos. Inclusive esta conversa é supervisão!" },
+  q20: { p: "Ao promover publicamente seus serviços, o psicólogo pode:", o: ["Fazer previsão taxativa de resultados", "Usar o preço como propaganda", "Divulgar apenas títulos ou qualificações que possua", "Fazer autopromoção em detrimento de outros profissionais"], c: 2, e: "Só vale anunciar o que você realmente tem. As outras três a Bia quase fez hoje." },
+  q33: { p: "O psicólogo pode intermediar transações financeiras ou receber comissões além dos honorários?", o: ["Sim, se o paciente concordar", "Sim, é prática comum", "Não, isso é vedado pelo Código de Ética", "Apenas em emergência"], c: 2, e: "A relação financeira se limita aos honorários combinados." },
+  q16: { p: "É vedado ao psicólogo:", o: ["Respeitar o sigilo profissional", "Praticar ou ser conivente com negligência, discriminação, exploração ou violência", "Encaminhar pacientes a profissionais habilitados", "Informar resultados necessários ao paciente"], c: 1, e: "Ser conivente também é falta. Não basta só não praticar." },
+  q12: { p: "A defesa dos direitos das minorias envolve:", o: ["Promover tolerância, respeito à diversidade e direitos individuais e coletivos", "Ignorar grupos étnicos e religiosos", "Restringir direitos de grupos vulneráveis", "Padronizar condutas sociais"], c: 0, e: "Respeitar a diversidade é proteger direitos, sem impor um jeito único de viver." },
+  q13: { p: "A proteção de grupos vulneráveis inclui:", o: ["Crianças, idosos, pessoas com deficiência, refugiados e vítimas de violência", "Apenas adultos em atendimento clínico", "Somente profissionais da saúde", "Grupos com maior poder econômico"], c: 0, e: "São grupos mais expostos a violações de direitos, como a Lia hoje." },
+  q11: { p: "A atuação da Psicologia na defesa dos Direitos Humanos deve focar em:", o: ["Atender apenas em consultórios particulares", "Promover igualdade, combater discriminação e reduzir desigualdades sociais", "Priorizar lucro e concorrência", "Evitar temas como racismo e violência de gênero"], c: 1, e: "Como na escola: promover igualdade e combater discriminação." },
+  q32: { p: "O psicólogo pode usar seu conhecimento para castigo, tortura ou violência?", o: ["Sim, se autorizado por lei", "Sim, em interrogatório", "Não, isso é expressamente vedado pelo Código de Ética", "Depende da situação"], c: 2, e: "Nunca, em nenhuma situação." },
+  q34: { p: "Em caso de greve ou paralisação, o psicólogo deve garantir:", o: ["Suspensão de todos os atendimentos sem aviso", "Atividades de emergência e comunicação prévia aos usuários", "Que o Conselho Regional pague os salários", "Fechamento definitivo do consultório"], c: 1, e: "A greve é um direito, mas ninguém pode ser abandonado: emergências mantidas e aviso antes." },
+  q3: { p: "Quais são atribuições do Sistema Conselhos?", o: ["Pesquisar, ensinar e avaliar", "Orientar, disciplinar e fiscalizar o exercício da profissão", "Punir, multar e cassar", "Legislar, julgar e executar"], c: 1, e: "Orientar, disciplinar e fiscalizar. Punir é só uma pequena parte." },
+  q4: { p: "É atribuição do Conselho Federal de Psicologia:", o: ["Julgar em instância inicial", "Elaborar e aprovar o Código de Ética Profissional do Psicólogo", "Eleger delegados-eleitores", "Publicar a relação de psicólogos de uma região"], c: 1, e: "O CFP aprova o Código. Julgar em primeira instância e listar os psicólogos da região é com os CRPs." },
+  q5: { p: "É atribuição dos Conselhos Regionais de Psicologia:", o: ["Zelar pela observância do Código de Ética na região", "Aprovar o regimento do Conselho Federal", "Legislar sobre a profissão", "Definir a jurisdição nacional"], c: 0, e: "Os CRPs fazem o Código ser cumprido na sua região." },
+  q15: { p: "De acordo com o Código de Ética, é dever fundamental do psicólogo:", o: ["Assumir responsabilidades mesmo sem capacitação técnica", "Conhecer, divulgar, cumprir e fazer cumprir o Código de Ética", "Atuar em calamidades visando benefício pessoal", "Usar testes sem embasamento científico"], c: 1, e: "É o primeiro dever do Art. 1º." },
+  q17: { p: "No atendimento não eventual de criança ou adolescente, o psicólogo deve:", o: ["Atender sem autorização", "Obter autorização de responsável legal", "Aguardar ordem judicial", "Comunicar apenas ao paciente"], c: 1, e: "Basta a autorização de ao menos um responsável (Art. 8º)." },
+  q21: { p: "Quais penalidades podem ser aplicadas por transgressões ao Código de Ética?", o: ["Apenas advertência verbal", "Advertência, multa, censura pública, suspensão e cassação", "Prisão imediata", "Pagamento de cesta básica"], c: 1, e: "São cinco penalidades, da advertência à cassação." },
+  q24: { p: "Qual é a diferença entre notificação e denúncia?", o: ["Não há diferença", "Na notificação, o informante não é parte do processo; na denúncia, o denunciante é parte", "A notificação é feita apenas por advogados", "A denúncia só pode ser feita pelo Conselho Federal"], c: 1, e: "Na denúncia, quem denuncia participa do processo." },
+  q25: { p: "Qual resolução do CFP institui o Manual de Elaboração de Documentos Escritos?", o: ["Resolução sobre serviços por tecnologias", "Resolução sobre documentos escritos", "Resolução sobre psicoterapia", "Resolução sobre avaliação psicológica"], c: 1, e: "É a Res. CFP 06/2019." },
+  q8: { p: "Qual princípio bioético significa visar o benefício do paciente?", o: ["Autonomia", "Não maleficência", "Beneficência", "Justiça"], c: 2, e: "Beneficência é fazer o bem. Não maleficência é não causar dano." },
+  q9: { p: "O que significa não maleficência na bioética?", o: ["Respeitar a autonomia do indivíduo", "Visar o benefício do paciente", "Não causar dano intencional ao paciente ou à cobaia", "Submeter a autoridade médica à justiça"], c: 2, e: "É o velho \"primeiro, não causar dano\". Como na noite do Léo." },
+  q22: { p: "Qual resolução do CFP regulamenta serviços psicológicos por tecnologias da informação e comunicação?", o: ["Resolução sobre serviços psicológicos por tecnologias da informação e comunicação", "Resolução sobre documentos escritos", "Resolução sobre psicoterapia", "Resolução sobre especialidades"], c: 0, e: "É a Res. CFP 11/2018, a do cadastro no e-Psi." },
+  q26: { p: "A guarda dos documentos psicológicos deve seguir:", o: ["Prazo definido nas normas do Conselho", "Indefinidamente", "Até a próxima sessão", "Não há orientação"], c: 0, e: "As normas do CFP fixam um prazo mínimo de 5 anos, com sigilo." },
+  q27: { p: "O que é obrigatório na entrega de relatórios e laudos psicológicos?", o: ["Entregar apenas por correio eletrônico", "Realizar entrevista devolutiva para explicar conteúdo e conclusões", "Entregar sem explicar nada", "Publicar resultados nas redes sociais"], c: 1, e: "A devolutiva garante que a pessoa entenda o que foi escrito sobre ela." },
+  q30: { p: "Qual resolução do CFP regulamenta a avaliação psicológica e o SATEPSI?", o: ["Resolução sobre serviços por tecnologias", "Resolução sobre documentos escritos", "Resolução sobre avaliação psicológica e testes", "Resolução sobre psicoterapia"], c: 2, e: "É a Res. CFP 31/2022. Só valem testes com parecer favorável no SATEPSI." },
+  q7: { p: "A Declaração Universal dos Direitos Humanos destaca quais valores?", o: ["Lucro e competição", "Liberdade, igualdade e dignidade", "Sigilo e publicidade", "Tortura e punição"], c: 1, e: "A DUDH, de 1948, é a base do Princípio I do Código." },
+  q14: { p: "Qual é um desafio atual na promoção dos Direitos Humanos?", o: ["Falta de profissionais de Psicologia", "Complexidade das abordagens multidisciplinares e discriminação racial", "Excesso de leis", "Alto custo dos testes psicológicos"], c: 1, e: "O racismo e o trabalho entre várias áreas tornam isso complexo, como no CRAS hoje." },
+  q35: { p: "Qual é a função do Sistema Conselhos em relação à ética?", o: ["Apenas punir profissionais", "Construir parâmetros éticos, difundi-los e zelar pelo exercício profissional qualificado", "Defender interesses financeiros da categoria", "Criar leis para o Congresso Nacional"], c: 1, e: "Construir e divulgar parâmetros éticos e zelar pela qualidade do serviço." },
+  q23: { p: "O que caracteriza uma denúncia qualificada no processamento disciplinar?", o: ["O denunciante não é parte do processo", "O denunciante não acompanha os trâmites", "O denunciante se torna parte do processo e pode acompanhar trâmites e mediação", "A denúncia é feita apenas por correio eletrônico"], c: 2, e: "Como a Renata: na denúncia, ela é parte e acompanha tudo." },
+  q28: { p: "Qual resolução do CFP dispõe sobre diretrizes e deveres para o exercício da psicoterapia?", o: ["Resolução sobre serviços por tecnologias", "Resolução sobre documentos escritos", "Resolução sobre diretrizes e deveres da psicoterapia", "Resolução sobre especialidades"], c: 2, e: "É a Res. CFP 13/2022." },
+  q29: { p: "Sobre o registro de especialidades, o psicólogo pode registrar:", o: ["Quantas desejar, sem comprovação", "Apenas especialidades reconhecidas e cumprindo as condições do Conselho", "Somente após indicação de outro profissional", "Apenas a especialidade clínica"], c: 1, e: "Só especialidades reconhecidas pelo CFP, com a comprovação exigida." },
+  q31: { p: "O uso de testes psicológicos é privativo de quem?", o: ["De qualquer profissional da saúde", "Exclusivamente da psicóloga e do psicólogo", "De estagiários de Psicologia", "De médicos psiquiatras"], c: 1, e: "Testes psicológicos são de uso exclusivo de psicólogas e psicólogos." },
+};
+
+const DIAS = [
+  { id: "d1", semana: "Segunda-feira", cal: "SEG", titulo: "O registro", sub: "Sistema Conselhos e o Código de Ética", revisao: [], cenas: [
+    { bg: "crp", passos: [
+      N("Segunda-feira, 9h. Você chega ao Conselho Regional de Psicologia com o diploma debaixo do braço."),
+      F("helena", "feliz", "{nome}! Que bom te ver. Eu sou a Helena e vou supervisionar sua primeira semana."),
+      F("helena", "neutro", "Antes de atender qualquer pessoa, falta uma coisa. Você sabe o quê?"),
+      ESC("helena", "pensativo", "O que você precisa fazer antes de começar a atender?", [
+        OK("Fazer minha inscrição no CRP.", F("helena", "feliz", "Isso mesmo. Sem registro no CRP, ninguém pode exercer a profissão, nem com diploma.")),
+        NO("Imprimir cartões de visita.", F("helena", "surpreso", "Calma! Cartão pode vir depois. Sem registro no CRP, você ainda não pode atender.")),
+        NO("Criar um perfil profissional no Instagram.", F("helena", "preocupado", "Perfil antes do registro? Nem pensar. Sem inscrição no CRP, você não pode exercer a profissão.")),
+      ], [F("helena", "neutro", "A Lei 5.766, de 1971, criou o Conselho Federal e os Conselhos Regionais. Juntos, eles formam o Sistema Conselhos.")], "Lei 5.766/1971"),
+      F("marcos", "feliz", "Bom dia! Eu sou o Marcos, conselheiro aqui do CRP. Veio fazer a inscrição?"),
+      V("Vim, sim! Confesso que estou com um frio na barriga."),
+      F("marcos", "feliz", "Normal! Antes de assinar, eu faço uma pergunta para todo mundo. Só para ver se a faculdade valeu a pena."),
+      ESC("marcos", "pensativo", "Quais são as atribuições do Sistema Conselhos?", [
+        OK("Orientar, disciplinar e fiscalizar o exercício da profissão.", F("marcos", "feliz", "Exatamente! Muita gente acha que a gente só pune. A maior parte do trabalho é orientar.")),
+        NO("Punir, multar e cassar.", F("marcos", "surpreso", "Punir é só uma pequena parte! Nosso trabalho é orientar, disciplinar e fiscalizar.")),
+        NO("Legislar, julgar e executar.", F("marcos", "neutro", "Quem faz leis é o Congresso. A gente orienta, disciplina e fiscaliza a profissão.")),
+      ]),
+      F("marcos", "neutro", "Agora uma um pouco mais difícil."),
+      ESC("marcos", "pensativo", "Quem elabora e aprova o Código de Ética Profissional do Psicólogo?", [
+        OK("O Conselho Federal de Psicologia.", F("marcos", "feliz", "Isso! O CFP tem jurisdição nacional e sede em Brasília. Nós, dos Regionais, zelamos pelo Código em cada região.")),
+        NO("Cada Conselho Regional cria o seu.", F("marcos", "surpreso", "Imagina a bagunça se cada região tivesse um código! Ele é um só, aprovado pelo Conselho Federal.")),
+        NO("O sindicato da categoria.", F("marcos", "neutro", "O sindicato cuida de questões trabalhistas. O Código é do Conselho Federal.")),
+      ], [F("helena", "neutro", "Guarde assim: o CFP cria as regras nacionais, como o Código de Ética. O CRP orienta, fiscaliza e julga na sua região."), F("helena", "feliz", "E o Código não é só uma lista de proibições. É um guia para pensar a sua conduta.")], "Res. CFP 010/2005"),
+      F("marcos", "neutro", "Para liberar seu registro, falta a Prova do CRP: 10 perguntas sobre a profissão."),
+      F("marcos", "pensativo", "Cada pergunta tem um peso: fácil vale 1, média vale 2 e difícil vale 3. A nota é a média ponderada, de 0 a 10. Para receber o CRP, você precisa de 7."),
+      { prova: true },
+      F("marcos", "feliz", "Inscrição feita! Boas-vindas à profissão, {nome}. Seu registro é {crp}."),
+      F("helena", "feliz", "Amanhã começam seus atendimentos. Descanse, porque o sigilo vai ser testado logo cedo."),
+    ]},
+  ]},
+  { id: "d2", semana: "Terça-feira", cal: "TER", titulo: "Segredos de consultório", sub: "Sigilo profissional e seus limites", revisao: ["q18", "q19", "q10"], cenas: [
+    { bg: "consultorio", passos: [
+      N("Terça-feira, 8h. Primeiro dia no consultório. O telefone toca antes do primeiro paciente chegar."),
+      F("celia", "preocupado", "Alô? Aqui é a Célia, mãe do Rafael. Ele começou terapia com você, não começou?"),
+      F("celia", "triste", "Eu só quero saber o que ele anda falando. Ele tem 32 anos, mas é meu filho. Eu tenho direito, não tenho?"),
+      ESC("narr", null, "O que você responde para a Dona Célia?", [
+        NO("Conto um resumo, só para tranquilizar.", F("celia", "feliz", "Ah, obrigada! Eu sabia que ele andava falando de mim."), N("Você sente um frio na barriga. O Rafael nunca autorizou isso.")),
+        NO("Confirmo que ele é meu paciente, mas não dou detalhes.", F("celia", "surpreso", "Então ele está fazendo terapia mesmo! Vou ligar para ele agora."), N("Até confirmar que alguém é paciente já expõe a pessoa.")),
+        OK("Explico que o atendimento é sigiloso, sem confirmar nada, e sugiro que ela converse com ele.", F("celia", "triste", "Ah... está bem. Acho que eu preciso mesmo conversar com ele."), V("Pode ser uma boa conversa, Dona Célia. Tenha um bom dia.")),
+      ], [F("helena", "neutro", "O sigilo protege a intimidade de quem atendemos."), F("helena", "neutro", "Rafael é adulto. Sem autorização dele, nem a mãe pode saber o que acontece na sessão. Isso é o Art. 9º do Código.")], "Art. 9º"),
+      SAI("helena"), SAI("celia"),
+      N("Às 10h, Rafael chega. Ele não consegue ficar sentado."),
+      F("rafael", "bravo", "Eu não aguento mais. Ela me traiu e me humilhou na frente de todo mundo."),
+      F("rafael", "bravo", "Ontem eu comprei uma arma. Hoje à noite eu vou até a casa dela. Eu sei o horário que ela chega."),
+      ESC("narr", null, "Rafael está falando sério. O que você faz?", [
+        NO("Mantenho o sigilo absoluto. É a regra.", N("Rafael vai embora. À noite, você não consegue dormir pensando no que pode acontecer.")),
+        NO("Espero a próxima sessão para ver se ele se acalma.", N("A próxima sessão é só daqui a uma semana. Hoje à noite pode ser tarde demais.")),
+        OK("Acolho Rafael, avalio o risco e quebro o sigilo, comunicando só o necessário para proteger a vida dela.", F("rafael", "triste", "...Você vai contar para alguém?"), V("Eu me importo com você e com a vida dela. Vou contar só o necessário para ninguém se machucar."), F("rafael", "triste", "...Tá. Acho que eu precisava que alguém me parasse.")),
+      ], [F("helena", "preocupado", "Esse é um dos momentos mais difíceis da profissão. O sigilo é a regra, mas não é absoluto."), F("helena", "neutro", "Diante de risco grave à vida, a quebra do sigilo busca o menor prejuízo. E você revela só o estritamente necessário, a quem pode agir. Isso é o Art. 10.")], "Art. 10"),
+      SAI("rafael"),
+      N("No fim do dia, você e a Helena dividem um café."),
+      F("helena", "feliz", "Dia pesado, hein? Sigilo parece simples até a gente estar diante de uma pessoa de verdade."),
+    ]},
+  ]},
+  { id: "d3", semana: "Quarta-feira", cal: "QUA", titulo: "Limites e likes", sub: "Relação terapêutica e redes sociais", revisao: ["q20", "q33", "q16"], cenas: [
+    { bg: "consultorio", passos: [
+      N("Quarta-feira. Camila está na quinta sessão e chega sorrindo."),
+      F("camila", "feliz", "Sábado é meu aniversário! Você vem? Ah, e já te segui no seu Instagram pessoal."),
+      ESC("narr", null, "Camila espera sua resposta.", [
+        NO("Aceito o convite e sigo de volta. Isso fortalece o vínculo.", F("camila", "feliz", "Oba! Vou te apresentar para a família toda!"), N("Na sessão seguinte, Camila trava para falar da família, que agora conhece você.")),
+        OK("Agradeço, não aceito e convido Camila a conversar sobre o que esse convite significa.", F("camila", "pensativo", "É... acho que eu queria que você fosse minha amiga. Eu ando me sentindo muito sozinha."), V("Que bom que você conseguiu dizer isso. Vamos falar sobre essa solidão?"), F("camila", "feliz", "Vamos.")),
+        NO("Bloqueio no Instagram e não falo nada.", F("camila", "triste", "Você me bloqueou? Eu achei que... deixa pra lá."), N("Camila falta às duas sessões seguintes.")),
+      ], [F("helena", "neutro", "Relações fora do consultório podem atrapalhar o trabalho. O Código proíbe manter com a pessoa atendida uma relação que interfira nos objetivos do serviço."), F("helena", "feliz", "Repare: quando você conversou sobre o convite, ele virou material terapêutico. O limite também é cuidado.")], "Art. 2º (j)"),
+    ]},
+    { bg: "cafe", passos: [
+      N("Na hora do almoço, você encontra a Bia, uma colega psicóloga que adora redes sociais."),
+      F("bia", "feliz", "Olha o post que eu vou soltar hoje: \"Em 10 sessões eu curo sua ansiedade. Resultado garantido! Só R$ 50 esta semana!\""),
+      F("bia", "feliz", "Vai bombar, né?"),
+      ESC("narr", null, "O que você diz para a Bia?", [
+        NO("Vai sim, posta logo!", F("bia", "feliz", "Postado!"), N("Três dias depois, a Bia recebe uma notificação do CRP.")),
+        NO("Só tira o preço que fica tudo certo.", F("bia", "pensativo", "Tirei o preço. Mas e o \"curo em 10 sessões\"?"), N("A promessa de resultado continua lá.")),
+        OK("Tem dois problemas: prometer resultado e usar o preço como propaganda.", F("bia", "surpreso", "Sério? Mas todo mundo faz isso!"), V("E todo mundo pode ser denunciado. Que tal um post explicando o que é ansiedade?"), F("bia", "feliz", "Conteúdo educativo... gostei!")),
+      ], [F("helena", "neutro", "O Art. 20 trata da publicidade. O psicólogo não pode prometer resultados nem usar o preço como forma de propaganda."), F("helena", "neutro", "E todo perfil profissional precisa ter o nome e o número do CRP.")], "Art. 20"),
+      SAI("helena"),
+      F("bia", "pensativo", "E se um seguidor me pedir para dizer se aquele cantor famoso é narcisista? Posso fazer um vídeo?"),
+      ESC("narr", null, "E agora?", [
+        NO("Pode. Ele é uma figura pública.", F("bia", "feliz", "Vou gravar agora!"), N("O vídeo viraliza. Os fãs do cantor viram. O CRP também.")),
+        OK("Não. Dá para falar do tema de forma educativa, sem diagnosticar ninguém.", F("bia", "feliz", "Então eu explico o que é narcisismo sem citar nome. Fechado!")),
+      ], [F("helena", "neutro", "Diagnosticar alguém pela internet expõe uma pessoa que nem é sua paciente, e sem base técnica. O Código proíbe isso no Art. 2º.")], "Art. 2º (q)"),
+    ]},
+  ]},
+  { id: "d4", semana: "Quinta-feira", cal: "QUI", titulo: "Pequenos grandes casos", sub: "Crianças, famílias e escola", revisao: ["q12", "q13", "q11"], cenas: [
+    { bg: "consultorio", passos: [
+      N("Quinta-feira, 9h. Um pai chega para conversar."),
+      F("daniel", "preocupado", "Oi, eu sou o Daniel. Quero trazer meu filho Theo, de 9 anos, para terapia. A mãe dele e eu somos separados, e ela ainda não sabe."),
+      F("daniel", "pensativo", "Você pode atender só com a minha autorização?"),
+      ESC("narr", null, "O que você responde?", [
+        NO("Não. Só com a assinatura dos dois responsáveis.", F("daniel", "triste", "Ah... então vai demorar meses."), N("Essa exigência não está no Código.")),
+        NO("Só com uma ordem judicial.", F("daniel", "surpreso", "Ordem judicial? Para fazer terapia?"), N("Não é preciso ordem judicial para isso.")),
+        OK("Sim. Basta a autorização de ao menos um responsável.", F("daniel", "feliz", "Que alívio! Mas vou contar para ela também. Acho que é melhor."), V("Ótima ideia. Envolver os dois ajuda o Theo.")),
+      ], [F("helena", "neutro", "Para atender criança ou adolescente de forma não eventual, o Art. 8º pede a autorização de ao menos um dos responsáveis.")], "Art. 8º"),
+      SAI("helena"), SAI("daniel"),
+      N("À tarde, você atende Lia, de 8 anos. Enquanto desenha, ela conta baixinho que o padrasto pede segredo sobre coisas que a deixam com medo."),
+      V("(Isso pode ser sinal de abuso. Preciso agir com cuidado.)"),
+      ESC("narr", null, "O que você faz?", [
+        NO("Guardo o segredo, porque ela confiou em mim.", N("Lia volta para casa. O segredo continua, e o perigo também.")),
+        NO("Confronto o padrasto quando ele vier buscá-la.", N("O padrasto nega tudo, fica furioso e tira Lia da terapia.")),
+        OK("Acolho Lia, registro o relato e comunico o Conselho Tutelar, informando só o necessário.", N("Você diz a Lia que ela fez muito bem em contar. Depois da sessão, liga para a Helena e para o Conselho Tutelar.")),
+      ], [F("helena", "preocupado", "Suspeita de violência contra criança precisa ser comunicada ao Conselho Tutelar. O ECA, no artigo 13, obriga essa comunicação."), F("helena", "neutro", "Você não precisa ter certeza para comunicar. Proteger a criança vem primeiro.")], "ECA, art. 13"),
+    ]},
+    { bg: "escola", passos: [
+      N("Fim da tarde. Você vai à escola onde começou a trabalhar."),
+      F("augusto", "neutro", "Que bom que você chegou. Vou direto ao ponto."),
+      F("augusto", "bravo", "Quero uma lista dos alunos \"problemáticos\", com o diagnóstico de cada um. Vou montar uma turma separada para eles."),
+      ESC("narr", null, "O diretor espera sua resposta.", [
+        NO("Faço a lista. A escola precisa se organizar.", F("augusto", "feliz", "Perfeito. Amanhã mesmo eu separo a turma."), N("A \"turma dos problemáticos\" vira piada na escola inteira.")),
+        NO("Aplico testes em todos os alunos para ter uma base.", F("augusto", "feliz", "Ótimo, testes dão um ar científico!"), N("Testes não servem para rotular alunos. Aplicar em massa, sem uma demanda clara, não tem fundamento.")),
+        OK("Recuso rotular e separar, e proponho um trabalho com professores, famílias e turmas.", F("augusto", "surpreso", "Hum. Eu nunca tinha pensado que separar poderia piorar as coisas."), F("augusto", "feliz", "Está bem. Vamos marcar uma reunião com os professores.")),
+      ], [F("helena", "neutro", "Rotular e segregar alunos é discriminação, e o Código veda ser conivente com isso."), F("helena", "pensativo", "Lembra do Princípio VII? Repare nas relações de poder: um diretor pedindo para excluir crianças.")], "Princípio VII"),
+    ]},
+  ]},
+  { id: "d5", semana: "Sexta-feira", cal: "SEX", titulo: "A denúncia", sub: "Processos éticos e direitos humanos", revisao: ["q32", "q34", "q31"], cenas: [
+    { bg: "consultorio", passos: [
+      N("Sexta-feira, 9h. Uma mulher chega com o celular na mão."),
+      F("renata", "triste", "Eu não sei a quem recorrer. Minha antiga psicóloga postou um print das minhas mensagens no Instagram."),
+      F("renata", "bravo", "Sem meu nome, mas todo mundo me reconheceu. Eu quero que ela responda por isso. Como eu faço?"),
+      ESC("narr", null, "Como você orienta a Renata?", [
+        OK("Você pode fazer uma denúncia ao CRP. Na denúncia, você é parte do processo e acompanha tudo.", F("renata", "surpreso", "Eu posso acompanhar? Então eu vou fazer.")),
+        NO("Não adianta. O Conselho só pune casos muito graves.", F("renata", "triste", "Então ela vai sair impune..."), N("Não é verdade. Expor uma paciente é falta ética grave.")),
+        NO("Expõe ela também nas redes.", F("renata", "pensativo", "Será?"), N("Responder exposição com exposição só aumentaria o sofrimento da Renata.")),
+      ], [F("helena", "neutro", "Existe diferença entre notificação e denúncia. Na notificação, quem informa não é parte do processo."), F("helena", "neutro", "Na denúncia, a pessoa é parte e pode acompanhar os trâmites, inclusive uma mediação.")], "Processamento disciplinar"),
+      F("renata", "pensativo", "E o que pode acontecer com ela?"),
+      ESC("narr", null, "Quais penalidades o Conselho pode aplicar?", [
+        OK("Advertência, multa, censura pública, suspensão ou cassação.", F("renata", "neutro", "Então é sério mesmo. Obrigada.")),
+        NO("Só uma advertência verbal.", F("renata", "triste", "Só isso?"), N("Não. As penalidades vão muito além de uma advertência.")),
+        NO("Prisão imediata.", F("renata", "surpreso", "Prisão?!"), N("O Conselho não prende ninguém. Ele aplica penalidades administrativas.")),
+      ], [F("helena", "neutro", "As penalidades vão da advertência à cassação do registro. Quem decide é o Conselho, depois de um processo com direito de defesa.")], "Penalidades"),
+      SAI("renata"), SAI("helena"),
+      N("Às 11h, Seu Jorge chega sozinho, de braços cruzados."),
+      F("jorge", "bravo", "Meu filho Caio, de 17 anos, disse que é gay. Eu quero que você faça ele voltar ao normal."),
+      ESC("narr", null, "O que você responde?", [
+        NO("Aceito. A família está pagando.", F("jorge", "feliz", "Ótimo. Quando começamos?"), N("Não existe \"cura\" para o que não é doença. Prometer isso viola as normas da profissão e machuca o Caio.")),
+        NO("Encaminho para um grupo religioso que trabalha com isso.", N("Você empurrou o problema adiante e reforçou a ideia de que o Caio tem algo errado.")),
+        OK("Explico que orientação sexual não é doença e ofereço acolher o sofrimento da família.", F("jorge", "triste", "Eu só... tenho medo do que vão fazer com ele lá fora."), V("Esse medo faz sentido. Vamos cuidar disso juntos?"), F("jorge", "neutro", "...Está bem. Vamos tentar.")),
+      ], [F("helena", "neutro", "Desde 1999, a Resolução CFP 01 proíbe tratar a orientação sexual como doença e oferecer qualquer tipo de \"cura\"."), F("helena", "feliz", "O foco é o sofrimento da família e do Caio, nunca a orientação dele.")], "Res. CFP 01/1999"),
+    ]},
+    { bg: "cerimonia", passos: [
+      N("Sexta-feira, 18h. A Helena leva você ao auditório do CRP."),
+      F("helena", "feliz", "Você chegou ao fim da sua primeira semana. Errar faz parte, desde que a gente aprenda com o erro."),
+      F("marcos", "feliz", "{nome}! Última pergunta, para fechar com chave de ouro."),
+      ESC("marcos", "pensativo", "De acordo com o Código de Ética, qual é um dever fundamental do psicólogo?", [
+        OK("Conhecer, divulgar, cumprir e fazer cumprir o Código de Ética.", F("marcos", "feliz", "É isso! E você passou a semana inteira fazendo exatamente isso.")),
+        NO("Assumir responsabilidades mesmo sem capacitação técnica.", F("marcos", "surpreso", "Pelo contrário! Só se assume o que se tem capacidade técnica para fazer.")),
+        NO("Usar testes mesmo sem embasamento científico.", F("marcos", "preocupado", "Nada disso! Testes precisam de fundamento científico.")),
+      ], [F("helena", "feliz", "O primeiro dever do Art. 1º é conhecer, divulgar, cumprir e fazer cumprir o Código."), F("helena", "feliz", "Parabéns, {nome}. Ética não é uma lista de proibições. É um jeito de cuidar das pessoas.")], "Art. 1º"),
+    ]},
+  ]},
+  { id: "d6", semana: "Segunda-feira", cal: "SEG", titulo: "Plantão on-line", sub: "Atendimento pela internet e crise", revisao: ["q22", "q8", "q9"], cenas: [
+    { bg: "escritorio", passos: [
+      N("Segunda semana. Hoje você estreia no atendimento on-line, do seu escritório em casa."),
+      F("helena", "neutro", "Atender pela internet é atendimento psicológico como qualquer outro. Mas antes da primeira chamada, tem um passo obrigatório."),
+      ESC("helena", "pensativo", "O que você precisa fazer antes de atender on-line?", [
+        OK("Fazer o cadastro no e-Psi, do Conselho.", F("helena", "feliz", "Exato. Sem o cadastro, nada de atendimento on-line.")),
+        NO("Nada. Basta ter internet e câmera.", F("helena", "surpreso", "Internet e câmera ajudam, mas não bastam! Existe um cadastro obrigatório.")),
+        NO("Pedir autorização ao paciente por WhatsApp.", F("helena", "neutro", "O consentimento do paciente importa, mas o cadastro no Conselho vem antes.")),
+      ], [F("helena", "neutro", "A Resolução CFP 11/2018 regulamenta os serviços psicológicos por tecnologias da informação e exige o cadastro prévio no e-Psi.")], "Res. CFP 11/2018"),
+      SAI("helena"),
+      N("14h. O Léo entra na chamada. Atrás dele, dá para ver uma lanchonete cheia."),
+      F("leo", "feliz", "E aí! Tô sem fone, mas pode falar alto que ninguém tá prestando atenção."),
+      ESC("narr", null, "O que você faz?", [
+        NO("Sigo a sessão normalmente. Ele disse que está tudo bem.", F("leo", "preocupado", "...Então, sobre a minha família..."), N("Na mesa ao lado, alguém para de comer para ouvir.")),
+        OK("Explico que o sigilo também depende do lugar e combino de ele ir a um local reservado ou remarcarmos.", F("leo", "pensativo", "Faz sentido. Tem uma praça vazia aqui do lado, vou pra lá."), F("leo", "feliz", "Pronto. Agora só tem pombo ouvindo.")),
+        NO("Encerro a chamada sem explicar.", F("leo", "triste", "Ué... caiu?"), N("O Léo fica sem entender e não marca de novo.")),
+      ], [F("helena", "neutro", "No on-line, o sigilo exige cuidado dos dois lados: lugar reservado, fone e conexão segura. Combine isso desde a primeira sessão.")], "Art. 9º"),
+      N("23h. O celular vibra. É uma mensagem do Léo."),
+      F("leo", "triste", "Desculpa a hora. Eu não tô aguentando. Acho que hoje eu quero sumir de vez."),
+      ESC("narr", null, "O Léo pode estar em risco. O que você faz?", [
+        NO("Respondo que a gente conversa na sessão da semana que vem.", N("Numa noite de risco, a mensagem fica sem a resposta de que ele precisava.")),
+        OK("Acolho, avalio o risco e aciono a rede: alguém de confiança perto dele, o SAMU (192) ou o CVV (188).", F("leo", "triste", "...Minha irmã tá aqui em casa. Posso chamar ela?"), V("Pode, sim. Chama agora. Eu fico aqui com você enquanto isso."), F("leo", "neutro", "Ela tá vindo.")),
+        NO("Posto um story pedindo que os amigos dele ajudem.", N("Expor o Léo nas redes viola o sigilo e pode piorar a situação.")),
+      ], [F("helena", "preocupado", "Com risco à vida, o cuidado vem antes do sigilo absoluto. Você comunica só o necessário, a quem pode proteger."), F("helena", "neutro", "Guarde estes números: o CVV atende pelo 188, de graça, a qualquer hora. O SAMU, pelo 192.")], "Art. 10"),
+    ]},
+  ]},
+  { id: "d7", semana: "Terça-feira", cal: "TER", titulo: "Papéis e testes", sub: "Documentos, avaliação e perícia", revisao: ["q26", "q27", "q30"], cenas: [
+    { bg: "consultorio", passos: [
+      N("Terça-feira. A Paula termina a sessão e para na porta."),
+      F("paula", "preocupado", "Meu chefe não acredita que eu venho na terapia. Você pode me dar um papel provando que eu estive aqui?"),
+      ESC("narr", null, "Qual documento serve para isso?", [
+        OK("Uma declaração de comparecimento, com data e horário.", F("paula", "feliz", "Perfeito, é só isso que ele precisa ver.")),
+        NO("Um laudo psicológico completo.", F("paula", "surpreso", "Um laudo? Ele vai saber da minha vida inteira?"), N("Um laudo vem de uma avaliação e mostra muito mais do que o necessário.")),
+        NO("Psicólogo não pode emitir nenhum documento.", F("paula", "triste", "Então vou levar falta..."), N("Pode, sim. Existem documentos próprios para isso.")),
+      ], [F("helena", "neutro", "A Resolução CFP 06/2019 define os documentos: declaração, atestado, relatório, laudo e parecer."), F("helena", "neutro", "A declaração informa fatos objetivos, como comparecimento e horário, sem expor o conteúdo da terapia.")], "Res. CFP 06/2019"),
+      F("paula", "pensativo", "E dá para escrever que eu tenho depressão? Assim ele me deixa em paz."),
+      ESC("narr", null, "O que você responde?", [
+        NO("Escrevo. Foi o que ela pediu.", N("Você registraria algo sem avaliação que o fundamente, e ainda exporia a Paula no trabalho.")),
+        OK("Explico que a declaração não leva diagnóstico, e que todo documento traz só o necessário e o que foi avaliado.", F("paula", "neutro", "Entendi. Melhor ele não saber dessas coisas mesmo.")),
+      ], [F("helena", "neutro", "Documento psicológico é técnico: precisa de fundamento e informa só o necessário para a finalidade dele.")]),
+      SAI("paula"),
+      N("No intervalo, a Tânia, pedagoga de uma escola, aparece no consultório."),
+      F("tania", "feliz", "Me vende o seu kit de teste de inteligência? Quero aplicar nos meus alunos!"),
+      ESC("narr", null, "O que você responde?", [
+        NO("Vendo. Ela trabalha com educação.", F("tania", "feliz", "Oba! Amanhã mesmo eu aplico."), N("Testes nas mãos de quem não é psicólogo viram rótulos sem fundamento.")),
+        NO("Empresto só o manual.", N("Emprestar também é vedado.")),
+        OK("Recuso, porque testes são de uso privativo do psicólogo, e ofereço pensar junto com ela as dificuldades da turma.", F("tania", "surpreso", "Ah, eu não sabia que era proibido!"), F("tania", "feliz", "Então vamos marcar uma conversa sobre a turma.")),
+      ], [F("helena", "neutro", "O Código proíbe divulgar, ensinar, ceder, emprestar ou vender a leigos instrumentos e técnicas psicológicas. Isso está no Art. 18.")], "Art. 18"),
+      SAI("tania"),
+      N("No fim da tarde, chega uma advogada."),
+      F("claudia", "feliz", "Sou advogada da Paula na disputa de guarda. O juiz vai nomear um perito para avaliar a família, e eu indiquei você. Você já conhece tudo!"),
+      ESC("narr", null, "O que você responde?", [
+        NO("Aceito. Conhecer a família ajuda.", N("Seu vínculo com a Paula comprometeria a imparcialidade da perícia.")),
+        OK("Recuso. Meu vínculo terapêutico com a Paula impede uma avaliação imparcial.", F("claudia", "pensativo", "Faz sentido. Vou pedir outro nome ao juiz.")),
+        NO("Aceito, mas não conto ao juiz que ela é minha paciente.", F("claudia", "feliz", "Ninguém precisa saber."), N("Esconder o vínculo deixaria tudo ainda mais grave.")),
+      ], [F("helena", "neutro", "É vedado ser perito ou avaliador quando vínculos pessoais ou profissionais, atuais ou anteriores, podem afetar a qualidade do trabalho. Art. 2º (k).")], "Art. 2º (k)"),
+    ]},
+  ]},
+  { id: "d8", semana: "Quarta-feira", cal: "QUA", titulo: "Hospital e SUS", sub: "Bioética, trabalho em equipe e greve", revisao: ["q7", "q14", "q35"], cenas: [
+    { bg: "hospital", passos: [
+      N("Quarta-feira. Você começa um plantão no hospital público da cidade."),
+      F("henrique", "preocupado", "Que bom que você chegou. O Seu Antônio, do leito 12, está recusando a cirurgia."),
+      F("henrique", "bravo", "Preciso que você convença ele. Use as técnicas que quiser."),
+      ESC("narr", null, "O que você faz?", [
+        NO("Uso técnicas de persuasão até ele aceitar.", F("henrique", "feliz", "Ótimo, é disso que eu preciso!"), N("Manipular a decisão de alguém fere a autonomia dele, mesmo com boa intenção.")),
+        OK("Converso com o Seu Antônio para entender a recusa, ajudo ele a decidir com informação e levo a visão dele à equipe.", F("henrique", "pensativo", "Ele tem medo de não acordar da anestesia? Ninguém tinha perguntado isso."), F("henrique", "neutro", "Vou explicar a anestesia para ele com calma.")),
+        NO("Digo que não é meu papel e vou embora.", F("henrique", "surpreso", "Como assim?"), N("A Psicologia hospitalar tem muito a contribuir, sem manipular ninguém.")),
+      ], [F("helena", "neutro", "A bioética tem quatro princípios: beneficência, não maleficência, autonomia e justiça."), F("helena", "feliz", "Querer o bem do paciente não dá o direito de decidir por ele.")], "Princípios da bioética"),
+      SAI("henrique"), SAI("helena"),
+    ]},
+    { bg: "crp", passos: [
+      N("À tarde, você vai ao CRAS, onde a equipe usa um prontuário compartilhado."),
+      F("katia", "neutro", "Oi! Eu sou a Kátia, assistente social. A Dona Rosa contou para você que sofre violência do marido, né? Escreve tudo no prontuário da equipe, com os detalhes."),
+      ESC("narr", null, "O que você registra?", [
+        NO("Tudo, com todos os detalhes. A equipe precisa saber.", N("Detalhes íntimos ficam expostos para a equipe inteira, sem necessidade.")),
+        OK("Só o necessário para a equipe agir, como a situação de risco, e guardo o restante em registro restrito.", F("katia", "feliz", "Faz sentido. Com isso a gente já consegue acionar a rede de proteção.")),
+        NO("Nada. É sigiloso.", F("katia", "preocupado", "Mas sem nenhuma informação, como a gente protege a Dona Rosa?"), N("Sem registro, a equipe não consegue proteger a Dona Rosa.")),
+      ], [F("helena", "neutro", "Com profissionais que não são psicólogos, você compartilha só o que é relevante para o cuidado, resguardando a confidencialidade. Isso é o Art. 6º.")], "Art. 6º"),
+      SAI("helena"),
+      F("katia", "preocupado", "Ah, e você viu? O sindicato aprovou greve a partir de amanhã."),
+      ESC("narr", null, "Como fica o seu atendimento durante a greve?", [
+        NO("Cancelo tudo, sem avisar ninguém.", N("Pessoas em risco ficariam sem nenhum cuidado.")),
+        OK("Mantenho as atividades de emergência e aviso os usuários com antecedência.", F("katia", "feliz", "Isso. A gente monta uma escala para as emergências.")),
+        NO("Não posso aderir à greve. Psicólogo não faz greve.", F("katia", "surpreso", "Claro que pode!"), N("A greve é um direito. O dever é não abandonar quem precisa.")),
+      ], [F("helena", "neutro", "Em greve ou paralisação, o psicólogo mantém as atividades de emergência e avisa os usuários com antecedência.")], "Greve e paralisação"),
+    ]},
+  ]},
+  { id: "d9", semana: "Quinta e sexta", cal: "QUI", titulo: "Ao vivo", sub: "Emergência, mídia e pesquisa", revisao: ["q23", "q28", "q29"], cenas: [
+    { bg: "escritorio", passos: [
+      N("Quinta-feira, 7h. Uma enchente atingiu a cidade vizinha durante a madrugada."),
+      F("helena", "preocupado", "O CRP está reunindo psicólogos voluntários para os abrigos. Você topa ir?"),
+      ESC("narr", null, "Como você responde?", [
+        OK("Vou, para cuidar das famílias, sem buscar nenhum benefício pessoal.", F("helena", "feliz", "É isso. Em emergência, a gente vai para cuidar.")),
+        NO("Vou, e aproveito para distribuir cartões do consultório.", F("helena", "bravo", "Nada disso! Ninguém vai a um abrigo para conseguir clientes.")),
+        NO("Não vou. Não é a minha cidade.", F("helena", "triste", "Pense de novo. O Código põe a atuação em calamidades entre os deveres do psicólogo.")),
+      ], [F("helena", "neutro", "Entre os deveres do Art. 1º está prestar serviços em calamidade pública ou emergência, sem visar benefício pessoal.")], "Art. 1º (d)"),
+    ]},
+    { bg: "estudio", passos: [
+      N("À noite, um programa de TV convida você para falar, ao vivo, sobre o dia nos abrigos."),
+      F("fernanda", "feliz", "Boa noite! Estamos ao vivo com {nome}, que passou o dia nos abrigos."),
+      F("fernanda", "pensativo", "Conta pra gente um caso que você atendeu hoje. Uma história real emociona o público!"),
+      ESC("narr", null, "Você está ao vivo. O que diz?", [
+        NO("Conto a história de uma família que atendi, sem dizer o nome.", N("Numa cidade pequena, os detalhes bastam para todo mundo saber quem é.")),
+        OK("Explico que não posso contar casos, e falo de como as pessoas reagem a tragédias e onde buscar ajuda.", F("fernanda", "feliz", "Informação útil para quem está em casa. Obrigada!")),
+      ], [F("helena", "neutro", "O sigilo vale na TV também. Na mídia, o psicólogo divulga conhecimento sobre a profissão, com base científica e sem expor ninguém.")], "Art. 19"),
+      F("fernanda", "surpreso", "Última pergunta: aquele homem que foi preso por saquear lojas. Ele é psicopata?"),
+      ESC("narr", null, "E agora?", [
+        NO("Pelo que vi no jornal, ele tem traços de psicopatia.", F("fernanda", "feliz", "Que revelação!"), N("Você diagnosticou alguém que nunca avaliou, ao vivo, para milhares de pessoas.")),
+        OK("Não dá para diagnosticar ninguém pela TV. Posso explicar o que leva pessoas a agir assim em crises.", F("fernanda", "neutro", "Justo. Então explica pra gente.")),
+      ], [F("helena", "feliz", "Mandou bem. Diagnóstico pela mídia expõe a pessoa e não tem base técnica.")], "Art. 2º (q)"),
+      SAI("fernanda"), SAI("helena"),
+    ]},
+    { bg: "escola", passos: [
+      N("Sexta-feira de manhã. Você ajuda o Prof. Rui numa pesquisa com adolescentes de uma escola."),
+      F("rui", "preocupado", "Temos um problema. Um participante quer desistir no meio da coleta, e a amostra já está pequena."),
+      ESC("narr", null, "O que você sugere?", [
+        NO("Insistir um pouco. É pela ciência.", N("Pressionar alguém a continuar fere o caráter voluntário da pesquisa.")),
+        NO("Oferecer ponto extra na escola para ele continuar.", N("Dar vantagem para manter alguém na pesquisa compromete a participação livre.")),
+        OK("Respeitar a desistência, sem nenhum prejuízo para ele.", F("rui", "pensativo", "Você tem razão. Melhor uma amostra menor do que uma pesquisa antiética."), F("rui", "feliz", "E vamos agradecer a participação dele até aqui.")),
+      ], [F("helena", "neutro", "Em pesquisas, o Art. 16 pede avaliar riscos, garantir participação voluntária, consentimento informado e sigilo."), F("helena", "neutro", "Desistir é um direito, a qualquer momento.")], "Art. 16"),
+    ]},
+    { bg: "cerimonia", passos: [
+      N("Sexta-feira, 18h. Duas semanas depois da inscrição, você volta ao auditório do CRP."),
+      F("marcos", "feliz", "{nome}! Soube que você foi aos abrigos e ainda deu uma aula na TV."),
+      F("helena", "feliz", "Foram duas semanas intensas. Você errou, aprendeu e cuidou das pessoas. É isso que a profissão pede."),
+      F("marcos", "feliz", "Seu plantão está completo. Agora o Código não é só um texto: é a sua prática."),
+    ]},
+  ]},
+];
+DIAS.forEach((d, i) => { d.sem = i < 5 ? 1 : 2; });
+
+/* níveis: 1 fácil, 2 médio, 3 difícil. O nível é o peso da pergunta na média ponderada. */
+const NIVEIS = { 1: "Fácil", 2: "Médio", 3: "Difícil" };
+const NIVEL_Q = {
+  q1: 1, q3: 1, q6: 1, q7: 1, q10: 1, q11: 1, q12: 1, q13: 1, q15: 1, q16: 1, q22: 1, q28: 1, q30: 1, q32: 1, q33: 1,
+  q2: 2, q8: 2, q9: 2, q17: 2, q18: 2, q20: 2, q21: 2, q25: 2, q26: 2, q27: 2, q29: 2, q31: 2, q34: 2,
+  q4: 3, q5: 3, q14: 3, q19: 3, q23: 3, q24: 3, q35: 3,
+};
+Object.entries(NIVEL_Q).forEach(([k, n]) => { QUEST[k].n = n; });
+/* nível de cada decisão das cenas, na ordem em que aparecem no dia */
+const NIVEL_CENAS = { d1: [1, 1, 2], d2: [2, 3], d3: [2, 1, 1], d4: [3, 2, 2], d5: [3, 2, 1, 1], d6: [2, 2, 3], d7: [2, 2, 1, 3], d8: [2, 3, 2], d9: [2, 1, 1, 1] };
+DIAS.forEach(d => {
+  const esc = d.cenas.flatMap(c => c.passos).filter(p => p.escolha);
+  console.assert(esc.length === NIVEL_CENAS[d.id].length, "níveis faltando em " + d.id);
+  esc.forEach((p, i) => { p.escolha.nivel = NIVEL_CENAS[d.id][i] || 1; });
+});
+
+const NOTA_CRP = 7;
+const PROVA_POR_NIVEL = { 1: 3, 2: 4, 3: 3 };
+function passosProva() {
+  const ids = [1, 2, 3].flatMap(n => embaralhar(Object.keys(QUEST).filter(k => QUEST[k].n === n)).slice(0, PROVA_POR_NIVEL[n]));
+  prova = { pontos: 0, max: 0, porNivel: { 1: [0, 0], 2: [0, 0], 3: [0, 0] } };
+  const out = [N("A Prova do CRP vai começar. São 10 perguntas, das fáceis às difíceis.")];
+  ids.forEach((id, k) => {
+    const q = QUEST[id];
+    const e = ESC("marcos", "pensativo", `Pergunta ${k + 1} de 10. ${q.p}`, q.o.map((t, i) => i === q.c
+      ? OK(t, F("marcos", "feliz", "Correto! " + q.e))
+      : NO(t, F("marcos", "neutro", `Não. A resposta é "${q.o[q.c]}". ${q.e}`))));
+    e.escolha.nivel = q.n; e.escolha.prova = true;
+    out.push(e);
+  });
+  out.push({ resultadoProva: true });
+  return out;
+}
+
+function passosRevisao(ids) {
+  if (!ids.length) return [];
+  const out = [F("helena", "feliz", "Antes de encerrar o dia, três perguntas rápidas para fixar.")];
+  ids.forEach(id => {
+    const q = QUEST[id];
+    out.push(ESC("helena", "pensativo", q.p, q.o.map((t, i) => i === q.c
+      ? OK(t, F("helena", "feliz", "Isso! " + q.e))
+      : NO(t, F("helena", "neutro", `Não exatamente. A resposta é: "${q.o[q.c]}". ${q.e}`)))));
+    out[out.length - 1].escolha.nivel = q.n;
+  });
+  out.push(F("helena", "feliz", "Muito bem, {nome}. Até amanhã!"));
+  return out;
+}
+
+/* =====================================================================
+   ESTADO
+   ===================================================================== */
+const KEY = "primeira-semana-v1";
+const NOVO = () => ({ nome: "", look: 0, dias: {}, cartas: {}, som: true, musica: true });
+let G = NOVO();
+try { const raw = localStorage.getItem(KEY); if (raw) G = Object.assign(NOVO(), JSON.parse(raw)); } catch (e) {}
+const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(G)); } catch (e) {} };
+const eu = () => ({ ...LOOKS[G.look] || LOOKS[0], nome: G.nome || "Você", papel: "Você" });
+const preencher = t => t.replaceAll("{nome}", G.nome || "você").replaceAll("{crp}", G.crp || "");
+const nota10 = (pts, max) => max ? pts / max * 10 : 0;
+const fmtNota = n => n.toFixed(1).replace(".", ",");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const embaralhar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+/* rodízio da resposta certa: nunca repete a letra da pergunta anterior e passa por A, B, C e D de forma equilibrada */
+let sacoCerta = [], ultimaCerta = -1;
+function posicaoCerta(n) {
+  let disp = sacoCerta.filter(i => i < n && i !== ultimaCerta);
+  if (!disp.length) { sacoCerta = embaralhar([0, 1, 2, 3]); disp = sacoCerta.filter(i => i < n && i !== ultimaCerta); }
+  const p = disp[0];
+  sacoCerta.splice(sacoCerta.indexOf(p), 1);
+  ultimaCerta = p;
+  return p;
+}
+/* no site público o quiz fica ao lado (treino.html); no Claude, é outro artifact */
+const LINK_TREINO = /github\.io$/.test(location.hostname) ? "treino.html" : "https://claude.ai/artifact/J9cwZNrgqHv1dBAKM4RGJ1";
+const SEM_MOVIMENTO = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ESTRELA = `<path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/>`;
+const estrelas = (n, cls = "") => `<div class="estrelas ${cls}" aria-label="${n} de 3 estrelas">${[0, 1, 2].map(i => `<svg viewBox="0 0 24 24" class="${i < n ? "on" : ""}" style="animation-delay:${.3 + i * .25}s">${ESTRELA}</svg>`).join("")}</div>`;
+const $app = document.getElementById("app");
+
+/* =====================================================================
+   SOM: tudo sintetizado no navegador, sem arquivos de áudio
+   ===================================================================== */
+const Som = {
+  ctx: null, mestre: null, timerMusica: null, passo: 0,
+  iniciar() {
+    if (!this.ctx) {
+      try {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        this.mestre = this.ctx.createGain(); this.mestre.gain.value = .9; this.mestre.connect(this.ctx.destination);
+      } catch (e) { return; }
+    }
+    if (this.ctx.state === "suspended") this.ctx.resume();
+    this.musica();
+  },
+  tom(freq, dur = .1, tipo = "sine", vol = .08, atraso = 0, ate = null, ehMusica = false) {
+    if (!this.ctx || !(ehMusica ? G.musica : G.som)) return;
+    const t = this.ctx.currentTime + atraso, o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = tipo; o.frequency.setValueAtTime(freq, t);
+    if (ate) o.frequency.exponentialRampToValueAtTime(ate, t + dur);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(this.mestre); o.start(t); o.stop(t + dur + .03);
+  },
+  voz(f) {
+    if (f === "narr") return;
+    const v = f === "voce" ? 260 : (PERS[f] && PERS[f].voz) || 250;
+    this.tom(v * (.9 + Math.random() * .25), .05, "square", .016);
+  },
+  clique() { this.tom(720, .04, "sine", .05); },
+  pop() { this.tom(420, .12, "sine", .06, 0, 760); },
+  boing() { this.tom(260, .25, "triangle", .06, 0, 620); },
+  tremor() { this.tom(140, .3, "sawtooth", .03, 0, 95); },
+  acerto() { [523.3, 659.3, 784, 1046.5].forEach((f, i) => this.tom(f, .22, "triangle", .08, i * .08)); },
+  erro() { this.tom(233, .22, "square", .04, 0, 196); this.tom(196, .35, "square", .04, .18, 147); },
+  carta() { [784, 988, 1175, 1568, 1976].forEach((f, i) => this.tom(f, .3, "sine", .06, i * .06)); this.tom(392, .5, "triangle", .05, 0, 784); },
+  virada() { this.tom(300, .35, "sine", .045, 0, 900); },
+  abertura() { [392, 523.3, 659.3, 784].forEach((f, i) => this.tom(f, .4, "triangle", .07, i * .12)); },
+  fanfarra() { [[523.3, 0], [523.3, .14], [659.3, .28], [784, .42], [659.3, .62], [784, .76], [1046.5, .9]].forEach(([f, a]) => this.tom(f, .32, "triangle", .09, a)); },
+  triste() { [392, 349.2, 311.1].forEach((f, i) => this.tom(f, .4, "triangle", .06, i * .22)); },
+  musica() {
+    if (this.timerMusica || !this.ctx || !G.musica) return;
+    const acordes = [[261.6, 329.6, 392], [220, 261.6, 329.6], [174.6, 220, 261.6], [196, 246.9, 293.7]], batida = 60 / 76;
+    this.timerMusica = setInterval(() => {
+      if (this.ctx.state !== "running") return;
+      const a = acordes[Math.floor(this.passo / 4) % 4], i = this.passo % 4;
+      if (i === 0) this.tom(a[0] / 2, batida * 3.6, "sine", .035, 0, null, true);
+      this.tom([a[0], a[1], a[2], a[1]][i] * 2, batida * .9, "triangle", .016, 0, null, true);
+      this.passo++;
+    }, batida * 1000);
+  },
+  pararMusica() { clearInterval(this.timerMusica); this.timerMusica = null; },
+};
+document.addEventListener("pointerdown", e => { Som.iniciar(); if (e.target.closest("button, a")) Som.clique(); }, true);
+document.addEventListener("keydown", () => Som.iniciar(), true);
+const ICO_SOM = on => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>${on ? '<path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>'}</svg>`;
+const somLigado = () => G.som || G.musica;
+function alternarSom(btn) {
+  const on = !somLigado(); G.som = on; G.musica = on; salvar();
+  if (on) Som.iniciar(); else Som.pararMusica();
+  if (btn) { btn.innerHTML = ICO_SOM(on); btn.setAttribute("aria-label", on ? "Desligar som" : "Ligar som"); }
+}
+const botaoSom = cls => `<button class="menu-btn ${cls}" id="som" aria-label="${somLigado() ? "Desligar som" : "Ligar som"}">${ICO_SOM(somLigado())}</button>`;
+const totalCartas = Object.keys(CARTAS).length;
+
+function toast(msg) {
+  let t = document.querySelector(".toast");
+  if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); $app.appendChild(t); }
+  t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 2400);
+}
+function fundoHTML(bg) { return `<div class="fundo"><div class="camada">${FUNDOS[bg]}</div></div>`; }
+
+/* =====================================================================
+   TELAS FORA DO JOGO
+   ===================================================================== */
+function telaTitulo() {
+  pararJogo();
+  $app.innerHTML = `${fundoHTML("consultorio")}
+    <div class="palco palco-titulo so-esq"><div class="slot esq"><div class="char">${avatar(PERS.helena, "feliz")}</div></div></div>
+    <div class="balao">Vamos ao seu primeiro plantão?</div>
+    ${botaoSom("som-titulo")}
+    <div class="overlay titulo">
+      <div class="psi" aria-hidden="true">Ψ</div>
+      <span class="label">Um jogo sobre ética na Psicologia</span>
+      <h1>Primeira Semana de <span>Plantão</span></h1>
+      <p class="sub">Duas semanas, nove dias de plantão e muitas decisões difíceis. A Helena vai supervisionar cada passo.</p>
+      <div class="pilha">
+        ${G.nome ? `<button class="btn" id="continuar">Continuar como ${esc(G.nome)}</button><button class="btn sec" id="novo">Novo jogo</button>` : `<button class="btn" id="novo">Começar</button>`}
+      </div>
+      <p class="nota">Personagens fictícios. Conteúdo baseado no Código de Ética Profissional do Psicólogo (Res. CFP 010/2005).</p>
+    </div>`;
+  const c = document.getElementById("continuar"); if (c) c.onclick = telaAgenda;
+  document.getElementById("som").onclick = e => alternarSom(e.currentTarget);
+  document.getElementById("novo").onclick = telaCriar;
+}
+
+function telaCriar() {
+  let look = G.look || 0;
+  $app.innerHTML = `${fundoHTML("crp")}
+    <div class="overlay papel">
+      <span class="label">Antes de começar</span>
+      <h2 style="font-size:30px">Quem vai assumir o plantão?</h2>
+      <div class="campo"><label for="nome"><b>Como você quer ser chamado(a)?</b></label><input id="nome" maxlength="18" autocomplete="off" placeholder="Seu nome ou apelido"></div>
+      <div class="campo"><b>Escolha seu visual</b>
+        <div class="looks">${LOOKS.map((l, i) => `<button class="look" data-l="${i}" aria-pressed="${i === look}" aria-label="Visual ${i + 1}">${cabecaSVG(l, "feliz")}</button>`).join("")}</div></div>
+      <button class="btn" id="ir" disabled>Começar a semana</button>
+      <button class="btn sec" id="volta">Voltar</button>
+    </div>`;
+  const inp = document.getElementById("nome"), ir = document.getElementById("ir");
+  inp.value = G.nome; ir.disabled = !inp.value.trim();
+  inp.oninput = () => { ir.disabled = !inp.value.trim(); };
+  $app.querySelectorAll(".look").forEach(b => b.onclick = () => { look = +b.dataset.l; $app.querySelectorAll(".look").forEach(x => x.setAttribute("aria-pressed", x === b)); });
+  ir.onclick = () => {
+    const novoNome = inp.value.trim();
+    if (G.nome && G.nome !== novoNome) { G.dias = {}; G.cartas = {}; }
+    G.nome = novoNome; G.look = look; salvar(); iniciarDia(0);
+  };
+  document.getElementById("volta").onclick = telaTitulo;
+  inp.focus();
+}
+
+const liberado = i => i === 0 || !!G.dias[DIAS[i - 1].id];
+function telaAgenda() {
+  pararJogo();
+  const total = DIAS.reduce((s, d) => s + (G.dias[d.id] ? G.dias[d.id].estrelas : 0), 0);
+  const fim = DIAS.every(d => G.dias[d.id]);
+  $app.innerHTML = `${fundoHTML("consultorio")}
+    <div class="overlay papel">
+      <div class="cab"><span class="mini">${cabecaSVG(eu(), "feliz")}</span><div><span class="label">Agenda de</span><h2>${esc(G.nome)}</h2>${G.crp ? `<span class="crp-num">${esc(G.crp)}</span>` : ""}</div></div>
+      <p>Suas duas semanas de plantão. ${total} de ${DIAS.length * 3} estrelas · ${Object.keys(G.cartas).length} de ${totalCartas} cartas do Código.</p>
+      ${[1, 2].map(sem => `<div class="semana-h"><h3>Semana ${sem}</h3><span class="label">${DIAS.filter(d => d.sem === sem && G.dias[d.id]).length}/${DIAS.filter(d => d.sem === sem).length} dias</span></div>
+      <div class="dias">${DIAS.map((d, i) => {
+        if (d.sem !== sem) return "";
+        const r = G.dias[d.id], ok = liberado(i);
+        return `<button class="dia-card ${r ? "feito" : ""}" data-d="${i}" ${ok ? "" : "disabled"}>
+          <span class="cal"><span>${d.cal}</span><b>${i + 1}</b></span>
+          <span><strong>${esc(d.titulo)}</strong><small>${ok ? esc(d.sub) : "Termine o dia anterior"}</small></span>
+          ${estrelas(r ? r.estrelas : 0, "peq")}</button>`; }).join("")}</div>`).join("")}
+      <div class="pilha">
+        ${fim ? `<button class="btn" id="cert">Ver meu certificado</button>` : ""}
+        <button class="btn sec" id="cad">Caderno do Código</button>
+        <a class="btn sec" href="${LINK_TREINO}" target="_blank" rel="noopener">Modo treino: quiz com todas as questões</a>
+        <button class="btn sec" id="titulo">Tela inicial</button>
+      </div>
+    </div>`;
+  $app.querySelectorAll("[data-d]").forEach(b => b.onclick = () => iniciarDia(+b.dataset.d));
+  document.getElementById("cad").onclick = () => telaCaderno(telaAgenda);
+  document.getElementById("titulo").onclick = telaTitulo;
+  const c = document.getElementById("cert"); if (c) c.onclick = certificado;
+}
+
+function telaCaderno(voltar) {
+  const div = document.createElement("div");
+  div.className = "overlay papel";
+  div.innerHTML = `<span class="label">${Object.keys(G.cartas).length} de ${totalCartas} cartas</span><h2 style="font-size:30px">Caderno do Código</h2>
+    <p>Cada decisão ganha uma carta com o artigo que a fundamenta.</p>
+    <div class="grade">${Object.entries(CARTAS).map(([r, t]) => G.cartas[r]
+      ? `<div class="cartinha"><span class="ref">${esc(r)}</span><p>${esc(t)}</p></div>`
+      : `<div class="cartinha bloq"><span class="ref">???</span><p>Decida um caso para desbloquear.</p></div>`).join("")}</div>
+    <button class="btn" id="fecha-cad">Voltar</button>`;
+  $app.appendChild(div);
+  div.querySelector("#fecha-cad").onclick = () => { div.remove(); if (voltar === telaAgenda) telaAgenda(); };
+}
+
+function certificado() {
+  const total = DIAS.reduce((s, d) => s + (G.dias[d.id] ? G.dias[d.id].estrelas : 0), 0);
+  $app.innerHTML = `${fundoHTML("cerimonia")}
+    <div class="overlay escuro">
+      <div class="certificado">
+        <span class="psi-c">Ψ</span>
+        <span class="label">Certificado</span>
+        <h2>Plantão Ético completo</h2>
+        <p>Conferido a</p>
+        <span class="nome">${esc(G.nome)}</span>
+        ${G.crp ? `<span class="crp-num">${esc(G.crp)}</span>` : ""}
+        <p>por concluir as duas semanas de plantão com ${total} de ${DIAS.length * 3} estrelas e ${Object.keys(G.cartas).length} cartas do Código de Ética.</p>
+        ${estrelas(Math.round(total / DIAS.length))}
+        <div class="assin"><span>Helena, supervisora</span><span>Marcos, conselheiro</span></div>
+      </div>
+      <p class="nota">Certificado fictício, parte do jogo.</p>
+      <div class="pilha"><button class="btn" id="comp">Copiar para compartilhar</button><button class="btn sec" id="ag">Voltar à agenda</button></div>
+    </div>`;
+  confete(); Som.fanfarra();
+  document.getElementById("ag").onclick = telaAgenda;
+  document.getElementById("comp").onclick = () => {
+    const txt = `Terminei as duas semanas da Primeira Semana de Plantão, um jogo sobre ética na Psicologia, com ${total}/${DIAS.length * 3} estrelas e ${Object.keys(G.cartas).length}/${totalCartas} cartas do Código de Ética.`;
+    try { navigator.clipboard.writeText(txt).then(() => toast("Copiado. É só colar onde quiser."), () => toast(txt)); } catch (e) { toast(txt); }
+  };
+}
+
+/* =====================================================================
+   MOTOR DO JOGO
+   ===================================================================== */
+let prova = null;
+let D = null, fila = [], pos = -1, placar = null, palco = { esq: null, dir: null };
+let digitando = null, esperando = false, travado = false, timers = [];
+const depois = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
+function pararJogo() { timers.forEach(clearTimeout); timers = []; if (digitando) clearInterval(digitando.id); digitando = null; document.onkeydown = null; $app.onclick = null; }
+
+function iniciarDia(i) {
+  pararJogo();
+  D = { ...DIAS[i], indice: i };
+  fila = [];
+  D.cenas.forEach(c => { fila.push({ bg: c.bg }); fila.push(...c.passos); });
+  fila.push(...passosRevisao(D.revisao), { fim: true });
+  pos = -1; placar = { acertos: 0, total: 0, pontos: 0, max: 0, cartas: [] }; palco = { esq: null, dir: null };
+  esperando = false; travado = false;
+  $app.innerHTML = `<div class="fundo" id="fundo"></div>
+    <div class="palco" id="palco"><div class="slot esq" id="s-esq"></div><div class="slot dir" id="s-dir"></div></div>
+    <div class="hud"><span class="pill dia">Dia ${i + 1} · ${esc(D.titulo)}</span>
+      <span class="dir-hud"><span class="pill selos" id="selos" title="Pontos de hoje (média ponderada)"><svg viewBox="0 0 24 24">${ESTRELA}</svg><span id="n-selos">0</span></span>
+      ${botaoSom("")}<button class="menu-btn" id="menu" aria-label="Pausar">II</button></span></div>
+    <div class="caixa" id="caixa" hidden>
+      <div class="tag" id="tag" hidden><span class="mini" id="mini"></span><span><b id="tag-nome"></b><small id="tag-papel"></small></span></div>
+      <div class="conteudo" id="conteudo"><span class="nivel" id="nivel" hidden></span><p class="fala" id="fala"></p><div class="opcoes" id="opcoes"></div></div>
+      <span class="seta" id="seta" hidden aria-hidden="true">▼</span>
+    </div>`;
+  document.getElementById("menu").onclick = e => { e.stopPropagation(); pausa(); };
+  document.getElementById("som").onclick = e => { e.stopPropagation(); alternarSom(e.currentTarget); };
+  $app.onclick = e => { if (e.target.closest("button, a, input, .overlay")) return; avancar(); };
+  document.onkeydown = e => { if ((e.key === "Enter" || e.key === " ") && !document.querySelector(".overlay") && !e.target.closest("button")) { e.preventDefault(); avancar(); } };
+  cartaz();
+}
+
+function cartaz() {
+  const div = document.createElement("div");
+  div.className = "overlay cartaz";
+  Som.abertura();
+  div.innerHTML = `<span class="label semana">Semana ${D.sem} · ${esc(D.semana)}</span><span class="num">Dia ${D.indice + 1}</span><h2>${esc(D.titulo)}</h2><p>${esc(D.sub)}</p><p class="toque">Toque para começar</p>`;
+  $app.appendChild(div);
+  const ir = () => { div.remove(); avancar(); };
+  div.onclick = ir;
+  div.tabIndex = 0; div.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ir(); } }; div.focus();
+}
+
+function avancar() {
+  if (travado || document.querySelector(".overlay")) return;
+  if (digitando) { digitando.fim(); return; }
+  if (esperando) return;
+  pos++; executar(fila[pos]);
+}
+function executar(p) {
+  if (!p) return;
+  if (p.bg) { trocarFundo(p.bg); limparPalco(); travado = true; depois(() => { travado = false; avancar(); }, 650); return; }
+  if (p.sai) { tirar(p.sai); avancar(); return; }
+  if (p.carta) { mostrarCarta(p.carta); return; }
+  if (p.fim) { fimDoDia(); return; }
+  if (p.escolha) { perguntar(p.escolha); return; }
+  if (p.prova) { fila.splice(pos + 1, 0, ...passosProva()); avancar(); return; }
+  if (p.resultadoProva) { resultadoProva(); return; }
+  falar(p);
+}
+
+function trocarFundo(bg) {
+  const f = document.getElementById("fundo"), nova = document.createElement("div");
+  nova.className = "camada"; nova.style.opacity = 0; nova.innerHTML = FUNDOS[bg];
+  if (f.children.length) Som.virada();
+  f.appendChild(nova); requestAnimationFrame(() => requestAnimationFrame(() => { nova.style.opacity = 1; }));
+  depois(() => { [...f.children].slice(0, -1).forEach(x => x.remove()); }, 700);
+}
+
+/* palco: Helena e Marcos (quando a Helena não está) ficam à esquerda; os demais à direita */
+function lado(f) {
+  if (palco.esq === f) return "esq";
+  if (palco.dir === f) return "dir";
+  if (f === "helena") return "esq";
+  if (f === "marcos" && palco.esq !== "helena") return "esq";
+  return "dir";
+}
+function atualizaLayout() {
+  const p = document.getElementById("palco");
+  p.classList.toggle("so-esq", !!palco.esq && !palco.dir);
+  p.classList.toggle("so-dir", !!palco.dir && !palco.esq);
+}
+function colocar(f, emo) {
+  const l = lado(f), slot = document.getElementById("s-" + l);
+  let ch = slot.querySelector(".char");
+  if (palco[l] !== f) {
+    if (ch) { const velho = ch; velho.classList.add("entra-" + l); depois(() => velho.remove(), 450); }
+    palco[l] = f;
+    ch = document.createElement("div");
+    ch.className = "char entra-" + l; ch.dataset.f = f; ch.dataset.e = emo;
+    ch.innerHTML = avatar(PERS[f], emo);
+    ch.querySelector(".olhos").style.animationDelay = `-${(Math.random() * 4).toFixed(2)}s`;
+    slot.appendChild(ch);
+    requestAnimationFrame(() => requestAnimationFrame(() => ch.classList.remove("entra-" + l)));
+    Som.pop();
+    atualizaLayout();
+    return;
+  }
+  if (ch.dataset.e !== emo) {
+    ch.dataset.e = emo; ch.innerHTML = avatar(PERS[f], emo);
+    const a = EMO[emo] && EMO[emo].anim;
+    if (a === "pula") Som.boing(); else if (a === "treme") Som.tremor();
+    if (a) { ch.classList.remove("pula", "treme", "afunda", "inclina"); void ch.offsetWidth; ch.classList.add(a); ch.addEventListener("animationend", () => ch.classList.remove(a), { once: true }); }
+  }
+}
+function tirar(f) {
+  ["esq", "dir"].forEach(l => {
+    if (palco[l] !== f) return;
+    palco[l] = null;
+    const ch = document.querySelector(`#s-${l} .char`);
+    if (ch) { ch.classList.add("entra-" + l); depois(() => ch.remove(), 450); }
+  });
+  atualizaLayout();
+}
+function limparPalco() { tirar(palco.esq); tirar(palco.dir); palco = { esq: null, dir: null }; atualizaLayout(); }
+function destacar(f) {
+  document.querySelectorAll(".char").forEach(c => {
+    const fala = c.dataset.f === f;
+    c.classList.toggle("ouvindo", f !== "narr" && !fala);
+    c.parentElement.classList.toggle("fala-agora", fala);
+  });
+}
+
+function falar(p, aoTerminar) {
+  const f = p.f || "narr";
+  if (f !== "narr" && f !== "voce") colocar(f, p.e || "neutro");
+  destacar(f);
+  const caixa = document.getElementById("caixa"), tag = document.getElementById("tag");
+  caixa.hidden = false;
+  caixa.classList.toggle("narra", f === "narr");
+  document.getElementById("opcoes").innerHTML = "";
+  document.getElementById("nivel").hidden = true;
+  if (f === "narr") tag.hidden = true;
+  else {
+    const pessoa = f === "voce" ? eu() : PERS[f];
+    tag.hidden = false; tag.classList.toggle("voce", f === "voce");
+    tag.style.animation = "none"; void tag.offsetWidth; tag.style.animation = "";
+    document.getElementById("mini").innerHTML = cabecaSVG(pessoa, f === "voce" ? "neutro" : (p.e || "neutro"));
+    document.getElementById("tag-nome").textContent = pessoa.nome;
+    document.getElementById("tag-papel").textContent = pessoa.papel;
+  }
+  escrever(preencher(p.t), f, aoTerminar);
+}
+
+function escrever(texto, f, aoTerminar) {
+  const el = document.getElementById("fala"), seta = document.getElementById("seta");
+  const ch = document.querySelector(`.char[data-f="${f}"]`);
+  seta.hidden = true; el.textContent = "";
+  if (ch) ch.classList.add("falando");
+  let k = 0;
+  const terminar = () => {
+    clearInterval(id); digitando = null; el.textContent = texto;
+    if (ch) ch.classList.remove("falando");
+    if (aoTerminar) aoTerminar(); else seta.hidden = false;
+  };
+  const id = setInterval(() => { k += 2; if (k % 6 === 0) Som.voz(f); el.textContent = texto.slice(0, k); if (k >= texto.length) terminar(); }, 28);
+  digitando = { id, fim: terminar };
+  if (SEM_MOVIMENTO) terminar();
+}
+
+function perguntar(q) {
+  esperando = true;
+  falar({ f: q.f, e: q.e, t: q.t }, () => mostrarOpcoes(q));
+  if (q.nivel) {
+    const nv = document.getElementById("nivel");
+    nv.className = "nivel n" + q.nivel; nv.hidden = false;
+    nv.innerHTML = `${[1, 2, 3].map(i => `<i class="${i <= q.nivel ? "on" : ""}"></i>`).join("")} ${NIVEIS[q.nivel]} · vale ${q.nivel} ${q.nivel === 1 ? "ponto" : "pontos"}`;
+  }
+}
+function mostrarOpcoes(q) {
+  const box = document.getElementById("opcoes");
+  const ops = embaralhar(q.opcoes.filter(o => !o.ok));
+  ops.splice(posicaoCerta(q.opcoes.length), 0, q.opcoes.find(o => o.ok));
+  box.innerHTML = "";
+  ops.forEach((op, i) => {
+    const b = document.createElement("button");
+    b.className = "op"; b.style.animationDelay = (i * .08) + "s";
+    b.innerHTML = `<span class="k">${"ABCD"[i]}</span><span></span>`;
+    b.lastChild.textContent = preencher(op.t);
+    b.onclick = e => { e.stopPropagation(); escolher(q, op, b); };
+    box.appendChild(b);
+  });
+  document.getElementById("palco").classList.add("escolhendo");
+  box.querySelector(".op").focus({ preventScroll: true });
+  document.getElementById("conteudo").scrollTop = 0;
+}
+function escolher(q, op, btn) {
+  esperando = false; travado = true;
+  document.getElementById("palco").classList.remove("escolhendo");
+  document.querySelectorAll(".op").forEach(b => { b.disabled = true; if (b !== btn) b.classList.add("apaga"); });
+  btn.classList.add(op.ok ? "certa" : "errada");
+  const peso = q.nivel || 1;
+  if (q.prova) {
+    prova.max += peso; prova.porNivel[peso][1]++;
+    if (op.ok) { prova.pontos += peso; prova.porNivel[peso][0]++; }
+  } else {
+    placar.total++; placar.max += peso;
+    if (op.ok) { placar.acertos++; placar.pontos += peso; }
+  }
+  if (op.ok) Som.acerto(); else Som.erro();
+  document.getElementById("n-selos").textContent = placar.pontos;
+  if (op.ok) { const s = document.getElementById("selos"); s.classList.remove("ganhou"); void s.offsetWidth; s.classList.add("ganhou"); }
+  const fl = document.createElement("div"); fl.className = "flash " + (op.ok ? "ok" : "no"); $app.appendChild(fl); depois(() => fl.remove(), 800);
+  const tx = document.createElement("div"); tx.className = "flutua " + (op.ok ? "ok" : "no"); tx.textContent = op.ok ? `+${peso} ${peso === 1 ? "ponto" : "pontos"}` : "Repense"; $app.appendChild(tx); depois(() => tx.remove(), 1500);
+  fila.splice(pos + 1, 0, ...op.r, ...q.ensina, ...(q.carta ? [{ carta: q.carta }] : []));
+  depois(() => { travado = false; avancar(); }, 1000);
+}
+
+function mostrarCarta(ref) {
+  placar.cartas.push(ref);
+  if (G.cartas[ref]) { avancar(); return; }
+  G.cartas[ref] = true; salvar(); Som.carta();
+  const div = document.createElement("div");
+  div.className = "overlay escuro carta-wrap";
+  div.innerHTML = `<span class="label">Nova carta do Código</span>
+    <div class="carta"><span class="psi-c">Ψ</span><span class="ref">${esc(ref)}</span><p>${esc(CARTAS[ref])}</p></div>
+    <p class="nota">Guardada no seu Caderno · ${Object.keys(G.cartas).length} de ${totalCartas}</p><p class="toque">Toque para continuar</p>`;
+  $app.appendChild(div);
+  if (!SEM_MOVIMENTO) for (let i = 0; i < 18; i++) {
+    const s = document.createElement("span"); s.className = "brilho";
+    const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 90;
+    s.style.left = "50%"; s.style.top = "45%"; s.style.setProperty("--x", Math.cos(a) * d + "px"); s.style.setProperty("--y", Math.sin(a) * d + "px");
+    div.appendChild(s);
+  }
+  const ir = () => { div.remove(); avancar(); };
+  div.onclick = ir; div.tabIndex = 0; div.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ir(); } }; div.focus();
+}
+
+function resultadoProva() {
+  const nota = nota10(prova.pontos, prova.max), passou = nota >= NOTA_CRP;
+  if (passou && !G.crp) G.crp = "CRP 00/" + String(Math.floor(10000 + Math.random() * 90000));
+  G.melhorNota = Math.max(G.melhorNota || 0, nota); salvar();
+  if (passou) { confete(); Som.fanfarra(); } else Som.triste();
+  const linhas = [1, 2, 3].map(n => { const [a, t] = prova.porNivel[n]; return `<tr><td>${NIVEIS[n]}</td><td>${a} de ${t}</td><td>× ${n}</td><td>${a * n} de ${t * n}</td></tr>`; }).join("");
+  const div = document.createElement("div");
+  div.className = "overlay escuro prova-res";
+  div.innerHTML = `<span class="label">Prova do CRP</span>
+    <span class="nota-grande" id="nota-anim">0,0</span>
+    <span>média ponderada · mínimo ${NOTA_CRP}</span>
+    <table class="tabela-niveis"><thead><tr><th>Nível</th><th>Acertos</th><th>Peso</th><th>Pontos</th></tr></thead>
+      <tbody>${linhas}<tr><td>Total</td><td></td><td></td><td>${prova.pontos} de ${prova.max}</td></tr></tbody></table>
+    <span class="carimbo ${passou ? "ok" : "no"}">${passou ? "APROVADO" : "NÃO FOI DESTA VEZ"}</span>
+    ${passou ? `<div class="carteira"><span class="foto">${cabecaSVG(eu(), "feliz")}</span><span><span class="label">Carteira profissional</span><b>${esc(G.nome)}</b><span class="num">${esc(G.crp)}</span></span></div>` : `<p>${nota >= 5 ? "Faltou pouco." : "Ainda não."} Revise as explicações do Marcos e tente de novo: as perguntas mudam a cada prova.</p>`}
+    <div class="pilha" style="width:100%">
+      ${passou ? `<button class="btn" id="seguir">Receber meu registro</button>` : `<button class="btn" id="refazer">Refazer a prova</button>
+      <a class="btn sec" href="${LINK_TREINO}" target="_blank" rel="noopener">Estudar no modo treino</a>
+      <button class="btn sec" id="ag">Sair para a agenda</button>`}
+    </div>`;
+  $app.appendChild(div);
+  const el = div.querySelector("#nota-anim"), t0 = performance.now();
+  (function conta(t) { const k = Math.min((t - t0) / 1200, 1); el.textContent = fmtNota(nota * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(conta); })(t0);
+  if (passou) div.querySelector("#seguir").onclick = () => { div.remove(); avancar(); };
+  else {
+    div.querySelector("#refazer").onclick = () => { div.remove(); fila.splice(pos + 1, 0, { prova: true }); avancar(); };
+    div.querySelector("#ag").onclick = telaAgenda;
+  }
+}
+
+function fimDoDia() {
+  const pct = placar.max ? placar.pontos / placar.max : 0;
+  const est = pct >= .9 ? 3 : pct >= .65 ? 2 : pct >= .4 ? 1 : 0;
+  const ant = G.dias[D.id];
+  G.dias[D.id] = { estrelas: Math.max(est, ant ? ant.estrelas : 0) };
+  salvar();
+  const ultimo = D.indice === DIAS.length - 1;
+  const refs = [...new Set(placar.cartas)];
+  const div = document.createElement("div");
+  div.className = "overlay escuro";
+  div.innerHTML = `<div class="resumo-dia">
+      <span class="label">Fim do dia ${D.indice + 1}</span>
+      <h2 style="font-size:32px">${D.indice === 4 ? "Primeira semana concluída!" : est === 3 ? "Plantão impecável!" : est === 2 ? "Muito bom!" : est === 1 ? "Bom começo." : "Dia difícil. Tente de novo?"}</h2>
+      ${estrelas(est)}
+      <span class="grande">${fmtNota(nota10(placar.pontos, placar.max))}</span><span>nota do dia · ${placar.pontos} de ${placar.max} pontos · ${placar.acertos} de ${placar.total} decisões certas</span>
+    </div>
+    <div class="anot"><h3>Anotações da Helena</h3><ul>${refs.map(r => `<li><b>${esc(r)}:</b> ${esc(CARTAS[r])}</li>`).join("")}</ul></div>
+    <div class="pilha">
+      ${ultimo ? `<button class="btn" id="cert">Receber certificado</button>` : `<button class="btn" id="prox">Próximo dia</button>`}
+      <button class="btn sec" id="rep">Rejogar este dia</button>
+      <button class="btn sec" id="ag">Agenda da semana</button>
+    </div>`;
+  $app.appendChild(div);
+  if (est >= 2) { confete(); Som.fanfarra(); } else Som.triste();
+  const p = div.querySelector("#prox"); if (p) p.onclick = () => iniciarDia(D.indice + 1);
+  const c = div.querySelector("#cert"); if (c) c.onclick = certificado;
+  div.querySelector("#rep").onclick = () => iniciarDia(D.indice);
+  div.querySelector("#ag").onclick = telaAgenda;
+}
+
+function pausa() {
+  if (document.querySelector(".overlay")) return;
+  const div = document.createElement("div");
+  div.className = "overlay escuro";
+  div.style.justifyContent = "center";
+  div.innerHTML = `<h2 style="font-size:30px;text-align:center">Pausa</h2>
+    <div class="pilha"><button class="btn" id="seguir">Continuar</button>
+    <button class="btn sec" id="t-som" aria-pressed="${G.som}">Efeitos e vozes: ${G.som ? "ligados" : "desligados"}</button>
+    <button class="btn sec" id="t-mus" aria-pressed="${G.musica}">Música: ${G.musica ? "ligada" : "desligada"}</button>
+    <button class="btn sec" id="cad">Caderno do Código</button>
+    <button class="btn sec" id="rei">Recomeçar o dia</button><button class="btn sec" id="ag">Sair para a agenda</button></div>`;
+  $app.appendChild(div);
+  div.querySelector("#seguir").onclick = () => { div.remove(); document.getElementById("som").innerHTML = ICO_SOM(somLigado()); };
+  div.querySelector("#t-som").onclick = e => { G.som = !G.som; salvar(); e.currentTarget.textContent = "Efeitos e vozes: " + (G.som ? "ligados" : "desligados"); e.currentTarget.setAttribute("aria-pressed", G.som); };
+  div.querySelector("#t-mus").onclick = e => { G.musica = !G.musica; salvar(); if (G.musica) Som.iniciar(); else Som.pararMusica(); e.currentTarget.textContent = "Música: " + (G.musica ? "ligada" : "desligada"); e.currentTarget.setAttribute("aria-pressed", G.musica); };
+  div.querySelector("#cad").onclick = () => { div.remove(); telaCaderno(); };
+  div.querySelector("#rei").onclick = () => iniciarDia(D.indice);
+  div.querySelector("#ag").onclick = telaAgenda;
+  div.querySelector("#seguir").focus();
+}
+
+function confete() {
+  if (SEM_MOVIMENTO) return;
+  const cv = document.createElement("canvas"); cv.className = "confete";
+  const r = $app.getBoundingClientRect(); cv.width = r.width; cv.height = r.height;
+  $app.appendChild(cv);
+  const ctx = cv.getContext("2d"), cores = ["#f4c04a", "#4fb8ad", "#e07fa5", "#7a5bd1", "#ffffff", "#5fd39a"];
+  const ps = Array.from({ length: 140 }, () => ({ x: cv.width / 2, y: cv.height * .35, vx: (Math.random() - .5) * 12, vy: -Math.random() * 12 - 4, r: Math.random() * 6 + 4, c: cores[Math.floor(Math.random() * cores.length)], a: Math.random() * 6, va: (Math.random() - .5) * .4 }));
+  const t0 = performance.now();
+  (function quadro(t) {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ps.forEach(p => { p.vy += .32; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore(); });
+    if (t - t0 < 3200) requestAnimationFrame(quadro); else cv.remove();
+  })(t0);
+}
+
+telaTitulo();
+</script>
+
+</body>
+</html>

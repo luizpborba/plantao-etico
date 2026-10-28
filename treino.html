@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plantão Ético · Modo treino</title>
+<meta name="description" content="Quiz sobre o Código de Ética do Psicólogo, com casos práticos, desafio do dia e simulado.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Plantão Ético · Modo treino">
+<meta property="og:description" content="Quiz sobre o Código de Ética do Psicólogo, com casos práticos, desafio do dia e simulado.">
+<meta property="og:url" content="https://luizpborba.github.io/plantao-etico/treino.html">
+<meta property="og:image" content="https://luizpborba.github.io/plantao-etico/capa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1f1c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4c04a'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' font-family='Georgia,serif' fill='%230f5f58'%3E%CE%A8%3C/text%3E%3C/svg%3E">
+<style>body { margin: 0; } [hidden] { display: none !important; }</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: uma coluna de celular (máx. 480px), telas trocadas como num app; a "ficha de atendimento" é o cartão central. */
+:root {
+  --bg: #eef2ee;
+  --surface: #ffffff;
+  --ink: #15211f;
+  --muted: #56645f;
+  --line: #d3ddd8;
+  --primary: #0f5f58;
+  --primary-ink: #ffffff;
+  --mark: #f4c04a;
+  --mark-ink: #3a2a00;
+  --ok: #1f7a4d;
+  --ok-bg: #e2f3ea;
+  --bad: #b53a26;
+  --bad-bg: #fbe7e2;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1614; --surface: #15211e; --ink: #e6efeb; --muted: #9db0a9; --line: #2a3a36;
+    --primary: #4fb8ad; --primary-ink: #06201d; --mark: #f4c04a; --mark-ink: #2b1f00;
+    --ok: #5fd39a; --ok-bg: #12301f; --bad: #ff8a73; --bad-bg: #3a1a14; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1614; --surface: #15211e; --ink: #e6efeb; --muted: #9db0a9; --line: #2a3a36;
+  --primary: #4fb8ad; --primary-ink: #06201d; --mark: #f4c04a; --mark-ink: #2b1f00;
+  --ok: #5fd39a; --ok-bg: #12301f; --bad: #ff8a73; --bad-bg: #3a1a14; color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.app { max-width: 480px; margin: 0 auto; padding-block: 16px 40px; display: flex; flex-direction: column; gap: 16px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+.label { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* topo com nível e XP */
+.top { display: flex; align-items: center; gap: 12px; }
+.psi { width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: var(--primary-ink); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 26px; flex: none; }
+.top .who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.top .lvl { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+.bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--primary); border-radius: 99px; transition: width .5s ease; }
+.streak { display: flex; flex-direction: column; align-items: center; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.streak .folgas { font-size: 10px; margin-top: 2px; white-space: nowrap; }
+.revbanner { text-align: left; border: 2px solid var(--primary); background: var(--surface); color: var(--ink); border-radius: var(--r); padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
+.revbanner > span:first-child { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.revbanner strong { font-family: var(--font-display); font-size: 19px; line-height: 1.15; }
+.revbanner .sub { font-size: 14px; color: var(--muted); }
+.revbanner .go { font-family: var(--font-display); font-weight: 800; background: var(--primary); color: var(--primary-ink); padding: 10px 14px; border-radius: 10px; }
+.foot.left { text-align: left; margin-top: -4px; }
+.streak b { font-family: var(--font-display); font-size: 22px; color: var(--ink); line-height: 1; }
+
+/* home */
+.hero { display: flex; flex-direction: column; gap: 8px; padding-block: 8px; }
+.hero h1 { font-size: clamp(34px, 9vw, 46px); font-weight: 800; letter-spacing: -.02em; }
+.hero h1 em { font-style: normal; background: linear-gradient(transparent 58%, var(--mark) 58%); color: inherit; }
+.hero p { color: var(--muted); }
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mode { text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 14px; display: flex; flex-direction: column; gap: 4px; }
+.mode strong { font-family: var(--font-display); font-size: 17px; }
+.mode span { color: var(--muted); font-size: 14px; }
+.mode.hot { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); }
+.mode.hot span { color: inherit; opacity: .85; }
+.mode[disabled] { opacity: .5; cursor: not-allowed; }
+.section-h { display: flex; justify-content: space-between; align-items: baseline; }
+.section-h h2 { font-size: 20px; }
+.chapters { display: flex; flex-direction: column; gap: 8px; }
+.chap { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 12px 14px; }
+.chap .n { font-family: var(--font-mono); font-size: 13px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; background: var(--bg); color: var(--muted); }
+.chap .t { min-width: 0; }
+.chap .t strong { display: block; font-family: var(--font-display); font-size: 16px; }
+.chap .t span { font-size: 13px; color: var(--muted); }
+.chap[disabled] { opacity: .55; cursor: not-allowed; }
+.chap.done .n { background: var(--primary); color: var(--primary-ink); }
+.stars { display: flex; gap: 2px; }
+.star { width: 16px; height: 16px; fill: var(--line); }
+.star.on { fill: var(--mark); }
+
+/* ficha de caso */
+.bar-row { display: flex; align-items: center; gap: 12px; }
+.back { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 12px; font-size: 14px; }
+.bar-row .bar { flex: 1; }
+.ficha { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.ficha header { display: flex; justify-content: space-between; gap: 8px; padding: 10px 16px; border-bottom: 1px dashed var(--line); }
+.ficha .body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.ficha h2 { font-size: 22px; }
+.ficha .q { font-weight: 700; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { text-align: left; border: 2px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 14px; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; transition: transform .1s ease; }
+.opt:active { transform: scale(.98); }
+.opt .k { font-family: var(--font-mono); font-size: 13px; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--bg); color: var(--muted); }
+.opt.right { border-color: var(--ok); background: var(--ok-bg); }
+.opt.right .k { background: var(--ok); color: var(--surface); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.opt.wrong .k { background: var(--bad); color: var(--surface); }
+.opt[disabled] { cursor: default; }
+.opt.dim { opacity: .5; }
+.fb { border-radius: var(--r); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--line); background: var(--surface); }
+.fb.ok { border-color: var(--ok); }
+.fb.no { border-color: var(--bad); }
+.fb h3 { font-size: 18px; }
+.fb.ok h3 { color: var(--ok); }
+.fb.no h3 { color: var(--bad); }
+.ref { align-self: flex-start; font-family: var(--font-mono); font-size: 12px; background: var(--mark); color: var(--mark-ink); padding: 3px 8px; border-radius: 6px; }
+.cta { border: 0; background: var(--primary); color: var(--primary-ink); border-radius: 12px; padding: 14px; font-family: var(--font-display); font-weight: 700; font-size: 17px; width: 100%; }
+.cta.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.xp-pop { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+
+/* resultado */
+.result { text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; padding-block: 16px; }
+.result .big { font-family: var(--font-display); font-weight: 800; font-size: 64px; line-height: 1; }
+.result .stars .star { width: 40px; height: 40px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.chip { font-size: 13px; border: 1px solid var(--line); background: var(--surface); padding: 4px 10px; border-radius: 99px; }
+.chip.new { border-color: var(--mark); background: var(--mark); color: var(--mark-ink); font-weight: 700; }
+.stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+
+/* relâmpago */
+.quick-head { display: flex; justify-content: space-between; align-items: center; }
+.timer { font-family: var(--font-display); font-weight: 800; font-size: 34px; font-variant-numeric: tabular-nums; }
+.timer.low { color: var(--bad); }
+.combo { font-family: var(--font-mono); font-size: 13px; background: var(--mark); color: var(--mark-ink); padding: 4px 10px; border-radius: 99px; }
+.statement { min-height: 190px; display: grid; place-items: center; text-align: center; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); font-family: var(--font-display); font-size: 22px; font-weight: 700; line-height: 1.25; transition: background .2s, border-color .2s; }
+.statement.ok { background: var(--ok-bg); border-color: var(--ok); }
+.statement.no { background: var(--bad-bg); border-color: var(--bad); }
+.yn { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.yn button { border: 0; border-radius: 14px; padding: 18px 10px; font-family: var(--font-display); font-weight: 800; font-size: 20px; }
+.yn .no { background: var(--bad); color: var(--surface); }
+.yn .yes { background: var(--ok); color: var(--surface); }
+.hint { font-size: 14px; color: var(--muted); text-align: center; min-height: 42px; }
+
+/* biblioteca e conquistas */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.card { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card .ref { font-size: 11px; }
+.card p { font-size: 14px; }
+.card.locked { background: transparent; border-style: dashed; color: var(--muted); }
+.card.locked .ref { background: var(--line); color: var(--muted); }
+.badge-ico { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--line); font-family: var(--font-display); font-weight: 800; color: var(--muted); }
+.card.got .badge-ico { background: var(--mark); color: var(--mark-ink); }
+.card strong { font-family: var(--font-display); }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 700; opacity: 0; transition: .3s; pointer-events: none; max-width: calc(100% - 32px); text-align: center; z-index: 20; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.foot { font-size: 13px; color: var(--muted); text-align: center; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@keyframes pop { from { transform: scale(.96); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+/* hoje: desafio e missões */
+.desafio { text-align: left; border: 0; background: var(--ink); color: var(--bg); border-radius: var(--r); padding: 16px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
+.desafio > span:first-child { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.desafio .label { color: inherit; opacity: .75; }
+.desafio strong { font-family: var(--font-display); font-size: 21px; line-height: 1.15; }
+.desafio .sub { font-size: 14px; opacity: .8; }
+.desafio .go { font-family: var(--font-display); font-weight: 800; background: var(--mark); color: var(--mark-ink); padding: 10px 16px; border-radius: 10px; }
+.sq { display: flex; gap: 4px; }
+.sq i { width: 18px; height: 18px; border-radius: 4px; background: var(--ok); }
+.sq i.x { background: var(--bad); }
+.big-sq i { width: 36px; height: 36px; border-radius: 8px; }
+.missoes { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.missoes h3 { font-size: 17px; }
+.missao { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; font-size: 15px; }
+.missao .ck { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--surface); }
+.missao.ok .ck { background: var(--ok); border-color: var(--ok); }
+.missao .mt-wrap { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.missao.ok .mt { text-decoration: line-through; color: var(--muted); }
+.missao .bar { height: 5px; }
+.missao .xp { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.sup { border: 1px dashed var(--primary); background: transparent; color: var(--primary); border-radius: 12px; padding: 10px 12px; font-weight: 700; font-size: 14px; }
+.opt.cut > span:last-child { text-decoration: line-through; }
+.combo.seq { align-self: flex-start; }
+.result .big small { font-size: 28px; color: var(--muted); }
+.fb strong { font-weight: 700; }
+/* ranking */
+.rank { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.rank li { display: grid; grid-template-columns: 32px 1fr auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.rank li.vazio { display: block; color: var(--muted); text-align: center; }
+.rank li.me { border: 2px solid var(--primary); }
+.rank .pos { font-family: var(--font-display); font-weight: 800; font-size: 18px; text-align: center; }
+.rank .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.rank .nm small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
+.rank .pts { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.enter { animation: pop .25s ease; }
+</style>
+
+<div class="app" id="app"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   BANCO DE PERGUNTAS
+   Para adicionar suas perguntas, copie um bloco e mude os textos.
+   - "certa" é o índice da alternativa correta (0 = primeira).
+   - "ref" vira uma carta colecionável na Biblioteca do Código.
+   Fonte principal: Código de Ética Profissional do Psicólogo
+   (Resolução CFP nº 010/2005) e resoluções do CFP indicadas.
+   ===================================================================== */
+
+/* Trilha de Estudo: perguntas diretas. q(pergunta, alternativas, letra certa, explicação, carta) */
+const q = (caso, opcoes, letra, porque, ref) => ({ caso, opcoes, certa: "abcd".indexOf(letra), porque, ref });
+const ESTUDO = [
+  { id: "conselhos", nome: "Sistema Conselhos", desc: "Quem orienta e fiscaliza a profissão", casos: [
+    q("O Sistema Conselhos é formado por quais órgãos?", ["Associação Brasileira de Psicólogos e Sociedade de Psicologia", "Conselho Federal de Psicologia e Conselhos Regionais de Psicologia", "Conselho de Ética e Comissão de Fiscalização", "Sindicato dos Psicólogos e Associação de Classe"], "b",
+      "O Sistema Conselhos é o CFP mais os CRPs. Associações e sindicatos são importantes, mas não fazem parte dele.", "Lei 5.766/1971"),
+    q("Qual órgão possui jurisdição nacional e sede no Distrito Federal?", ["Conselho Regional de Psicologia", "Associação Brasileira de Psicólogos", "Conselho Federal de Psicologia", "Comissão de Orientação e Fiscalização"], "c",
+      "O CFP tem sede em Brasília e atua em todo o país. Cada CRP atua na sua região.", "Lei 5.766/1971"),
+    q("Quais são atribuições do Sistema Conselhos?", ["Pesquisar, ensinar e avaliar", "Orientar, disciplinar e fiscalizar o exercício da profissão", "Punir, multar e cassar", "Legislar, julgar e executar"], "b",
+      "A missão é orientar, disciplinar e fiscalizar. Punir é só uma parte do disciplinar, e quem legisla é o Congresso.", "Lei 5.766/1971"),
+    q("É atribuição do Conselho Federal de Psicologia:", ["Julgar em instância inicial", "Elaborar e aprovar o Código de Ética Profissional do Psicólogo", "Eleger delegados-eleitores", "Publicar a relação de psicólogos de uma região"], "b",
+      "O CFP elabora e aprova o Código de Ética. O julgamento em primeira instância e a relação de psicólogos da região ficam com os CRPs.", "Lei 5.766/1971"),
+    q("É atribuição dos Conselhos Regionais de Psicologia:", ["Zelar pela observância do Código de Ética na região", "Aprovar o regimento do Conselho Federal", "Legislar sobre a profissão", "Definir a jurisdição nacional"], "a",
+      "Os CRPs fazem cumprir o Código na sua região: orientam, fiscalizam e julgam em primeira instância.", "Lei 5.766/1971"),
+    q("O Código de Ética Profissional do Psicólogo serve como:", ["Instrumento-guia para a conduta profissional", "Manual de publicidade", "Tabela de honorários", "Lista de especialidades"], "a",
+      "O Código é um guia de conduta construído pela categoria. Ele orienta a reflexão ética e não serve só para punir.", "Res. CFP 010/2005"),
+    q("Qual é a função do Sistema Conselhos em relação à ética?", ["Apenas punir profissionais", "Construir parâmetros éticos, difundi-los e zelar pelo exercício profissional qualificado", "Defender interesses financeiros da categoria", "Criar leis para o Congresso Nacional"], "b",
+      "O Sistema constrói e divulga parâmetros éticos e zela pela qualidade do serviço prestado à sociedade. Defender interesses financeiros é papel do sindicato.", "Res. CFP 010/2005"),
+  ]},
+  { id: "bioetica", nome: "Bioética e direitos humanos", desc: "Os valores por trás do Código", casos: [
+    q("A Declaração Universal dos Direitos Humanos destaca quais valores?", ["Lucro e competição", "Liberdade, igualdade e dignidade", "Sigilo e publicidade", "Tortura e punição"], "b",
+      "A DUDH (1948) afirma liberdade, igualdade e dignidade de todas as pessoas. O Código de Ética se baseia nesses valores.", "DUDH (1948)"),
+    q("Qual princípio bioético significa visar o benefício do paciente?", ["Autonomia", "Não maleficência", "Beneficência", "Justiça"], "c",
+      "Beneficência é fazer o bem. Não maleficência é não causar dano. Autonomia é respeitar a decisão da pessoa. Justiça é a distribuição justa do cuidado.", "Princípios da bioética"),
+    q("O que significa não maleficência na bioética?", ["Respeitar a autonomia do indivíduo", "Visar o benefício do paciente", "Não causar dano intencional ao paciente ou à cobaia", "Submeter a autoridade médica à justiça"], "c",
+      "Não maleficência é o primum non nocere: antes de tudo, não causar dano.", "Princípios da bioética"),
+    q("Quais são exemplos de práticas bioéticas na Psicologia?", ["Sigilo, consentimento informado e supervisão ética", "Publicidade, lucro e autopromoção", "Interrogatório sob hipnose e coerção", "Divulgação de dados de pacientes ao público"], "a",
+      "Sigilo protege a intimidade, o consentimento informado respeita a autonomia e a supervisão reduz o risco de dano.", "Princípios da bioética"),
+    q("A atuação da Psicologia na defesa dos Direitos Humanos deve focar em:", ["Atender apenas em consultórios particulares", "Promover igualdade, combater discriminação e reduzir desigualdades sociais", "Priorizar lucro e concorrência", "Evitar temas como racismo e violência de gênero"], "b",
+      "Os princípios do Código pedem que o psicólogo contribua para eliminar negligência, discriminação, exploração, violência, crueldade e opressão.", "Princípios fundamentais"),
+    q("A defesa dos direitos das minorias envolve:", ["Promover tolerância, respeito à diversidade e direitos individuais e coletivos", "Ignorar grupos étnicos e religiosos", "Restringir direitos de grupos vulneráveis", "Padronizar condutas sociais"], "a",
+      "Respeitar a diversidade é proteger os direitos individuais e coletivos sem impor um padrão único de vida.", "Princípios fundamentais"),
+    q("A proteção de grupos vulneráveis inclui:", ["Crianças, idosos, pessoas com deficiência, refugiados e vítimas de violência", "Apenas adultos em atendimento clínico", "Somente profissionais da saúde", "Grupos com maior poder econômico"], "a",
+      "São grupos mais expostos a violações de direitos, por isso exigem atenção especial da Psicologia.", "Princípios fundamentais"),
+    q("Qual é um desafio atual na promoção dos Direitos Humanos?", ["Falta de profissionais de Psicologia", "Complexidade das abordagens multidisciplinares e discriminação racial", "Excesso de leis", "Alto custo dos testes psicológicos"], "b",
+      "O racismo estrutural e a necessidade de trabalhar junto com outras áreas tornam essa promoção complexa.", "Princípios fundamentais"),
+  ]},
+  { id: "codigo", nome: "Código de Ética na prática", desc: "Deveres, vedações e sigilo", casos: [
+    q("De acordo com o Código de Ética, é dever fundamental do psicólogo:", ["Assumir responsabilidades mesmo sem capacitação técnica", "Conhecer, divulgar, cumprir e fazer cumprir o Código de Ética", "Atuar em calamidades visando benefício pessoal", "Usar testes sem embasamento científico"], "b",
+      "É o primeiro dever do Art. 1º. As outras alternativas contrariam deveres do próprio Código.", "Art. 1º"),
+    q("É vedado ao psicólogo:", ["Respeitar o sigilo profissional", "Praticar ou ser conivente com negligência, discriminação, exploração ou violência", "Encaminhar pacientes a profissionais habilitados", "Informar resultados necessários ao paciente"], "b",
+      "É a primeira vedação do Art. 2º. Ser conivente também é falta, não só praticar.", "Art. 2º (a)"),
+    q("No atendimento não eventual de criança ou adolescente, o psicólogo deve:", ["Atender sem autorização", "Obter autorização de responsável legal", "Aguardar ordem judicial", "Comunicar apenas ao paciente"], "b",
+      "Basta a autorização de ao menos um dos responsáveis. Sem responsável presente, o atendimento pode ocorrer e deve ser comunicado às autoridades competentes.", "Art. 8º"),
+    q("Em caso de quebra de sigilo, o psicólogo deve basear sua decisão:", ["No próprio interesse", "Na busca pelo menor prejuízo, prestando apenas as informações necessárias", "Na vontade da família", "Na divulgação total dos fatos"], "b",
+      "A quebra é exceção. Ela se baseia no menor prejuízo e se limita ao estritamente necessário.", "Art. 10"),
+    q("Em caso de interrupção do trabalho, o psicólogo deve fazer o quê com os arquivos confidenciais?", ["Jogar no lixo comum", "Deixar em local aberto", "Lacrar e repassar ao psicólogo substituto ou ao Conselho Regional", "Vender os dados para outra clínica"], "c",
+      "O sigilo continua depois que o trabalho acaba. Os arquivos são lacrados e repassados ao substituto ou, se não houver um, ao CRP.", "Art. 15"),
+    q("Ao promover publicamente seus serviços, o psicólogo pode:", ["Fazer previsão taxativa de resultados", "Usar o preço como propaganda", "Divulgar apenas títulos ou qualificações que possua", "Fazer autopromoção em detrimento de outros profissionais"], "c",
+      "Só se divulgam títulos que você realmente possui. As outras três alternativas são vedadas pelo Art. 20.", "Art. 20"),
+    q("Quais penalidades podem ser aplicadas por transgressões ao Código de Ética?", ["Apenas advertência verbal", "Advertência, multa, censura pública, suspensão e cassação", "Prisão imediata", "Pagamento de cesta básica"], "b",
+      "São cinco penalidades, da mais leve à mais grave. A suspensão é de até 30 dias e a cassação depende de confirmação do CFP.", "Lei 5.766/1971"),
+    q("O psicólogo pode usar seu conhecimento para castigo, tortura ou violência?", ["Sim, se autorizado por lei", "Sim, em interrogatório", "Não, isso é expressamente vedado pelo Código de Ética", "Depende da situação"], "c",
+      "É vedado usar ou favorecer o uso da Psicologia como instrumento de castigo, tortura ou violência, em qualquer situação.", "Art. 2º (c)"),
+    q("O psicólogo pode intermediar transações financeiras ou receber comissões além dos honorários?", ["Sim, se o paciente concordar", "Sim, é prática comum", "Não, isso é vedado pelo Código de Ética", "Apenas em emergência"], "c",
+      "A relação financeira se limita aos honorários combinados. Comissões e intermediações criam conflito de interesse.", "Art. 2º (vedações)"),
+    q("Em caso de greve ou paralisação, o psicólogo deve garantir:", ["Suspensão de todos os atendimentos sem aviso", "Atividades de emergência e comunicação prévia aos usuários", "Que o Conselho Regional pague os salários", "Fechamento definitivo do consultório"], "b",
+      "A greve é um direito, mas as pessoas atendidas não podem ser abandonadas. Mantêm-se as emergências e avisa-se com antecedência.", "Greve e paralisação"),
+  ]},
+  { id: "resolucoes", nome: "Resoluções e processos", desc: "Online, documentos, testes e denúncias", casos: [
+    q("Qual resolução do Conselho Federal regulamenta serviços psicológicos por tecnologias da informação e comunicação?", ["Resolução sobre serviços psicológicos por tecnologias da informação e comunicação", "Resolução sobre documentos escritos", "Resolução sobre psicoterapia", "Resolução sobre especialidades"], "a",
+      "É a Res. CFP 11/2018. Para atender online, o psicólogo precisa se cadastrar no e-Psi.", "Res. CFP 11/2018"),
+    q("O que caracteriza uma denúncia qualificada no processamento disciplinar?", ["O denunciante não é parte do processo", "O denunciante não acompanha os trâmites", "O denunciante se torna parte do processo e pode acompanhar trâmites e mediação", "A denúncia é feita apenas por correio eletrônico"], "c",
+      "Na denúncia, quem denuncia vira parte do processo e acompanha cada etapa, inclusive uma possível mediação.", "Processamento disciplinar"),
+    q("Qual é a diferença entre notificação e denúncia?", ["Não há diferença", "Na notificação, o informante não é parte do processo; na denúncia, o denunciante é parte", "A notificação é feita apenas por advogados", "A denúncia só pode ser feita pelo Conselho Federal"], "b",
+      "Na notificação, o Conselho recebe a informação e conduz o caso sozinho. Na denúncia, o denunciante participa do processo.", "Processamento disciplinar"),
+    q("Qual resolução do Conselho Federal institui o Manual de Elaboração de Documentos Escritos?", ["Resolução sobre serviços por tecnologias", "Resolução sobre documentos escritos", "Resolução sobre psicoterapia", "Resolução sobre avaliação psicológica"], "b",
+      "É a Res. CFP 06/2019. Ela define declaração, atestado, relatório, laudo e parecer.", "Res. CFP 06/2019"),
+    q("A guarda dos documentos psicológicos deve seguir:", ["Prazo definido nas normas do Conselho", "Indefinidamente", "Até a próxima sessão", "Não há orientação"], "a",
+      "As normas do CFP fixam um prazo mínimo de 5 anos de guarda, com sigilo.", "Res. CFP 06/2019"),
+    q("O que é obrigatório na entrega de relatórios e laudos psicológicos?", ["Entregar apenas por correio eletrônico", "Realizar entrevista devolutiva para explicar conteúdo e conclusões", "Entregar sem explicar nada", "Publicar resultados nas redes sociais"], "b",
+      "A devolutiva garante que a pessoa entenda o que foi escrito sobre ela e quais são as conclusões.", "Res. CFP 06/2019"),
+    q("Qual resolução do Conselho Federal dispõe sobre diretrizes e deveres para o exercício da psicoterapia?", ["Resolução sobre serviços por tecnologias", "Resolução sobre documentos escritos", "Resolução sobre diretrizes e deveres da psicoterapia", "Resolução sobre especialidades"], "c",
+      "É a Res. CFP 13/2022. A psicoterapia deve usar métodos e técnicas reconhecidos pela ciência psicológica.", "Res. CFP 13/2022"),
+    q("Sobre o registro de especialidades, o psicólogo pode registrar:", ["Quantas desejar, sem comprovação", "Apenas especialidades reconhecidas e cumprindo as condições do Conselho", "Somente após indicação de outro profissional", "Apenas a especialidade clínica"], "b",
+      "Só especialidades reconhecidas pelo CFP, com a comprovação exigida. Divulgar um título que não foi registrado também é falta ética.", "Especialidades"),
+    q("Qual resolução do Conselho Federal regulamenta a avaliação psicológica e o SATEPSI?", ["Resolução sobre serviços por tecnologias", "Resolução sobre documentos escritos", "Resolução sobre avaliação psicológica e testes", "Resolução sobre psicoterapia"], "c",
+      "É a Res. CFP 31/2022, que substituiu a Res. 09/2018. Só podem ser usados testes com parecer favorável no SATEPSI.", "Res. CFP 31/2022"),
+    q("O uso de testes psicológicos é privativo de quem?", ["De qualquer profissional da saúde", "Exclusivamente da psicóloga e do psicólogo", "De estagiários de Psicologia", "De médicos psiquiatras"], "b",
+      "Métodos e técnicas psicológicas são privativos de psicólogos. Estagiários só usam testes sob supervisão.", "Lei 4.119/1962"),
+  ]},
+  { id: "principios", nome: "Os 7 princípios", desc: "A base de todo o Código", casos: [
+    q("Quantos princípios fundamentais tem o Código de Ética Profissional do Psicólogo de 2005?", ["3", "7", "10", "12"], "b",
+      "São 7 princípios fundamentais. Eles vêm antes dos artigos e orientam a leitura de todo o Código.", "Res. CFP 010/2005"),
+    q("Segundo o Princípio I, o trabalho do psicólogo se baseia no respeito e na promoção de:", ["Lucro, eficiência e produtividade", "Liberdade, dignidade, igualdade e integridade do ser humano", "Obediência às instituições", "Neutralidade diante de qualquer injustiça"], "b",
+      "O Princípio I se apoia nos valores da Declaração Universal dos Direitos Humanos.", "Princípio I"),
+    q("O Princípio II pede que o psicólogo promova saúde e qualidade de vida e contribua para:", ["Aumentar o número de consultas", "Adaptar as pessoas a qualquer ambiente", "Eliminar negligência, discriminação, exploração, violência, crueldade e opressão", "Diagnosticar o maior número de pessoas"], "c",
+      "Promover saúde inclui enfrentar as violências que produzem sofrimento, e não só tratar as consequências.", "Princípio II"),
+    q("Atuar com responsabilidade social (Princípio III) significa:", ["Analisar crítica e historicamente a realidade política, econômica, social e cultural", "Atender só quem pode pagar", "Evitar falar de política e sociedade", "Seguir a opinião da maioria"], "a",
+      "O sofrimento psíquico também tem raízes sociais. O psicólogo precisa enxergar o contexto em que a pessoa vive.", "Princípio III"),
+    q("Segundo o Princípio IV, o psicólogo atua com responsabilidade por meio de:", ["Contínuo aprimoramento profissional", "Diploma, sem precisar estudar mais", "Intuição pessoal", "Técnicas que viralizam nas redes"], "a",
+      "A formação não termina na graduação. Estudar sempre também faz a Psicologia avançar como ciência.", "Princípio IV"),
+    q("O Princípio V fala em universalizar o acesso. Isso significa:", ["Atender apenas em consultório particular", "Restringir o conhecimento aos psicólogos", "Ampliar o acesso da população às informações, à ciência psicológica e aos serviços", "Cobrar o mesmo valor de todos"], "c",
+      "A Psicologia deve chegar a todos, por exemplo pelo SUS, pelo SUAS, pelas escolas e por conteúdo educativo responsável.", "Princípio V"),
+    q("O Princípio VI pede que o psicólogo rejeite situações em que a Psicologia esteja sendo:", ["Divulgada", "Aviltada", "Estudada", "Questionada em pesquisas"], "b",
+      "Aviltar é rebaixar ou desvalorizar. Condições de trabalho degradantes ou usos indignos da profissão devem ser recusados.", "Princípio VI"),
+    q("O Princípio VII pede atenção especial a quê?", ["À hierarquia entre psicólogos", "Ao valor de mercado dos serviços", "Às relações de poder nas situações em que atua e aos seus impactos", "Às preferências pessoais do psicólogo"], "c",
+      "Escolas, empresas, prisões e hospitais têm relações de poder. O psicólogo precisa percebê-las e se posicionar de forma crítica.", "Princípio VII"),
+  ]},
+];
+
+/* Resumo de cada carta da Biblioteca do Código */
+const RESUMOS = {
+  "Lei 5.766/1971": "Cria o CFP e os CRPs, que formam o Sistema Conselhos, define as atribuições de cada um e as penalidades.",
+  "Res. CFP 010/2005": "Código de Ética Profissional do Psicólogo: guia de conduta construído pela categoria e aprovado pelo CFP.",
+  "DUDH (1948)": "Declaração Universal dos Direitos Humanos: liberdade, igualdade e dignidade, base dos princípios do Código.",
+  "Princípios da bioética": "Beneficência, não maleficência, autonomia e justiça orientam as decisões sobre o cuidado.",
+  "Princípios fundamentais": "O psicólogo promove saúde e qualidade de vida e contribui para eliminar discriminação, violência e opressão.",
+  "Art. 1º": "Deveres fundamentais, a começar por conhecer, divulgar, cumprir e fazer cumprir o Código.",
+  "Art. 2º (c)": "É vedado usar a Psicologia como instrumento de castigo, tortura ou qualquer forma de violência.",
+  "Art. 2º (vedações)": "É vedado receber comissão por encaminhamento ou intermediar transações financeiras além dos honorários.",
+  "Art. 15": "Ao interromper o trabalho, os arquivos confidenciais são lacrados e repassados ao substituto ou ao CRP.",
+  "Greve e paralisação": "Em greve, o psicólogo mantém as atividades de emergência e avisa os usuários com antecedência.",
+  "Art. 20": "Na publicidade: só títulos que possui, sem previsão taxativa de resultados, sem preço como propaganda e sem autopromoção em detrimento de outros.",
+  "Processamento disciplinar": "Na notificação, o informante não é parte. Na denúncia, o denunciante é parte e acompanha o processo.",
+  "Res. CFP 06/2019": "Manual de documentos escritos: declaração, atestado, relatório, laudo e parecer, com devolutiva e guarda mínima de 5 anos.",
+  "Res. CFP 13/2022": "Diretrizes e deveres para o exercício da psicoterapia.",
+  "Especialidades": "O título de especialista só é registrado para especialidades reconhecidas pelo CFP, com comprovação.",
+  "Res. CFP 31/2022": "Regulamenta a avaliação psicológica e o SATEPSI. Só valem testes com parecer favorável.",
+  "Lei 4.119/1962": "Regulamenta a profissão. O uso de métodos e técnicas psicológicas é privativo do psicólogo.",
+  "Princípio I": "Respeito e promoção da liberdade, dignidade, igualdade e integridade do ser humano, com base na DUDH.",
+  "Princípio II": "Promover saúde e qualidade de vida e contribuir para eliminar negligência, discriminação, exploração, violência, crueldade e opressão.",
+  "Princípio III": "Responsabilidade social, analisando crítica e historicamente a realidade política, econômica, social e cultural.",
+  "Princípio IV": "Responsabilidade por meio do contínuo aprimoramento profissional e do desenvolvimento da Psicologia como ciência.",
+  "Princípio V": "Universalizar o acesso da população às informações, ao conhecimento da Psicologia e aos serviços.",
+  "Princípio VI": "Zelar pela dignidade da profissão, rejeitando situações em que a Psicologia esteja sendo aviltada.",
+  "Princípio VII": "Considerar as relações de poder onde atua e seus impactos, posicionando-se de forma crítica.",
+  "Art. 16": "Em pesquisas: avaliar riscos, garantir participação voluntária, consentimento informado e sigilo.",
+};
+
+/* Trilha de Casos práticos: situações do consultório. */
+const CASOS = [
+  { id: "sigilo", nome: "Sigilo profissional", desc: "O que fica na sala e quando não fica", casos: [
+    { titulo: "A mãe preocupada", caso: "A mãe de um paciente de 25 anos liga para você. Ela quer saber o que o filho tem falado nas sessões, porque está preocupada.",
+      opcoes: ["Conto um resumo geral, já que ela é da família.", "Explico que o atendimento é sigiloso e sugiro que ela converse com o filho.", "Peço que ela marque uma sessão para eu contar com calma.", "Confirmo só o diagnóstico, sem detalhes."], certa: 1,
+      porque: "O paciente é adulto. O sigilo protege a intimidade dele, e familiares não têm direito às informações da terapia sem consentimento.", ref: "Art. 9º", resumo: "É dever respeitar o sigilo para proteger a intimidade de pessoas, grupos ou organizações." },
+    { titulo: "Ameaça concreta", caso: "Na sessão, o paciente diz que comprou uma arma e vai matar a ex-companheira hoje à noite. Ele dá o endereço e o horário.",
+      opcoes: ["Mantenho o sigilo absoluto. É a regra.", "Espero a próxima sessão para ver se ele muda de ideia.", "Quebro o sigilo, comunicando só o estritamente necessário para proteger a vida dela.", "Publico um alerta nas redes sociais."], certa: 2,
+      porque: "Diante de risco grave e iminente, a decisão de quebrar o sigilo busca o menor prejuízo. Mesmo assim, você revela apenas o necessário, a quem pode agir.", ref: "Art. 10", resumo: "Em conflito, a quebra de sigilo se baseia no menor prejuízo e se restringe ao estritamente necessário." },
+    { titulo: "Fofoca no café", caso: "No café da clínica, uma colega começa a contar um caso em voz alta, citando o nome e o trabalho da paciente.",
+      opcoes: ["Escuto e dou minha opinião sobre o caso.", "Interrompo com gentileza e proponho discutir em supervisão, sem identificar a paciente.", "Finjo que não ouvi.", "Conto um caso meu para compensar."], certa: 1,
+      porque: "Discutir casos é legítimo em supervisão ou estudo, sem dados que identifiquem a pessoa. Ser conivente com a exposição também é falta ética.", ref: "Art. 2º (a)", resumo: "É vedado praticar ou ser conivente com atos que caracterizem negligência ou violência." },
+    { titulo: "Relato de abuso", caso: "Uma menina de 8 anos conta, desenhando, que o padrasto toca nela quando a mãe sai para trabalhar.",
+      opcoes: ["Guardo sigilo porque ela confiou em mim.", "Confronto o padrasto na próxima vez que ele trouxer a criança.", "Comunico o Conselho Tutelar, conforme o ECA, e informo o estritamente necessário.", "Espero ter certeza absoluta antes de fazer qualquer coisa."], certa: 2,
+      porque: "Suspeita de violência contra criança deve ser comunicada ao Conselho Tutelar (ECA, art. 13). A comunicação protege a criança e se limita ao necessário.", ref: "ECA, art. 13", resumo: "Suspeita ou confirmação de maus-tratos contra criança ou adolescente deve ser comunicada ao Conselho Tutelar." },
+  ]},
+  { id: "limites", nome: "Limites da relação", desc: "Amizade, presentes e conflitos de interesse", casos: [
+    { titulo: "Solicitação de amizade", caso: "Uma paciente te segue no Instagram pessoal e convida você para a festa de aniversário dela.",
+      opcoes: ["Aceito tudo. Isso fortalece o vínculo.", "Não aceito e trago o tema para a sessão com cuidado.", "Bloqueio sem explicar.", "Vou à festa, mas não bebo."], certa: 1,
+      porque: "Relações fora do setting podem interferir no trabalho. Conversar sobre o convite em sessão transforma o limite em material terapêutico.", ref: "Art. 2º (j)", resumo: "É vedado estabelecer com a pessoa atendida relação que possa interferir negativamente nos objetivos do serviço." },
+    { titulo: "A melhor amiga", caso: "Sua melhor amiga está passando por um divórcio difícil e pede para fazer terapia com você.",
+      opcoes: ["Atendo de graça, por amizade.", "Atendo, mas só por um mês.", "Explico por que não posso e indico um colega de confiança.", "Atendo por mensagem, que é mais informal."], certa: 2,
+      porque: "O vínculo pessoal compromete a neutralidade e a qualidade do serviço. Encaminhar é o cuidado ético.", ref: "Art. 2º (j)", resumo: "É vedado estabelecer com a pessoa atendida relação que possa interferir negativamente nos objetivos do serviço." },
+    { titulo: "Atração no setting", caso: "Você percebe uma atração mútua com um paciente. Ele sugere que vocês se encontrem fora do consultório.",
+      opcoes: ["Encerro a terapia e começo o namoro.", "Recuso, levo a questão para supervisão e, se o trabalho ficar comprometido, encaminho.", "Encontro só uma vez, para conversar.", "Ignoro e sigo como se nada tivesse acontecido."], certa: 1,
+      porque: "Envolvimento afetivo ou sexual com paciente é grave violação ética. Supervisão e terapia pessoal ajudam a lidar com o que surge na relação.", ref: "Art. 2º (j)", resumo: "É vedado estabelecer com a pessoa atendida relação que possa interferir negativamente nos objetivos do serviço." },
+    { titulo: "Comissão por encaminhamento", caso: "Uma clínica de estética oferece 15% de cada paciente que você encaminhar para eles.",
+      opcoes: ["Aceito. Todo mundo faz isso.", "Aceito, mas só encaminho quem precisa.", "Recuso. Encaminhamento deve seguir o interesse do paciente, não o meu.", "Aceito e aviso o paciente."], certa: 2,
+      porque: "Receber ou pagar porcentagem por encaminhamento é vedado. O encaminhamento precisa ser técnico.", ref: "Art. 2º (vedações)", resumo: "É vedado receber, pagar remuneração ou porcentagem por encaminhamento de serviços." },
+  ]},
+  { id: "redes", nome: "Redes sociais e publicidade", desc: "O que pode e o que não pode no feed", casos: [
+    { titulo: "Promessa de cura", caso: "Uma colega quer postar: \"Em 10 sessões eu curo sua ansiedade. Resultado garantido!\"",
+      opcoes: ["Ótima ideia. Vende muito.", "Pode, desde que tenha estudos.", "Não pode. É vedado prometer resultados de forma taxativa.", "Pode, se colocar um asterisco."], certa: 2,
+      porque: "A publicidade do psicólogo não pode fazer previsão taxativa de resultados. Cada processo terapêutico é singular.", ref: "Art. 20", resumo: "Na publicidade, o psicólogo não fará previsão taxativa de resultados nem usará o preço como propaganda." },
+    { titulo: "Promoção relâmpago", caso: "Você pensa em postar: \"Sessão por R$ 50 só esta semana! Corre!\"",
+      opcoes: ["Pode. É marketing normal.", "Não pode. O preço do serviço não pode ser usado como forma de propaganda.", "Pode, se for só nos stories.", "Pode, se o valor for alto."], certa: 1,
+      porque: "Você pode informar valores a quem pergunta, mas usar o preço como chamariz publicitário é vedado.", ref: "Art. 20", resumo: "Na publicidade, o psicólogo não fará previsão taxativa de resultados nem usará o preço como propaganda." },
+    { titulo: "Diagnóstico de famoso", caso: "Um vídeo viral pede: \"Psicóloga, esse cantor é narcisista?\" Seu vídeo poderia bombar.",
+      opcoes: ["Faço o vídeo com o diagnóstico. É figura pública.", "Falo sobre o tema de forma educativa, sem diagnosticar ninguém.", "Faço o diagnóstico, mas digo que é opinião.", "Só faço se tiver muitos views."], certa: 1,
+      porque: "Diagnosticar ou expor pessoas em meios de comunicação é vedado. Conteúdo educativo sobre o tema é bem-vindo.", ref: "Art. 2º (q)", resumo: "É vedado realizar diagnósticos ou apresentar resultados em meios de comunicação de forma a expor pessoas." },
+    { titulo: "O perfil profissional", caso: "Você vai criar seu perfil profissional. O que precisa aparecer?",
+      opcoes: ["Seu nome, a profissão e o número do CRP.", "Só uma foto bonita.", "Depoimentos de pacientes.", "Apenas o @ da clínica."], certa: 0,
+      porque: "Toda publicidade deve informar nome, profissão e número de inscrição no Conselho Regional.", ref: "Art. 20 (a)", resumo: "Na publicidade, informar o nome completo, o CRP e o número de registro." },
+    { titulo: "Curso para leigos", caso: "Um RH quer que você ensine os analistas, que não são psicólogos, a aplicar e corrigir testes psicológicos.",
+      opcoes: ["Ensino. Eles já trabalham com pessoas.", "Ensino só os testes mais fáceis.", "Recuso. Não posso ensinar ou ceder testes psicológicos a leigos.", "Ensino, se pagarem bem."], certa: 2,
+      porque: "Testes psicológicos são de uso privativo. Passá-los a leigos facilita o exercício ilegal da profissão.", ref: "Art. 18", resumo: "Não divulgar, ensinar, ceder, emprestar ou vender a leigos instrumentos e técnicas psicológicas." },
+  ]},
+  { id: "familia", nome: "Crianças e instituições", desc: "Responsáveis, escolas e empresas", casos: [
+    { titulo: "Pais separados", caso: "O pai traz o filho de 9 anos para terapia. A mãe, que tem guarda compartilhada, ainda não sabe.",
+      opcoes: ["Não posso atender sem a assinatura dos dois.", "Posso atender com a autorização de pelo menos um responsável.", "Atendo sem autorização de ninguém.", "Peço autorização para a escola."], certa: 1,
+      porque: "O Código exige autorização de ao menos um dos responsáveis para atendimento não eventual de criança ou adolescente.", ref: "Art. 8º", resumo: "Para atender criança, adolescente ou interdito, é necessária a autorização de ao menos um responsável." },
+    { titulo: "O que contar aos pais", caso: "Uma adolescente de 15 anos é sua paciente. Os pais pedem um relatório com tudo o que ela fala.",
+      opcoes: ["Entrego tudo. Eles são os responsáveis.", "Comunico só o estritamente essencial para promover medidas em benefício dela.", "Não falo nada, nunca.", "Peço que a escola decida."], certa: 1,
+      porque: "No atendimento de menores, os responsáveis recebem apenas o essencial para o cuidado. Isso preserva a confiança do adolescente.", ref: "Art. 13", resumo: "No atendimento a menor, comunicar aos responsáveis apenas o estritamente essencial em benefício dele." },
+    { titulo: "O RH curioso", caso: "Você é psicóloga numa empresa. O gestor pede os detalhes do que um funcionário contou no acolhimento.",
+      opcoes: ["Repasso tudo. A empresa me paga.", "Compartilho só o que for relevante para o serviço, preservando o caráter confidencial.", "Mando a gravação da conversa.", "Invento algo genérico."], certa: 1,
+      porque: "Com profissionais não psicólogos, compartilhe só o relevante para qualificar o serviço, resguardando a confidencialidade.", ref: "Art. 6º", resumo: "Com não psicólogos, compartilhar somente informações relevantes, resguardando o caráter confidencial." },
+    { titulo: "Laudo encomendado", caso: "O diretor pede que você escreva no relatório que um funcionário é \"instável\", para justificar a demissão dele.",
+      opcoes: ["Escrevo. Ele é meu chefe.", "Escrevo, mas com palavras mais suaves.", "Recuso. Meu trabalho não pode contrariar o Código e as evidências técnicas.", "Peço demissão sem explicar."], certa: 2,
+      porque: "Se a instituição exigir algo que fere o Código, o psicólogo deve recusar e, se necessário, recorrer ao Conselho.", ref: "Art. 3º", resumo: "Se a missão da instituição contrariar o Código, o psicólogo deve recusar-se a prestar o serviço." },
+  ]},
+  { id: "documentos", nome: "Avaliação e documentos", desc: "Testes, laudos e prontuários", casos: [
+    { titulo: "Falta no trabalho", caso: "O paciente pede um documento comprovando que esteve na sessão de hoje para entregar no trabalho.",
+      opcoes: ["Emito uma declaração de comparecimento.", "Emito um laudo completo.", "Digo que psicólogo não emite documento.", "Assino um atestado médico."], certa: 0,
+      porque: "A declaração registra informações objetivas, como o comparecimento e o horário, sem expor o conteúdo da terapia.", ref: "Res. CFP 06/2019", resumo: "Regula os documentos escritos: declaração, atestado, relatório, laudo e parecer." },
+    { titulo: "Guarda do prontuário", caso: "Seu armário está cheio. Por quanto tempo você precisa guardar prontuários e documentos?",
+      opcoes: ["6 meses.", "1 ano.", "No mínimo 5 anos.", "Só enquanto o paciente estiver em terapia."], certa: 2,
+      porque: "Os documentos devem ser guardados por, no mínimo, 5 anos, com sigilo e segurança.", ref: "Res. CFP 06/2019", resumo: "Regula os documentos escritos: declaração, atestado, relatório, laudo e parecer." },
+    { titulo: "Perícia do próprio paciente", caso: "O juiz nomeia você perita na disputa de guarda. Uma das partes é sua paciente há dois anos.",
+      opcoes: ["Aceito. Conheço bem o caso.", "Aceito e só não conto que ela é minha paciente.", "Recuso, porque meu vínculo pode afetar a qualidade do trabalho.", "Aceito, mas cobro a mais."], certa: 2,
+      porque: "É vedado ser perito ou avaliador quando vínculos atuais ou anteriores possam afetar a imparcialidade.", ref: "Art. 2º (k)", resumo: "É vedado ser perito ou avaliador quando vínculos pessoais ou profissionais possam afetar o trabalho." },
+    { titulo: "Teste da internet", caso: "Você encontra um teste de personalidade gratuito na internet que não aparece como favorável no SATEPSI.",
+      opcoes: ["Uso. É de graça.", "Uso só com pacientes particulares.", "Não uso como teste psicológico. Só uso testes com parecer favorável no SATEPSI.", "Uso e não conto."], certa: 2,
+      porque: "Testes psicológicos precisam de parecer favorável do CFP, consultável no SATEPSI.", ref: "Res. CFP 31/2022" },
+  ]},
+  { id: "direitos", nome: "Direitos humanos", desc: "Diversidade, crença e acesso", casos: [
+    { titulo: "Pedido de \"reversão\"", caso: "Uma família pede que você \"cure\" a homossexualidade do filho de 17 anos.",
+      opcoes: ["Aceito, porque a família pagou.", "Explico que orientação sexual não é doença e ofereço acolher o sofrimento da família e do jovem.", "Encaminho para um grupo religioso.", "Tento por algumas sessões."], certa: 1,
+      porque: "O CFP proíbe ações que patologizem orientações sexuais ou ofereçam \"cura\". O cuidado foca no sofrimento, não na orientação.", ref: "Res. CFP 01/1999", resumo: "Proíbe tratar a homossexualidade como doença e oferecer tratamentos de \"cura\"." },
+    { titulo: "Nome social", caso: "Uma paciente trans se apresenta como Júlia, mas o documento ainda tem outro nome.",
+      opcoes: ["Uso o nome do documento. É o oficial.", "Uso o nome social Júlia.", "Evito chamar pelo nome.", "Pergunto se ela tem certeza."], certa: 1,
+      porque: "O psicólogo respeita a identidade de gênero e o nome social, sem patologizar experiências trans.", ref: "Res. CFP 01/2018", resumo: "Orienta a atuação com pessoas trans e travestis, sem patologizar e respeitando o nome social." },
+    { titulo: "Fé na sessão", caso: "Você é religiosa e acredita que uma oração ajudaria seu paciente, que não pediu isso.",
+      opcoes: ["Rezo com ele no fim da sessão.", "Sugiro uma igreja.", "Não induzo convicções religiosas. Se ele trouxer a fé, acolho como parte da história dele.", "Deixo uma Bíblia na mesa."], certa: 2,
+      porque: "É vedado induzir convicções religiosas, políticas ou morais. A crença do paciente pode ser acolhida, a sua não deve ser imposta.", ref: "Art. 2º (b)", resumo: "É vedado induzir convicções políticas, filosóficas, morais, ideológicas, religiosas ou de orientação sexual." },
+    { titulo: "Sem dinheiro", caso: "Uma paciente perdeu o emprego e não consegue mais pagar o valor combinado.",
+      opcoes: ["Encerro na hora.", "Avalio com ela um ajuste de honorários ou encaminho para serviço gratuito.", "Continuo e deixo a dívida acumular.", "Peço que um parente pague."], certa: 1,
+      porque: "Os honorários podem considerar a realidade de quem é atendido. Se não for possível ajustar, encaminhar garante a continuidade do cuidado.", ref: "Art. 4º", resumo: "Ao fixar honorários, considerar as características da população atendida." },
+    { titulo: "Terapia online", caso: "Você quer começar a atender pela internet. O que precisa fazer antes?",
+      opcoes: ["Nada. Basta ter Wi-Fi.", "Fazer o cadastro no e-Psi, do Conselho.", "Pedir permissão ao paciente por WhatsApp.", "Atender só com câmera desligada."], certa: 1,
+      porque: "Os serviços psicológicos por tecnologias da informação exigem cadastro prévio no e-Psi.", ref: "Res. CFP 11/2018", resumo: "Regulamenta o atendimento psicológico online e exige cadastro no e-Psi." },
+  ]},
+  { id: "contextos", nome: "Escola, SUS e mídia", desc: "A ética fora do consultório", casos: [
+    { titulo: "A turma separada", caso: "O diretor pede que você, psicóloga escolar, faça uma lista dos alunos \"com problema\", com o diagnóstico de cada um, para montar uma turma separada.",
+      opcoes: ["Faço a lista. A escola precisa se organizar.", "Recuso rotular e separar alunos e proponho ações com professores, famílias e turmas.", "Faço a lista, mas só com as iniciais.", "Aplico testes em todos os alunos para ter base."], certa: 1,
+      porque: "Separar alunos por rótulos reforça estigma e exclusão. A Psicologia escolar trabalha com a instituição, e não só com o \"aluno-problema\".", ref: "Art. 2º (a)" },
+    { titulo: "Prontuário da equipe", caso: "No CRAS, a equipe usa um prontuário compartilhado. Uma usuária conta que sofreu violência e pede que os detalhes não fiquem visíveis para todos.",
+      opcoes: ["Registro tudo em detalhes. É o protocolo.", "Não registro nada.", "Registro só o necessário para a equipe agir e guardo o restante em registro de acesso restrito.", "Conto os detalhes na reunião de equipe."], certa: 2,
+      porque: "Em equipe multiprofissional, você compartilha só o que qualifica o cuidado e protege o resto.", ref: "Art. 6º" },
+    { titulo: "Convença o paciente", caso: "No hospital, a equipe médica pede que você \"convença\" um paciente a aceitar uma cirurgia que ele está recusando.",
+      opcoes: ["Uso técnicas de persuasão até ele aceitar.", "Ajudo o paciente a entender as informações e a decidir com autonomia, e levo a percepção dele à equipe.", "Digo à equipe que isso não é problema meu.", "Ligo para a família pressionar."], certa: 1,
+      porque: "O papel do psicólogo é favorecer uma decisão livre e informada. Manipular a decisão fere a autonomia da pessoa.", ref: "Princípios da bioética" },
+    { titulo: "Ao vivo na TV", caso: "Um programa de TV ao vivo convida você para comentar um crime brutal e pede que você diga se o suspeito \"é psicopata\".",
+      opcoes: ["Dou o diagnóstico. O público quer saber.", "Falo do tema de forma geral e educativa, sem diagnosticar o suspeito.", "Digo que ele \"provavelmente\" é.", "Recuso qualquer participação em mídia."], certa: 1,
+      porque: "Diagnosticar alguém pela TV expõe a pessoa e não tem base técnica. Falar do tema de forma educativa ajuda a população.", ref: "Art. 2º (q)" },
+    { titulo: "Desistência na pesquisa", caso: "Você conduz uma pesquisa com adolescentes de uma escola. No meio da coleta, um participante diz que quer desistir.",
+      opcoes: ["Insisto, porque a amostra vai ficar pequena.", "Respeito a desistência, sem nenhum prejuízo para ele.", "Só aceito se os pais autorizarem a saída.", "Ofereço ponto extra para ele continuar."], certa: 1,
+      porque: "Participar de pesquisa é voluntário. A pessoa pode desistir a qualquer momento, sem prejuízo.", ref: "Art. 16" },
+  ]},
+];
+
+const CAPITULOS = [
+  ...ESTUDO.map(c => ({ ...c, trilha: "estudo" })),
+  ...CASOS.map(c => ({ ...c, trilha: "casos" })),
+];
+const TRILHAS = [
+  { id: "estudo", nome: "Trilha de Estudo", desc: "Conteúdo da disciplina" },
+  { id: "casos", nome: "Casos práticos", desc: "Decida como no consultório" },
+];
+
+/* Modo Relâmpago: afirmações. "pode": true se a prática é permitida. */
+const RELAMPAGO = [
+  { t: "Parar de estudar depois de formado.", pode: false, e: "O aprimoramento contínuo é um princípio (Princípio IV)." },
+  { t: "Falar de Psicologia na mídia de forma educativa.", pode: true, e: "Amplia o acesso ao conhecimento (Princípio V)." },
+  { t: "Deixar um participante desistir da pesquisa no meio.", pode: true, e: "A participação é voluntária (Art. 16)." },
+  { t: "Aceitar trabalhar em condições que aviltam a profissão.", pode: false, e: "Rejeitar o aviltamento é o Princípio VI." },
+  { t: "Montar uma turma separada pelos diagnósticos dos alunos.", pode: false, e: "Rotular e segregar é discriminação (Art. 2º, a)." },
+  { t: "Persuadir um paciente a aceitar uma cirurgia que ele recusa.", pode: false, e: "Respeite a autonomia: apoie uma decisão informada." },
+  { t: "Usar a Psicologia em interrogatório com coerção.", pode: false, e: "Uso para castigo, tortura ou violência é vedado (Art. 2º, c)." },
+  { t: "Em greve, manter as atividades de emergência.", pode: true, e: "E avisar os usuários com antecedência." },
+  { t: "Jogar arquivos de pacientes no lixo comum ao fechar o consultório.", pode: false, e: "Lacrar e repassar ao substituto ou ao CRP (Art. 15)." },
+  { t: "Entregar um laudo com entrevista devolutiva.", pode: true, e: "A devolutiva é obrigatória (Res. CFP 06/2019)." },
+  { t: "Divulgar uma especialidade que não está registrada no CRP.", pode: false, e: "Só títulos que você possui (Art. 20)." },
+  { t: "Um estagiário aplicar testes sozinho, sem supervisão.", pode: false, e: "Testes são privativos do psicólogo (Lei 4.119/1962)." },
+  { t: "Na denúncia, o denunciante acompanha o processo.", pode: true, e: "Ele é parte do processo. Na notificação, não." },
+  { t: "Atender online sem nenhum cadastro no Conselho.", pode: false, e: "Precisa de cadastro no e-Psi (Res. CFP 11/2018)." },
+  { t: "Divulgar nome e número do CRP no perfil profissional.", pode: true, e: "É obrigatório na publicidade (Art. 20)." },
+  { t: "Garantir resultado em um anúncio.", pode: false, e: "Previsão taxativa de resultados é vedada (Art. 20)." },
+  { t: "Emitir declaração de comparecimento à sessão.", pode: true, e: "É um documento previsto na Res. CFP 06/2019." },
+  { t: "Vender testes psicológicos para quem não é psicólogo.", pode: false, e: "Vedado pelo Art. 18." },
+  { t: "Quebrar o sigilo para evitar risco grave à vida, só no necessário.", pode: true, e: "Busca do menor prejuízo (Art. 10)." },
+  { t: "Atender uma criança com autorização de um dos responsáveis.", pode: true, e: "Basta ao menos um responsável (Art. 8º)." },
+  { t: "Oferecer terapia de \"reversão\" da orientação sexual.", pode: false, e: "Proibido pela Res. CFP 01/1999." },
+  { t: "Receber comissão por encaminhar pacientes.", pode: false, e: "Vedado no Art. 2º." },
+  { t: "Chamar uma pessoa trans pelo nome social.", pode: true, e: "Res. CFP 01/2018." },
+  { t: "Prolongar o tratamento sem necessidade.", pode: false, e: "Vedado no Art. 2º." },
+  { t: "Ser perita de alguém que já foi sua paciente.", pode: false, e: "Conflito de vínculo (Art. 2º, k)." },
+  { t: "Diagnosticar um famoso num vídeo do TikTok.", pode: false, e: "Expor pessoas em meios de comunicação é vedado (Art. 2º, q)." },
+  { t: "Ajustar honorários considerando a realidade do paciente.", pode: true, e: "Previsto no Art. 4º." },
+  { t: "Usar teste com parecer desfavorável no SATEPSI.", pode: false, e: "Só testes favoráveis (Res. CFP 31/2022)." },
+  { t: "Atuar como psicólogo sem registro no CRP.", pode: false, e: "O registro é obrigatório (Lei 5.766/1971)." },
+  { t: "Atuar em calamidade pública sem visar benefício pessoal.", pode: true, e: "É um dever (Art. 1º, d)." },
+  { t: "Usar preço promocional como propaganda.", pode: false, e: "Vedado pelo Art. 20." },
+  { t: "Discutir um caso em supervisão sem identificar o paciente.", pode: true, e: "Preserva o sigilo e qualifica o trabalho." },
+  { t: "Guardar prontuários por apenas 1 ano.", pode: false, e: "Mínimo de 5 anos (Res. CFP 06/2019)." },
+  { t: "Induzir o paciente à sua religião.", pode: false, e: "Vedado no Art. 2º, b." },
+  { t: "Informar ao paciente os resultados da avaliação dele.", pode: true, e: "É dever informar os resultados (Art. 1º)." },
+  { t: "Fazer amizade no Instagram pessoal com um paciente.", pode: false, e: "Pode interferir no trabalho (Art. 2º, j)." },
+  { t: "Comunicar suspeita de abuso infantil ao Conselho Tutelar.", pode: true, e: "Exigido pelo ECA, art. 13." },
+];
+
+const NIVEIS = [
+  { xp: 0, nome: "Calouro(a)" },
+  { xp: 150, nome: "Estagiário(a)" },
+  { xp: 450, nome: "Psicólogo(a) CRP" },
+  { xp: 900, nome: "Supervisor(a)" },
+  { xp: 1500, nome: "Referência Ética" },
+  { xp: 2200, nome: "Conselheiro(a) do CRP" },
+];
+
+const CONQUISTAS = [
+  { id: "primeiro", ico: "1", nome: "Primeiro plantão", desc: "Termine o primeiro capítulo." },
+  { id: "conselhos", ico: "CFP", nome: "Conheço o Sistema", desc: "3 estrelas em Sistema Conselhos." },
+  { id: "estudo", ico: "E", nome: "Pronto(a) para a prova", desc: "Termine a Trilha de Estudo." },
+  { id: "sigilo", ico: "S", nome: "Guardião do sigilo", desc: "3 estrelas em Sigilo profissional." },
+  { id: "perfeito", ico: "★", nome: "Ficha limpa", desc: "3 estrelas em qualquer capítulo." },
+  { id: "seq5", ico: "»", nome: "Embalado(a)", desc: "Acerte 5 seguidas em um capítulo." },
+  { id: "desafio", ico: "D", nome: "Plantão do dia", desc: "Faça um Desafio do Dia." },
+  { id: "desafio5", ico: "5/5", nome: "Dia perfeito", desc: "Acerte 5 de 5 no Desafio do Dia." },
+  { id: "missoes", ico: "M", nome: "Missão cumprida", desc: "Complete as 3 missões de um dia." },
+  { id: "nota10", ico: "A+", nome: "Nota 10", desc: "Tire 10 no Simulado." },
+  { id: "combo10", ico: "10", nome: "Raciocínio rápido", desc: "Combo de 10 no Relâmpago." },
+  { id: "rel200", ico: "R", nome: "Relâmpago de ouro", desc: "200 pontos no Relâmpago." },
+  { id: "streak3", ico: "3", nome: "Hábito de estudo", desc: "Jogue 3 dias seguidos." },
+  { id: "streak7", ico: "7", nome: "Semana de plantão", desc: "Jogue 7 dias seguidos." },
+  { id: "revisor", ico: "↺", nome: "Aprendi com o erro", desc: "Zere as revisões do dia." },
+  { id: "dominio", ico: "∞", nome: "Memória de longo prazo", desc: "Domine 10 questões na revisão espaçada." },
+  { id: "folga", ico: "F", nome: "Salvo(a) pela folga", desc: "Use um dia de folga para manter a sequência." },
+  { id: "todos", ico: "Ψ", nome: "Código completo", desc: "Termine todos os capítulos." },
+  { id: "colecao", ico: "C", nome: "Colecionador(a)", desc: "Desbloqueie todas as cartas." },
+];
+
+/* Missões diárias: 3 sorteadas por dia. "meta" é quantas vezes o evento precisa acontecer. */
+const MISSOES = {
+  acertos: { txt: "Acerte 8 questões", meta: 8, xp: 30 },
+  relampago: { txt: "Jogue uma partida do Relâmpago", meta: 1, xp: 20 },
+  desafio: { txt: "Faça o Desafio do Dia", meta: 1, xp: 20 },
+  capitulo: { txt: "Termine um capítulo", meta: 1, xp: 30 },
+  revisao: { txt: "Acerte 2 questões na Revisão", meta: 2, xp: 25 },
+  combo: { txt: "Faça combo de 6 no Relâmpago", meta: 1, xp: 25 },
+  sequencia: { txt: "Acerte 4 seguidas em um capítulo", meta: 1, xp: 25 },
+  prova: { txt: "Faça um Simulado", meta: 1, xp: 30 },
+  carta: { txt: "Desbloqueie uma carta nova", meta: 1, xp: 20 },
+};
+const BONUS_MISSOES = 20;
+
+/* ===================== estado ===================== */
+const KEY = "plantao-etico-v1";
+const NOVO = () => ({ xp: 0, cartas: {}, caps: {}, srs: {}, dominadas: 0, folgas: 1, conquistas: {}, streak: { dia: "", n: 0 }, melhorRel: 0, melhorProva: null, missoes: null, desafio: null });
+let S = NOVO();
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(NOVO(), JSON.parse(raw)); } catch (e) {}
+const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const MAX_FOLGAS = 2;
+/* Revisão espaçada: cada acerto de uma questão errada adia a próxima revisão (em dias). */
+const INTERVALOS = [1, 3, 7];
+
+const todosCasos = CAPITULOS.flatMap(c => c.casos.map((x, i) => ({ ...x, id: c.id + "-" + i, cap: c.id, trilha: c.trilha })));
+const casoPorId = id => todosCasos.find(c => c.id === id);
+/* versões antigas guardavam os erros numa lista simples */
+if (Array.isArray(S.erros)) { S.erros.forEach(id => { S.srs[id] = { n: 0, quando: "" }; }); delete S.erros; }
+const refs = [...new Set(todosCasos.map(c => c.ref))].map(r => [r, RESUMOS[r] || todosCasos.find(c => c.ref === r && c.resumo).resumo]);
+
+const nivel = () => { let n = 0; NIVEIS.forEach((l, i) => { if (S.xp >= l.xp) n = i; }); return n; };
+const embaralhar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+/* rodízio da resposta certa: nunca repete a letra da pergunta anterior e passa por A, B, C e D de forma equilibrada */
+let sacoCerta = [], ultimaCerta = -1;
+function posicaoCerta(n) {
+  let disp = sacoCerta.filter(i => i < n && i !== ultimaCerta);
+  if (!disp.length) { sacoCerta = embaralhar([0, 1, 2, 3]); disp = sacoCerta.filter(i => i < n && i !== ultimaCerta); }
+  const p = disp[0];
+  sacoCerta.splice(sacoCerta.indexOf(p), 1);
+  ultimaCerta = p;
+  return p;
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const $app = document.getElementById("app");
+let tela = "home";
+
+/* datas locais e sorteio fixo por dia (todo mundo recebe o mesmo desafio) */
+const dataLocal = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const hoje = () => dataLocal(new Date());
+const ontem = () => { const d = new Date(); d.setDate(d.getDate() - 1); return dataLocal(d); };
+const paraData = s => { const [a, m, d] = s.split("-").map(Number); return new Date(a, m - 1, d); };
+const somarDias = (dia, n) => { const d = paraData(dia); d.setDate(d.getDate() + n); return dataLocal(d); };
+const difDias = (a, b) => Math.round((paraData(b) - paraData(a)) / 864e5);
+const formatarDia = dia => dia.slice(8, 10) + "/" + dia.slice(5, 7);
+const diaMes = () => { const d = new Date(); return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0"); };
+function semente(str) {
+  let h = 2166136261; for (const ch of str) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
+  return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return (h >>> 0) / 4294967296; };
+}
+function sortear(arr, n, rnd) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a.slice(0, n); }
+
+/* avisos em fila, para conquistas e missões não se atropelarem */
+const filaToast = []; let toastAtivo = false;
+function toast(msg) { filaToast.push(msg); if (!toastAtivo) proximoToast(); }
+function proximoToast() {
+  const t = document.getElementById("toast"), msg = filaToast.shift();
+  if (!msg) { toastAtivo = false; return; }
+  toastAtivo = true; t.textContent = msg; t.classList.add("show");
+  setTimeout(() => { t.classList.remove("show"); setTimeout(proximoToast, 300); }, 2200);
+}
+
+function ganharXP(n) {
+  const antes = nivel(); S.xp += n; const depois = nivel();
+  if (depois > antes) toast("Subiu de nível: " + NIVEIS[depois].nome);
+}
+function conquistar(id) {
+  if (S.conquistas[id]) return;
+  S.conquistas[id] = true; toast("Conquista: " + CONQUISTAS.find(x => x.id === id).nome);
+}
+function marcarDia() {
+  const st = S.streak;
+  if (st.dia === hoje()) return;
+  const faltas = st.dia ? difDias(st.dia, hoje()) - 1 : Infinity;
+  if (faltas === 0) st.n++;
+  else if (faltas <= S.folgas) {
+    S.folgas -= faltas; st.n++;
+    toast(`${faltas === 1 ? "Dia de folga usado" : faltas + " dias de folga usados"}. Sua sequência de ${st.n} dias continua.`);
+    conquistar("folga");
+  } else st.n = 1;
+  st.dia = hoje();
+  if (S.streak.n >= 3) conquistar("streak3");
+  if (S.streak.n >= 7) conquistar("streak7");
+}
+const streakAtual = () => S.streak.dia && difDias(S.streak.dia, hoje()) - 1 <= S.folgas ? S.streak.n : 0;
+
+const pendentes = () => Object.keys(S.srs).filter(id => S.srs[id].quando <= hoje() && casoPorId(id));
+const proximaRevisao = () => Object.values(S.srs).map(r => r.quando).filter(q => q > hoje()).sort()[0];
+function errou(id) { S.srs[id] = { n: 0, quando: hoje() }; }
+/* devolve a data da próxima revisão, "dominada", ou null se a questão não estava para revisar hoje */
+function acertou(id) {
+  const r = S.srs[id];
+  if (!r || r.quando > hoje()) return null;
+  r.n++;
+  if (r.n > INTERVALOS.length) {
+    delete S.srs[id]; S.dominadas++;
+    if (S.dominadas >= 10) conquistar("dominio");
+    return "dominada";
+  }
+  r.quando = somarDias(hoje(), INTERVALOS[r.n - 1]);
+  return r.quando;
+}
+
+function missoesHoje() {
+  if (!S.missoes || S.missoes.dia !== hoje()) {
+    const pool = Object.keys(MISSOES).filter(k => k !== "revisao" || pendentes().length >= 2);
+    S.missoes = { dia: hoje(), ids: sortear(pool, 3, semente("m" + hoje())), prog: {}, feitas: {}, todas: false };
+    salvar();
+  }
+  return S.missoes;
+}
+function evento(tipo, n = 1) {
+  const m = missoesHoje();
+  if (!m.ids.includes(tipo) || m.feitas[tipo]) return;
+  m.prog[tipo] = (m.prog[tipo] || 0) + n;
+  if (m.prog[tipo] >= MISSOES[tipo].meta) {
+    m.feitas[tipo] = true; ganharXP(MISSOES[tipo].xp);
+    toast("Missão cumprida: +" + MISSOES[tipo].xp + " XP");
+    if (!m.todas && m.ids.every(k => m.feitas[k])) {
+      m.todas = true; ganharXP(BONUS_MISSOES); toast("Todas as missões de hoje: +" + BONUS_MISSOES + " XP"); conquistar("missoes");
+      if (S.folgas < MAX_FOLGAS) { S.folgas++; toast("Você ganhou 1 dia de folga para proteger sua sequência"); }
+    }
+  }
+  salvar();
+}
+
+const estrelas = (n, cls = "") => `<span class="stars ${cls}" aria-label="${n} de 3 estrelas">${[0,1,2].map(i => `<svg class="star ${i < n ? "on" : ""}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>`).join("")}</span>`;
+const quadrados = res => `<span class="sq" aria-label="${res.filter(Boolean).length} de ${res.length} certas">${res.map(r => `<i class="${r ? "" : "x"}"></i>`).join("")}</span>`;
+
+function topo() {
+  const n = nivel(), atual = NIVEIS[n], prox = NIVEIS[n + 1];
+  const pct = prox ? Math.round((S.xp - atual.xp) / (prox.xp - atual.xp) * 100) : 100;
+  return `<div class="top">
+    <div class="psi" aria-hidden="true">Ψ</div>
+    <div class="who"><span class="label">Nível ${n + 1} · ${S.xp} XP${prox ? " · faltam " + (prox.xp - S.xp) : ""}</span>
+      <span class="lvl">${atual.nome}</span><div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div></div>
+    <div class="streak" title="Dias seguidos estudando. Cada folga cobre um dia sem jogar."><b>${streakAtual()}</b>dias<span class="folgas">${S.folgas} folga${S.folgas === 1 ? "" : "s"}</span></div>
+  </div>`;
+}
+
+/* ===================== telas ===================== */
+function home() {
+  pararTimer(); tela = "home";
+  const liberado = i => i === 0 || CAPITULOS[i - 1].trilha !== CAPITULOS[i].trilha || S.caps[CAPITULOS[i - 1].id];
+  const capBtn = (c, i) => {
+    const r = S.caps[c.id], ok = liberado(i), n = CAPITULOS.filter((x, j) => j <= i && x.trilha === c.trilha).length;
+    return `<button class="chap ${r ? "done" : ""}" data-cap="${i}" ${ok ? "" : "disabled"}>
+      <span class="n">${ok ? String(n).padStart(2, "0") : "—"}</span>
+      <span class="t"><strong>${esc(c.nome)}</strong><span>${ok ? esc(c.desc) + " · " + c.casos.length + (c.trilha === "estudo" ? " questões" : " casos") : "Termine o capítulo anterior"}</span></span>
+      ${estrelas(r ? r.estrelas : 0)}</button>`;
+  };
+  const nCartas = Object.keys(S.cartas).length, m = missoesHoje();
+  const des = S.desafio && S.desafio.dia === hoje() ? S.desafio : null;
+  const due = pendentes().length, prox = proximaRevisao();
+  $app.innerHTML = `${topo()}
+  <section class="hero enter">
+    <span class="label">Código de Ética do Psicólogo</span>
+    <h1>Você está de <em>plantão.</em> Cada caso pede uma decisão ética.</h1>
+  </section>
+  <button class="desafio" id="m-des">
+    <span><span class="label">Desafio do dia · ${diaMes()}</span>
+    <strong>${des ? "Você fez " + des.res.filter(Boolean).length + " de 5" : "5 questões. Uma tentativa."}</strong>
+    ${des ? quadrados(des.res) : `<span class="sub">Igual para todo mundo. Compare com a turma.</span>`}</span>
+    <span class="go">${des ? "Ver" : "Jogar"}</span>
+  </button>
+  ${due ? `<button class="revbanner" id="m-rev2">
+    <span><span class="label">Revisão espaçada</span><strong>${due} ${due === 1 ? "questão" : "questões"} para revisar hoje</strong>
+    <span class="sub">Rever no dia certo fixa na memória. Cada acerto adia a próxima revisão: 1, 3 e 7 dias.</span></span>
+    <span class="go">Revisar</span></button>` : ""}
+  <section class="missoes" aria-label="Missões de hoje">
+    <div class="section-h"><h3>Missões de hoje</h3><span class="label">${m.ids.filter(k => m.feitas[k]).length}/3</span></div>
+    <p class="foot left">Complete as 3: +${BONUS_MISSOES} XP${S.folgas < MAX_FOLGAS ? " e 1 dia de folga" : ""}.</p>
+    ${m.ids.map(k => { const d = MISSOES[k], p = Math.min(m.prog[k] || 0, d.meta), ok = m.feitas[k];
+      return `<div class="missao ${ok ? "ok" : ""}"><span class="ck" aria-hidden="true">${ok ? "✓" : ""}</span>
+        <span class="mt-wrap"><span class="mt">${esc(d.txt)}</span>${d.meta > 1 && !ok ? `<span class="bar"><i style="width:${p / d.meta * 100}%"></i></span>` : ""}</span>
+        <span class="xp">${ok ? "feita" : (d.meta > 1 ? p + "/" + d.meta + " · " : "") + "+" + d.xp}</span></div>`; }).join("")}
+  </section>
+  <div class="modes">
+    <button class="mode hot" id="m-rel"><strong>Relâmpago</strong><span>60 segundos: pode ou não pode? Recorde: ${S.melhorRel}</span></button>
+    <button class="mode" id="m-pro"><strong>Simulado</strong><span>10 questões, nota no fim.${S.melhorProva != null ? " Melhor nota: " + S.melhorProva : ""}</span></button>
+    <button class="mode" id="m-rev" ${due ? "" : "disabled"}><strong>Revisão</strong><span>${due ? due + " para hoje" : prox ? "Próxima em " + formatarDia(prox) : "Nada para revisar"}${S.dominadas ? " · " + S.dominadas + " dominadas" : ""}</span></button>
+    <button class="mode" id="m-bib"><strong>Biblioteca</strong><span>${nCartas}/${refs.length} cartas do Código</span></button>
+    <button class="mode" id="m-con"><strong>Conquistas</strong><span>${Object.keys(S.conquistas).length}/${CONQUISTAS.length} medalhas</span></button>
+    <button class="mode" id="m-rank" ${DB ? "" : "disabled"}><strong>Ranking</strong><span>${DB ? "Veja quem está na frente" : window.claude ? "Disponível para quem entra com conta Claude" : "Disponível na versão do Claude"}</span></button>
+  </div>
+  ${TRILHAS.map(t => {
+    const caps = CAPITULOS.map((c, i) => [c, i]).filter(([c]) => c.trilha === t.id);
+    return `<div class="section-h"><h2>${t.nome}</h2><span class="label">${caps.filter(([c]) => S.caps[c.id]).length}/${caps.length} concluídos</span></div>
+  <div class="chapters">${caps.map(([c, i]) => capBtn(c, i)).join("")}</div>`; }).join("")}
+  <button class="cta ghost" id="share">Copiar meu progresso para compartilhar</button>
+  <p class="foot">Conteúdo educativo baseado na Res. CFP 010/2005 e resoluções do CFP. Consulte sempre o texto oficial.</p>`;
+  document.getElementById("m-des").onclick = () => des ? fimDesafio(des.res, false) : jogar({ modo: "desafio", nome: "Desafio do dia", casos: sortear(todosCasos, 5, semente("d" + hoje())) });
+  document.getElementById("m-rel").onclick = relampago;
+  document.getElementById("m-pro").onclick = () => jogar({ modo: "prova", nome: "Simulado", casos: embaralhar(todosCasos.filter(c => c.trilha === "estudo")).slice(0, 10) });
+  document.getElementById("m-rev").onclick = revisar;
+  if (due) document.getElementById("m-rev2").onclick = revisar;
+  document.getElementById("m-bib").onclick = biblioteca;
+  document.getElementById("m-con").onclick = conquistas;
+  document.getElementById("m-rank").onclick = () => DB && ranking();
+  document.getElementById("share").onclick = compartilhar;
+  $app.querySelectorAll("[data-cap]").forEach(b => b.onclick = () => {
+    const c = CAPITULOS[+b.dataset.cap];
+    jogar({ modo: "capitulo", id: c.id, nome: c.nome, casos: todosCasos.filter(x => x.cap === c.id) });
+  });
+}
+const revisar = () => { const ids = pendentes(); if (ids.length) jogar({ modo: "revisao", nome: "Revisão", casos: embaralhar(ids).map(casoPorId) }); };
+
+let partida = null;
+function jogar(p) {
+  tela = "jogo";
+  partida = { ...p, i: 0, acertos: 0, novas: [], xp: 0, seq: 0, res: [], erradas: [], ajuda: p.modo === "capitulo" || p.modo === "revisao" ? 1 : 0, comAjuda: false };
+  marcarDia(); salvar(); caso();
+}
+
+function caso() {
+  const p = partida, c = p.casos[p.i], prova = p.modo === "prova";
+  const ordem = embaralhar(c.opcoes.map((t, i) => i).filter(i => i !== c.certa));
+  ordem.splice(posicaoCerta(c.opcoes.length), 0, c.certa);
+  $app.innerHTML = `<div class="bar-row"><button class="back" id="sair">Sair</button>
+    <div class="bar"><i style="width:${p.i / p.casos.length * 100}%"></i></div><span class="label">${p.i + 1}/${p.casos.length}</span></div>
+  ${p.seq >= 2 ? `<span class="combo seq">${p.seq} seguidas${p.seq >= 3 ? " · +5 XP de bônus" : ""}</span>` : ""}
+  <article class="ficha enter">
+    <header><span class="label">${c.titulo ? "Ficha de atendimento" : "Questão"}</span><span class="label">${esc(p.nome)}</span></header>
+    <div class="body">${c.titulo ? `<h2>${esc(c.titulo)}</h2><p>${esc(c.caso)}</p><p class="q">O que você faz?</p>` : `<h2>${esc(c.caso)}</h2>`}</div>
+  </article>
+  <div class="opts">${ordem.map((oi, k) => `<button class="opt" data-o="${oi}"><span class="k">${"ABCD"[k]}</span><span>${esc(c.opcoes[oi])}</span></button>`).join("")}</div>
+  ${p.ajuda ? `<button class="sup" id="sup">Pedir supervisão: elimina 2 alternativas (1 por rodada, acerto vale 10 XP)</button>` : ""}
+  ${prova ? `<p class="foot">Simulado: a correção aparece só no fim.</p>` : ""}
+  <div id="fb"></div>`;
+  document.getElementById("sair").onclick = home;
+  $app.querySelectorAll(".opt").forEach(b => b.onclick = () => responder(+b.dataset.o, b));
+  const sup = document.getElementById("sup");
+  if (sup) sup.onclick = () => {
+    p.ajuda = 0; p.comAjuda = true; sup.remove();
+    const erradas = embaralhar([...$app.querySelectorAll(".opt")].filter(b => +b.dataset.o !== c.certa)).slice(0, 2);
+    erradas.forEach(b => { b.disabled = true; b.classList.add("dim", "cut"); });
+  };
+}
+
+function responder(o, btn) {
+  const p = partida, c = p.casos[p.i], certo = o === c.certa;
+  p.res.push(certo);
+  let agenda = null;
+  if (certo) { p.acertos++; agenda = acertou(c.id); }
+  else errou(c.id);
+  if (p.modo === "prova") {
+    if (!certo) p.erradas.push({ c, o });
+    salvar();
+    if (p.i === p.casos.length - 1) fimProva(); else { p.i++; caso(); window.scrollTo(0, 0); }
+    return;
+  }
+  const sup = document.getElementById("sup"); if (sup) sup.remove();
+  $app.querySelectorAll(".opt").forEach(b => {
+    b.disabled = true; const v = +b.dataset.o;
+    if (v === c.certa) b.classList.add("right"); else if (b === btn) b.classList.add("wrong"); else b.classList.add("dim");
+  });
+  let ganho = certo ? (p.comAjuda ? 10 : 20) : 5;
+  if (certo) {
+    p.seq++;
+    if (p.seq >= 3) ganho += 5;
+    evento("acertos");
+    if (p.modo === "revisao") evento("revisao");
+    if (p.modo === "capitulo" && p.seq === 4) evento("sequencia");
+    if (p.modo === "capitulo" && p.seq === 5) conquistar("seq5");
+  } else p.seq = 0;
+  p.comAjuda = false;
+  p.xp += ganho; ganharXP(ganho);
+  let nova = false;
+  if (!S.cartas[c.ref]) { S.cartas[c.ref] = true; nova = true; p.novas.push(c.ref); evento("carta"); }
+  if (Object.keys(S.cartas).length === refs.length) conquistar("colecao");
+  salvar();
+  const ultimo = p.i === p.casos.length - 1;
+  document.getElementById("fb").innerHTML = `<div class="fb ${certo ? "ok" : "no"} enter">
+    <h3>${certo ? (c.titulo ? "Decisão ética!" : "Resposta certa!") : "Não é bem assim."}</h3>
+    <p>${esc(c.porque)}</p>
+    <span class="ref">${esc(c.ref)}</span>
+    <span class="xp-pop">+${ganho} XP${nova ? " · nova carta na Biblioteca" : ""}${!certo ? " · volta na Revisão de hoje" : agenda === "dominada" ? " · questão dominada" : agenda ? " · próxima revisão em " + formatarDia(agenda) : ""}</span>
+    <button class="cta" id="prox">${ultimo ? "Ver resultado" : c.titulo ? "Próximo caso" : "Próxima questão"}</button></div>`;
+  const pb = document.getElementById("prox"); pb.focus({ preventScroll: true });
+  document.getElementById("fb").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  pb.onclick = () => { if (ultimo) fim(); else { p.i++; caso(); window.scrollTo(0, 0); } };
+}
+
+function fim() {
+  const p = partida;
+  if (p.modo === "desafio") return fimDesafio(p.res, true);
+  const total = p.casos.length, pct = p.acertos / total;
+  const est = pct === 1 ? 3 : pct >= .75 ? 2 : pct >= .5 ? 1 : 0;
+  if (p.modo === "revisao") { if (!pendentes().length) conquistar("revisor"); }
+  else {
+    const ant = S.caps[p.id];
+    if (!ant || est > ant.estrelas) S.caps[p.id] = { estrelas: est };
+    if (!ant) { ganharXP(30); p.xp += 30; }
+    evento("capitulo");
+    conquistar("primeiro");
+    if (est === 3) { conquistar("perfeito"); if (p.id === "sigilo") conquistar("sigilo"); if (p.id === "conselhos") conquistar("conselhos"); }
+    if (ESTUDO.every(c => S.caps[c.id])) conquistar("estudo");
+    if (Object.keys(S.caps).length === CAPITULOS.length) conquistar("todos");
+  }
+  salvar(); enviarRanking();
+  const msg = est === 3 ? "Atendimento impecável." : est === 2 ? "Muito bom. Quase lá." : est === 1 ? "Bom começo. Revise os erros." : "Hora de estudar o Código.";
+  $app.innerHTML = `${topo()}<section class="result enter">
+    <span class="label">${esc(p.nome)}</span>
+    <span class="big">${p.acertos}/${total}</span>
+    ${p.modo === "revisao" ? "" : estrelas(est)}
+    <h2>${msg}</h2>
+    <p class="xp-pop">+${p.xp} XP nesta rodada</p>
+    ${p.novas.length ? `<div class="chips">${p.novas.map(r => `<span class="chip new">${esc(r)}</span>`).join("")}</div><p class="foot">Novas cartas na sua Biblioteca</p>` : ""}
+    <div class="stack">
+      ${pendentes().length ? `<button class="cta" id="rev">Revisar ${pendentes().length} agora</button>` : ""}
+      <button class="cta ${pendentes().length ? "ghost" : ""}" id="volta">Voltar ao plantão</button>
+    </div></section>`;
+  tela = "fim";
+  document.getElementById("volta").onclick = home;
+  const r = document.getElementById("rev"); if (r) r.onclick = revisar;
+}
+
+/* ---------- Desafio do dia ---------- */
+function fimDesafio(res, agora) {
+  tela = "fim";
+  if (agora) {
+    S.desafio = { dia: hoje(), res };
+    ganharXP(20); evento("desafio"); conquistar("desafio");
+    if (res.every(Boolean)) conquistar("desafio5");
+    salvar(); enviarRanking();
+  }
+  const n = res.filter(Boolean).length;
+  $app.innerHTML = `${topo()}<section class="result enter">
+    <span class="label">Desafio do dia · ${diaMes()}</span>
+    <span class="big">${n}/5</span>
+    ${quadrados(res).replace('class="sq"', 'class="sq big-sq"')}
+    <h2>${n === 5 ? "Dia perfeito." : n >= 3 ? "Bom plantão." : "Amanhã tem outro."}</h2>
+    <p class="foot">Um novo desafio aparece todo dia, igual para todo mundo.</p>
+    <div class="stack">
+      <button class="cta" id="comp">Copiar resultado para compartilhar</button>
+      ${pendentes().length ? `<button class="cta ghost" id="rev">Fazer as ${pendentes().length} revisões de hoje</button>` : ""}
+      <button class="cta ghost" id="volta">Voltar ao plantão</button>
+    </div></section>`;
+  document.getElementById("volta").onclick = home;
+  const rv = document.getElementById("rev"); if (rv) rv.onclick = revisar;
+  document.getElementById("comp").onclick = () => copiar(`Plantão Ético · Desafio de ${diaMes()}\n${res.map(r => r ? "🟩" : "🟥").join("")} ${n}/5\nSequência de estudo: ${streakAtual()} dia(s)`);
+}
+
+/* ---------- Simulado ---------- */
+function fimProva() {
+  tela = "fim";
+  const p = partida, nota = p.acertos, xp = nota * 10;
+  ganharXP(xp); evento("prova");
+  const recorde = S.melhorProva == null || nota > S.melhorProva;
+  if (recorde) S.melhorProva = nota;
+  if (nota === 10) conquistar("nota10");
+  salvar(); enviarRanking();
+  $app.innerHTML = `${topo()}<section class="result enter">
+    <span class="label">Simulado</span>
+    <span class="big">${nota}<small>/10</small></span>
+    <h2>${nota === 10 ? "Nota máxima." : nota >= 7 ? "Aprovado(a)." : "Ainda não. Revise e tente de novo."}</h2>
+    <p class="xp-pop">+${xp} XP${recorde ? " · sua melhor nota" : ""}</p>
+  </section>
+  ${p.erradas.length ? `<div class="section-h"><h2>Correção</h2><span class="label">${p.erradas.length} erro(s) voltam na Revisão de hoje</span></div>
+  <div class="stack">${p.erradas.map(({ c, o }) => `<div class="fb no">
+    <h3>${esc(c.caso)}</h3>
+    <p><span class="label">Sua resposta</span><br>${esc(c.opcoes[o])}</p>
+    <p><span class="label">Resposta certa</span><br><strong>${esc(c.opcoes[c.certa])}</strong></p>
+    <p>${esc(c.porque)}</p><span class="ref">${esc(c.ref)}</span></div>`).join("")}</div>` : ""}
+  <div class="stack"><button class="cta" id="de">Novo simulado</button><button class="cta ghost" id="volta">Voltar ao plantão</button></div>`;
+  document.getElementById("de").onclick = () => jogar({ modo: "prova", nome: "Simulado", casos: embaralhar(todosCasos.filter(c => c.trilha === "estudo")).slice(0, 10) });
+  document.getElementById("volta").onclick = home;
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Relâmpago ---------- */
+let tick = null;
+function pararTimer() { if (tick) { clearInterval(tick); tick = null; } document.onkeydown = null; }
+function relampago() {
+  tela = "jogo"; marcarDia(); salvar();
+  const r = { fila: embaralhar(RELAMPAGO), i: 0, pts: 0, combo: 0, maxCombo: 0, t: 60, acertos: 0, travado: false };
+  $app.innerHTML = `<div class="bar-row"><button class="back" id="sair">Sair</button><span class="label" style="flex:1">Relâmpago</span><span class="label">Recorde ${S.melhorRel}</span></div>
+  <div class="quick-head"><span class="timer" id="tm">60</span><span class="combo" id="cb">combo x1</span><span class="timer" id="pt" style="font-size:26px">0</span></div>
+  <div class="statement" id="st"></div>
+  <div class="yn"><button class="no" id="bn">Não pode</button><button class="yes" id="by">Pode</button></div>
+  <p class="hint" id="hn">Responda o máximo que conseguir. Acertos seguidos multiplicam os pontos.</p>`;
+  const st = document.getElementById("st"), hn = document.getElementById("hn");
+  const mostrar = () => { if (r.i >= r.fila.length) { r.fila = r.fila.concat(embaralhar(RELAMPAGO)); } st.className = "statement"; st.textContent = r.fila[r.i].t; };
+  const resp = v => {
+    if (r.travado || r.t <= 0) return; r.travado = true;
+    const q = r.fila[r.i], ok = q.pode === v;
+    if (ok) { r.combo++; r.acertos++; r.maxCombo = Math.max(r.maxCombo, r.combo); r.pts += 10 * Math.min(1 + Math.floor(r.combo / 3), 5); }
+    else r.combo = 0;
+    st.className = "statement " + (ok ? "ok" : "no");
+    hn.textContent = (ok ? "Certo. " : "Errado. ") + q.e;
+    document.getElementById("pt").textContent = r.pts;
+    document.getElementById("cb").textContent = "combo x" + Math.min(1 + Math.floor(r.combo / 3), 5);
+    if (r.combo === 6) evento("combo");
+    if (r.maxCombo >= 10) conquistar("combo10");
+    setTimeout(() => { r.i++; r.travado = false; if (r.t > 0) mostrar(); }, ok ? 650 : 1500);
+  };
+  document.getElementById("bn").onclick = () => resp(false);
+  document.getElementById("by").onclick = () => resp(true);
+  document.getElementById("sair").onclick = home;
+  document.onkeydown = e => { if (e.key === "ArrowLeft") resp(false); if (e.key === "ArrowRight") resp(true); };
+  mostrar();
+  tick = setInterval(() => {
+    r.t--; const tm = document.getElementById("tm"); if (!tm) return pararTimer();
+    tm.textContent = r.t; tm.classList.toggle("low", r.t <= 10);
+    if (r.t <= 0) { pararTimer(); fimRelampago(r); }
+  }, 1000);
+}
+function fimRelampago(r) {
+  tela = "fim";
+  const recorde = r.pts > S.melhorRel; if (recorde) S.melhorRel = r.pts;
+  const xp = Math.round(r.pts / 5); ganharXP(xp);
+  if (r.pts >= 200) conquistar("rel200");
+  evento("relampago");
+  salvar(); enviarRanking();
+  $app.innerHTML = `${topo()}<section class="result enter">
+    <span class="label">Relâmpago</span><span class="big">${r.pts}</span>
+    <h2>${recorde ? "Novo recorde!" : "Fim do tempo."}</h2>
+    <div class="chips"><span class="chip">${r.acertos} acertos</span><span class="chip">combo máximo ${r.maxCombo}</span><span class="chip new">+${xp} XP</span></div>
+    <div class="stack"><button class="cta" id="de">Jogar de novo</button><button class="cta ghost" id="volta">Voltar ao plantão</button></div></section>`;
+  document.getElementById("de").onclick = relampago;
+  document.getElementById("volta").onclick = home;
+}
+
+/* ---------- Biblioteca e conquistas ---------- */
+function biblioteca() {
+  tela = "biblioteca";
+  $app.innerHTML = `<div class="bar-row"><button class="back" id="sair">Voltar</button><span class="label">${Object.keys(S.cartas).length}/${refs.length} cartas</span></div>
+  <div class="hero"><h1 style="font-size:32px">Biblioteca do Código</h1><p>Cada questão que você responde desbloqueia a carta do artigo que a fundamenta. Complete a coleção.</p></div>
+  <div class="grid">${refs.map(([ref, resumo]) => S.cartas[ref]
+    ? `<div class="card"><span class="ref">${esc(ref)}</span><p>${esc(resumo)}</p></div>`
+    : `<div class="card locked"><span class="ref">${esc(ref)}</span><p>Responda uma questão para desbloquear.</p></div>`).join("")}</div>`;
+  document.getElementById("sair").onclick = home;
+}
+function conquistas() {
+  tela = "conquistas";
+  $app.innerHTML = `<div class="bar-row"><button class="back" id="sair">Voltar</button><span class="label">${Object.keys(S.conquistas).length}/${CONQUISTAS.length}</span></div>
+  <div class="hero"><h1 style="font-size:32px">Conquistas</h1><p>Medalhas por constância, acerto e curiosidade.</p></div>
+  <div class="grid">${CONQUISTAS.map(c => `<div class="card ${S.conquistas[c.id] ? "got" : "locked"}"><span class="badge-ico">${c.ico}</span><strong>${esc(c.nome)}</strong><p>${esc(c.desc)}</p></div>`).join("")}</div>
+  <button class="cta ghost" id="zerar">Apagar meu progresso</button>`;
+  document.getElementById("sair").onclick = home;
+  const z = document.getElementById("zerar");
+  z.onclick = () => {
+    if (z.dataset.confirm) { S = NOVO(); salvar(); home(); toast("Progresso apagado"); }
+    else { z.dataset.confirm = "1"; z.textContent = "Toque de novo para confirmar"; }
+  };
+}
+
+/* ---------- Ranking da turma (só para quem entra com conta Claude) ---------- */
+let DB = null, USER = null, MEU_ID = null, rankSoLeitura = false, ultimoEnvio = "";
+function enviarRanking() {
+  if (!DB || !MEU_ID || rankSoLeitura) return;
+  const d = { xp: S.xp, cartas: Object.keys(S.cartas).length, relampago: S.melhorRel };
+  const k = JSON.stringify(d); if (k === ultimoEnvio) return; ultimoEnvio = k;
+  DB.collection("ranking").doc(MEU_ID).set({ ...d, atualizado: Date.now() })
+    .catch(e => { if (e && e.code === "invalid_argument") rankSoLeitura = true; });
+}
+async function ranking() {
+  tela = "ranking";
+  $app.innerHTML = `<div class="bar-row"><button class="back" id="sair">Voltar</button><span class="label">Top 30 por XP</span></div>
+  <div class="hero"><h1 style="font-size:32px">Ranking</h1><p>Quem mais estudou o Código. Seu XP entra aqui quando você termina uma rodada.</p></div>
+  <ol class="rank" id="rk"><li class="vazio">Carregando ranking…</li></ol>
+  ${rankSoLeitura ? `<p class="foot">Você pode ver o ranking, mas para aparecer nele peça acesso de Contribuidor a quem compartilhou o jogo.</p>` : ""}`;
+  document.getElementById("sair").onclick = home;
+  try {
+    const snap = await DB.collection("ranking").orderBy("xp", "desc").limit(30).get();
+    const ids = snap.docs.map(d => d.id), ps = ids.length ? await USER.profiles(ids) : {};
+    if (tela !== "ranking") return;
+    document.getElementById("rk").innerHTML = snap.empty ? `<li class="vazio">Ninguém no ranking ainda. Termine uma rodada para ser o primeiro.</li>`
+      : snap.docs.map((d, i) => { const v = d.data(), xp = Number(v.xp) || 0, nv = NIVEIS.reduce((a, l, j) => xp >= l.xp ? j : a, 0);
+        return `<li class="${d.id === MEU_ID ? "me" : ""}"><span class="pos">${i + 1}</span>
+          <span class="nm">${esc((ps[d.id] && ps[d.id].name) || "Participante")}${d.id === MEU_ID ? " (você)" : ""}<small>${NIVEIS[nv].nome} · ${Number(v.cartas) || 0} cartas</small></span>
+          <span class="pts">${xp} XP</span></li>`; }).join("");
+  } catch (e) {
+    if (tela === "ranking") document.getElementById("rk").innerHTML = `<li class="vazio">Não foi possível carregar o ranking agora. Tente de novo mais tarde.</li>`;
+  }
+}
+
+function copiar(txt) {
+  const ok = () => toast("Copiado. É só colar no WhatsApp ou nos stories.");
+  try { navigator.clipboard.writeText(txt).then(ok, () => toast(txt)); } catch (e) { toast(txt); }
+}
+function compartilhar() {
+  copiar(`Estou no nível "${NIVEIS[nivel()].nome}" no Plantão Ético, com ${S.xp} XP, ${Object.keys(S.cartas).length}/${refs.length} cartas do Código de Ética e recorde de ${S.melhorRel} no Relâmpago. Bora jogar?`);
+}
+
+home();
+
+(async () => {
+  try {
+    if (!window.claude || !window.claude.use) return;
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    if (!db || !user) return;
+    const id = await user.id(); if (!id) return;
+    DB = db; USER = user; MEU_ID = id;
+    if ((await user.can("data.write")) === false) rankSoLeitura = true;
+    enviarRanking();
+    if (tela === "home") home();
+  } catch (e) {}
+})();
+</script>
+
+</body>
+</html>
